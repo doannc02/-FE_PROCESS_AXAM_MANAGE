@@ -1,0 +1,13 @@
+{
+    "title": "Danh sách số dư tài khoản ngân hàng",
+    "type_balance": "Nhập số dư",
+    "table": {
+        "bankAccountNumber": "Số TK ngân hàng",
+        "bankAccountName": "Tên ngân hàng",
+        "accountName": "Số tài khoản",
+        "debit": "Dư nợ",
+        "credit": "Dư có",
+        "amountSourceDebit": "Dư nợ gốc",
+        "amountSourceCredit": "Dư có gốc"
+    }
+}

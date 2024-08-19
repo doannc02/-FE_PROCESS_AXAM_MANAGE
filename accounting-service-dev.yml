@@ -1,0 +1,30 @@
+version: '3.6'
+
+services:
+  accounting-service-cms:
+    image: %DOCKER_IMAGE%
+    stop_grace_period: 60s
+    networks:
+      - traefik_traefik_public
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 1
+        delay: 60s
+        order: start-first
+      labels:
+        - traefik.docker.network=traefik_traefik_public
+        - traefik.frontend.rule=HostRegexp:{subdomain:[a-z0-9-]+}.dev.apusplatform.com;PathPrefix:/accounting
+        - traefik.port=80
+        - traefik.backend=accounting-cms
+        - traefik.frontend.priority=4
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8000"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+networks:
+  traefik_traefik_public:
+    external: true

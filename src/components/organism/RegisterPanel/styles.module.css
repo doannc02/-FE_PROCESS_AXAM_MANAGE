@@ -1,0 +1,9 @@
+.imageBg {
+  background-image: url('../../../assets/png/login.png');
+  border-top-left-radius: '6px';
+  border-bottom-left-radius: '6px';
+}
+
+.frameBg {
+  background-image: url('../../../assets/png/frame.png');
+}

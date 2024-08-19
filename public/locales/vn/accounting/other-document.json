@@ -1,0 +1,19 @@
+{
+  "title": "Chứng từ nghiệp vụ khác",
+  "table": {
+    "code": "Số chứng từ",
+    "accountingDate": "Ngày hạch toán",
+    "documentType": "Loại chứng từ",
+    "date": "Ngày chứng từ",
+    "amount": "Giá trị",
+    "note": "Nội dung"
+  },
+  "enTryTable": {
+    "accountDebit": "Tài khoản nợ",
+    "accountCredit": "Tài khoản có",
+    "label": "Nội dung",
+    "amount": "Số tiền",
+    "partnerDebit": "Đối tượng nợ",
+    "partnerCredit": "Đối tượng có"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Cấu hình thẻ tài khoản",
+  "table": {
+    "name": "Tên thẻ",
+    "applicability": "Khả năng áp dụng",
+    "action": "Hành động"
+  }
+}

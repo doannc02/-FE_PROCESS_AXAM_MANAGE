@@ -1,0 +1,19 @@
+{
+  "IN_REFUND": "Trả hàng",
+  "IN_INVOICE": "Mua hàng",
+  "OUT_INVOICE": "Bán hàng",
+  "OUT_REFUND": "Trả hàng",
+  "table": {
+    "code": "Số chứng từ",
+    "partner": "Nhà cung cấp",
+    "partnerCus": "Khách hàng",
+    "partnerCusInternal": "Chi nhánh",
+    "date": "Ngày lập chứng từ",
+    "dueDate": "Ngày đến hạn",
+    "amountUntaxed": "Trước thuế",
+    "amountTotal": "Tổng tiền",
+    "paymentStatus": "Thanh toán",
+    "state": "Trạng thái",
+    "saleType": "Loại khách hàng"
+  }
+}

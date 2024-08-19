@@ -1,0 +1,96 @@
+{
+    "management_salary": {
+    "title": "Kế toán lương",
+    "add":"Thêm mới",
+    "edit": "Chỉnh sửa",
+    "view": "Xem chi tiết",
+    "child": {
+      "group_salary" : {
+        "title": "Nhóm cột lương",
+        "add":"Thêm mới",
+        "edit": "Chỉnh sửa",
+        "view": "Xem chi tiết",
+        "code_column": "Mã nhóm cột",
+        "name_column": "Tên nhóm cột",
+        "description": "Mô tả",
+        "placeholder": {
+          "code_column":"Nhập mã nhóm cột",
+          "name_column":"Nhập tên nhóm cột",
+          "description":"Nhập mô tả",
+          "search": "Tìm kiếm theo mã hoặc tên nhóm cột lương"
+        },
+        "delete": "Bạn có chắc muốn xóa nhóm cột lương này không?",
+        "regex": "Trường này không được chứa kí tự đặc biệt"
+      },
+      "salary_column" : {
+        "title": "Cột lương",
+        "code" : "Mã cột lương",
+        "name": "Tên cột lương",
+        "paramType": "Loại tham số",
+        "columnType": "Tên nhóm cột lương",
+        "incomeType": "Loại thu nhập",
+        "placeholder": {
+          "search_column": "Tìm kiếm theo mã hoặc tên cột lương",
+          "search_group_column": "Tìm kiếm theo mã hoặc tên nhóm cột lương"
+
+        },
+        "delete": "Bạn có chắc muốn xóa cột lương này không?",
+        "params_Type" : {
+          "MANUAL" : "Thủ công",
+          "SYSTEM": "Hệ thống"
+        },
+        "column_Type": {
+          "PLUS" :"Thuộc khoản cộng",
+          "MINUS" :"Thuộc khoản trừ"
+        },
+        "income_Type" : {
+          "PLUS" :{
+            "TAX": "Chịu thuế",
+            "NON_TAX": "Không chịu thuế"
+          },
+          "MINUS" :{
+            "TAX": "Khoản phạt",
+            "NON_TAX": "Khoản khác"
+          },
+          "DEFAULT": "Không có giá trị"
+        }
+
+      },
+      "salary_template": {
+        "title":"Mẫu bảng lương",
+        "code": "Mã mẫu bảng lương",
+        "name":"Tên mẫu bảng lương",
+        "template": "Mẫu bảng lương",
+        "object": "Đối tượng áp dụng",
+        "quantity": "Số lượng đối tượng áp dụng",
+        "description": "Mô tả",
+        "placeholder": {
+          "search": "Tìm kiếm theo mẫu bảng lương"
+        },
+        "table": {
+          "code": "Mã CL/Nhóm CL",
+          "name": "Tên CL/Nhóm CL",
+          "type": "Loại cột lương"
+        },
+        "delete": "Bạn có chắc muốn xóa mẫu cột lương này không?"
+
+
+
+      },
+      "salary_table": {
+        "title": "Bảng lương",
+        "DURATION": "Theo thời gian",
+        "PRODUCT": "Theo sản phẩm",
+        "OUTSOURCING": "Theo khoán",
+        "TOTAL_OUTPUT": "Theo tổng sản lượng chung",
+        "MIXTURE": "Theo 3P (hỗn hợp)",
+        "FIXED": "Theo cố định",
+        "code": "Mã",
+        "salary_table": "Bảng lương",
+        "time": "Thời gian",
+        "applicableType": "Đối tượng áp dụng",
+        "salary_total": "Tổng lương"
+      }
+    }
+  }
+}

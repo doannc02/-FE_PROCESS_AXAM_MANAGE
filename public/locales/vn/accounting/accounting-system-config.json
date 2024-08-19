@@ -1,0 +1,8 @@
+{
+  "title": "Cấu hình hệ thống tài khoản",
+  "table": {
+    "name": "Tên",
+    "code":"Mã",
+    "action": "Hành động"
+  }
+}

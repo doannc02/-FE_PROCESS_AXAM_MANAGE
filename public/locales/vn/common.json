@@ -1,0 +1,135 @@
+{
+  "name": "Tên",
+  "login": "Đăng nhập",
+  "rememberPassword": "Ghi nhớ mật khẩu",
+  "forgetPassword": "Quên mật khẩu?",
+  "status": "Trạng thái",
+  "action": "Hành động",
+  "from": "Từ",
+  "to": "Đến",
+  "account_info": "Thông tin tài khoản",
+  "logout": "Đăng xuất",
+  "detail": "Chi tiết",
+  "Search": "Tìm kiếm",
+  "message": {
+    "success": "Thành công",
+    "fail": "Thất bại",
+    "error": "Có lỗi xảy ra",
+    "delete_data_success": "Xóa dữ liệu thành công",
+    "delete_data_failed": "Xóa dữ liệu thất bại"
+  },
+  "error500": "Oops, Có lỗi xảy ra!",
+  "option": {
+    "ALL": "Tất cả"
+  },
+
+  "form": {
+    "search": {
+      "label": "Tìm kiếm",
+      "placeholder": "Nhập từ khóa tìm kiếm"
+    },
+    "autocomplete": {
+      "placeholder": "Chọn {{label}}",
+      "no_options": "Không có lựa chọn"
+    },
+    "input": {
+      "placeholder": "Nhập {{label}}"
+    }
+  },
+  "btn": {
+    "save_change": "Lưu thay đổi",
+    "add": "Thêm mới",
+    "edit": "Chỉnh sửa",
+    "cancel": "Hủy bỏ",
+    "saveConfig": "Lưu cấu hình",
+    "back": "Trở lại",
+    "delete": "Xóa",
+    "draft" :"Lưu nháp",
+    "confirm": "Xác nhận",
+    "viewDetail": "Xem chi tiết",
+    "deny": "Từ chối",
+    "approve": "Phê duyệt",
+    "history": "Lịch sử",
+    "view": "Xem",
+    "copy" : "Copy",
+    "export": "Export",
+    "import": "Import"
+  },
+  "table": {
+    "no_data": "Không tìm thấy dữ liệu nào!",
+    "paginationNumber": "Số hàng hiển thị trên trang",
+    "jumpToPage": "Nhảy tới trang",
+    "no": "STT",
+    "no_exist_page": "Trang không tồn tại",
+    "action":"Hành động"
+  },
+  "validation": {
+    "password_required": "Bạn chưa nhập mật khẩu",
+    "password_min": "Mật khẩu tối thiểu 6 ký tự",
+    "password_false": "Mật khẩu không đúng",
+    "email": "Email chưa đúng định dạng",
+    "email_unique": "Email đã tồn tại",
+    "mobile_required": "Bạn chưa nhập số điện thoại",
+    "mobile": "Số điện thoại chưa đúng định dạng",
+    "required": "Đây là trường bắt buộc",
+    "username": "Tài khoản 6-15 ký tự và không được phép chứa ký tự đặc biệt",
+    "confirm": "Nhập lại mật khẩu không đúng",
+    "min": "Tối thiểu {{number}} ký tự",
+    "max": "Tối đa {{number}} ký tự",
+    "alias": "Mã bao gồm kí tự chữ, số và #_/\\|.-",
+    "code": "Chỉ được phép nhập ký tự số, chữ không dấu, không có khoảng cách và các ký tự '-' '_' '.'",
+    "password": "Mật khẩu bao gồm ít nhất 8 ký tự. Trong đó chứa ít nhất 1 ký tự viết hoa đầu tiên, 1 ký tự thường , 1 ký tự chữ số, 1 ký đặc biệt",
+    "phone": "Số điện thoại sai định dạng",
+    "not_type": "Sai định dạng",
+    "invalid": "Không hợp lệ",
+    "not_number": "Chỉ được phép nhập ký tự số",
+    "not_contract_number": "Chỉ được phép nhập ký tự chữ, số, và dấu -, /",
+    "url": "URL không đúng định dạng",
+    "confirm_password": "Nhập lại mật khẩu chưa đúng",
+    "number_min": "Không được phép nhỏ hơn {{min}}",
+    "number_max": "Không được phép lớn hơn {{max}}",
+    "cannotLessThanOrEqual": "Không được phép nhỏ hơn hoặc bằng {{min}}",
+    "cannotGreaterThanOrEqual": "Không được phép lớn hơn hoặc bằng {{max}}",
+    "more_than": "Giá trị phải lớn hơn {{more}}",
+    "name": "Tên không được chứa ký tự đặc biệt",
+    "requiredField": "Thông tin bắt buộc",
+    "integer": "Chỉ được phép nhập số nguyên dương",
+    "emailPhoneInvalid": "Không đúng định dạng số điện thoại hoặc email"
+  },
+  "footer": {
+    "label": "Copyright © 2021. Bản quyền site thuộc về Công ty TNHH một thành viên Apodio."
+  },
+  "bizzapp": {
+    "label": "Chuyển đổi hệ thống"
+  },
+  "forgotpassword": {
+    "label": "Bạn quên mật khẩu?",
+    "text": "Vui lòng nhật địa chỉ email hoặc số điện thoại của bạn để khôi phục mật khẩu.",
+    "recovery": "Khôi phục mật khẩu"
+  },
+  "changepassword": {
+    "label": "Nhập mã OTP",
+    "text": "Mã OTP đã được gửi vào số điện thoại/email của quý khách. Vui lòng nhập để khôi phục mật khẩu.",
+    "recovery": "Khôi phục mật khẩu",
+    "input": {
+      "new": "Mật khẩu mới",
+      "re_enter": "Nhập lại mật khẩu mới"
+    },
+    "success": "Đổi mật khẩu thành công"
+  },
+  "countdown": {
+    "label": "Hiệu lực mã OTP: {{count}}s"
+  },
+  "rules": {
+    "required": "Đây là trường bắt buộc",
+    "validate": "Mật khẩu mới không khớp"
+  },
+  "mail": {
+    "label": "Địa chỉ email",
+    "placeholder": "Bạn có thể đăng nhập bằng email, SDT hoặc username"
+  },
+  "password": {
+    "label": "Mật khẩu",
+    "placeholder": "Nhập mật khẩu"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Bút toán phát sinh",
+  "table": {
+    "code": "Số chứng từ",
+    "partner": "Khách hàng",
+    "date": "Ngày lập chứng từ",
+    "dueDate": "Ngày đến hạn",
+    "amountUntaxed": "Trước thuế",
+    "amountTotal": "Tổng tiền",
+    "paymentStatus": "Thanh toán",
+    "state": "Trạng thái"
+  }
+}

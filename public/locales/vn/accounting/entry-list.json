@@ -1,0 +1,12 @@
+{
+  "title": "Đối soát bút toán",
+  "table": {
+    "createdAt": "Ngày",
+    "codeInvoice": "Bút toán",
+    "accountName": "Tài khoản",
+    "partnerName": "Đối tác",
+    "label": "Nhãn",
+    "debit": "Nợ",
+    "credit": "Có"
+  }
+}

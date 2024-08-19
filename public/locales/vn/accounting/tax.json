@@ -1,0 +1,12 @@
+{
+  "title": "Thuế",
+
+  "table": {
+    "name": "Tên loại thuế",
+    "scopeType": "Phạm vi sử dụng thuế",
+    "type": "Kiểu thuế",
+    "description" : "Mô tả",
+    "isActive" : "Trạng thái",
+    "action": "Hành động"
+  }
+}

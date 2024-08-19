@@ -1,0 +1,11 @@
+{
+  "title": "Sổ kế toán",
+  "table": {
+    "code": "Mã",
+    "name": "Tên sổ kế toán",
+    "type": "Kiểu",
+    "defaultAccount": "Tài Khoản mặc định",
+    "currency": "Tiền tệ",
+    "action": "Hành động"
+  }
+}

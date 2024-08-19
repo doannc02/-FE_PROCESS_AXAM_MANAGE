@@ -1,0 +1,33 @@
+{
+    "title": "Quản lý kho",
+    "table": {
+        "code": "Mã Kho",
+        "name": "Tên Kho",
+        "state" : "Trạng thái"
+    },
+    "tableStockPickingRequest": {
+        "content": "Nội dung",
+        "scheduledDate": "Ngày nhập dự kiến",
+        "doneDate" : "Ngày nhập thực tế",
+        "stock" : "Phiếu nhập kho",
+        "status" : "Trạng thái yêu cầu"
+    },
+    "tableStockPickingList": {
+        "code": "Mã phiếu nhập kho",
+        "sourceDocument" : "Nguồn đơn",
+        "content": "Nội dung",
+        "scheduledDate": "Ngày nhập dự kiến",
+        "doneDate" : "Ngày nhập thực tế",
+        "stock" : "Phiếu nhập kho",
+        "warehouse" : "Nhập vào kho",
+        "status" : "Trạng thái",
+        "employee" : "Người nhập kho"
+    },
+    "tableInventoryFirstPeriod" : {
+        "createdAt": "Ngày tạo",
+        "importer" : "Người nhập",
+        "warehouse": "Kho",
+        "quantity": "Số lượng"
+    }
+    
+}

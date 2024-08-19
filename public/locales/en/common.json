@@ -1,0 +1,94 @@
+{
+  "name": "Name",
+  "login": "Login",
+  "rememberPassword": "Remember Password",
+  "forgetPassword": "Forget Password?",
+  "status": "Trạng thái",
+  "action": "Action",
+  "from": "From",
+  "to": "To",
+  "account_info": "Account Info",
+  "logout": "Logout",
+  "detail": "Detail",
+  "Search": "Search",
+
+  "message": {
+    "success": "Success",
+    "fail": "Fail",
+    "error": "Error",
+    "delete_data_success": "Delete data success",
+    "delete_data_failed": "Delete data success"
+  },
+  "error500": "Oops, something went wrong!",
+  "option": {
+    "ALL": "All"
+  },
+
+  "form": {
+    "search": {
+      "label": "Search",
+      "placeholder": "Input search"
+    },
+    "autocomplete": {
+      "placeholder": "Choose {{label}}",
+      "no_options": "No options"
+    },
+    "input": {
+      "placeholder": "Input {{label}}"
+    }
+  },
+  "btn": {
+    "save_change": "Save change",
+    "add": "Add",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "saveConfig": "Save config",
+    "back": "Back",
+    "delete": "Delete",
+    "draft": "Save draft",
+    "confirm": "Confirm"
+  },
+  "table": {
+    "no_data": "No found data!",
+    "paginationNumber": "Number of rows displayed per page",
+    "jumpToPage": "Jum to page",
+    "no": "No",
+    "no_exist_page": "No exits page"
+  },
+  "footer": {
+    "label": "Copyright © 2021. Website copyright belongs to ..."
+  },
+  "bizzapp": {
+    "label": "Switch system"
+  },
+  "forgotpassword": {
+    "label": "Forgot Password?",
+    "text": "Please enter your email or phone number to recover your password.",
+    "recovery": "Recover Password"
+  },
+  "changepassword": {
+    "label": "Enter OTP code",
+    "text": "The OTP code has been sent to your email/phone number. Please enter it to recover your password.",
+    "recovery": "Recover Password",
+    "input": {
+      "new": "New Password",
+      "re_enter": "Confirm New Password"
+    },
+    "success": "Password changed successfully"
+  },
+  "countdown": {
+    "label": "OTP code validity: {{count}}s"
+  },
+  "rules": {
+    "required": "This field is required",
+    "validate": "New password does not match"
+  },
+  "mail": {
+    "label": "Email address",
+    "placeholder": "You can log in with email, phone number or username"
+  },
+  "password": {
+    "label": "Password",
+    "placeholder": "Enter password"
+  }
+}

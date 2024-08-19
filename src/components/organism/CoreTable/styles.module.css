@@ -1,0 +1,11 @@
+.tableRow {
+    cursor: pointer;
+}
+
+.tableRow[data-type='true'] {
+    background-color: #F6F7F9;
+}
+
+.tableRow:hover {
+    background-color: #caecfa;
+}

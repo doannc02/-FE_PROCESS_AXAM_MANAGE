@@ -1,0 +1,32 @@
+{
+    "title_customer": "Danh sách số công nợ khách hàng",
+    "title_provider": "Danh sách số công nợ nhà cung cấp",
+    "type_balance": "Nhập số dư",
+    
+    "table_customer": {
+        "accountName": "Số tài khoản",
+        "partnerCode": "Mã khách hàng",
+        "partnerName": "Tên khách hàng",
+        "name": "Số tài khoản",
+        "debit": "Dư nợ",
+        "credit": "Dư có",
+        "amountSourceDebit": "Dư nợ gốc",
+        "amountSourceCredit": "Dư có gốc"
+    },
+
+    "table_provider": {
+        "accountName": "Số tài khoản",
+        "partnerCode": "Mã NCC",
+        "partnerName": "Tên NCC",
+        "name": "Số tài khoản",
+        "debit": "Dư nợ",
+        "credit": "Dư có"
+    },
+    "table_hisImport": {
+        "createdAt": "Ngày tạo",
+        "createdBy": "Người tạo",
+        "fileUploadName": "File import",
+        "fileResultName": "Kết quả"
+    }
+    
+}

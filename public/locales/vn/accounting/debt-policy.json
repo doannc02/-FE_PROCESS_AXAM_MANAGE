@@ -1,0 +1,14 @@
+{
+    "title": "Chính sách cấp công nợ",
+    "table": {
+      "name": "Tên chính sách",
+      "partner": "Khách hàng áp dụng",
+      "timeApplyPolicy": "Thời gian bắt đầu",
+      "timeEndPolicy": "Thời gian kết thúc",
+      "maximumDebtAmount": "Giới hạn nợ",
+      "limit": "Thời gian được nợ",
+      "amountPunish": "Phạt trả chậm",
+      "status": "Trạng thái",
+      "statusPolicy": "Phê duyệt"
+    }
+  }
