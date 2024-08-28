@@ -76,6 +76,7 @@ const CoreNavbar = (props: Props) => {
         </div>
       </div>
       <div
+        className='bg-slate-100'
         style={
           !isNotPaddingContent
             ? {

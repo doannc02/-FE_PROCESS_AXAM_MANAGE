@@ -5,6 +5,7 @@ import { useDashboard } from './useDashboard'
 import LoadingPage from '@/components/atoms/LoadingPage'
 import { FormProvider } from 'react-hook-form'
 import CoreNavbar from '@/components/organism/CoreNavbar'
+import General from './components/General'
 
 const Dashboard = () => {
   const [, _] = useDashboard()
@@ -45,14 +46,9 @@ const Dashboard = () => {
             <CoreNavbar
               breadcrumbs={[
                 {
-                  title: 'Chi tiết',
-                  content: <>tab 1</>,
+                  title: 'HOME',
+                  content: <General />,
                   rightAction: <>kkk</>,
-                },
-                {
-                  title: 'Bút toán',
-                  content: <>bt</>,
-                  rightAction: <>bt</>,
                 },
               ]}
               //  tabNumber={tabNumber}
