@@ -1,5 +1,4 @@
 import PaginationCustom from '@/components/organism/PaginationCustom'
-import { Income } from '@/service/accounting/accountMove/getListIncome/type'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import {
   CircularProgress,
@@ -37,7 +36,7 @@ const BodyTable = ({
   onReturnValueRow,
 }: {
   isLoading: boolean
-  data: Income[]
+  data: any[]
   onRowClick?: (id: number, row?: any) => void
   showInfoText?: boolean
   onReturnValueRow?: (val: any) => any
@@ -94,7 +93,7 @@ const TableCustomCollapse2 = ({
   onReturnValueRow,
 }: {
   isLoading: boolean
-  data: Income[]
+  data: any[]
   onRowClick?: (id: number, row?: any) => void
   onChangePageSize?: (val: PaginationTableProps) => void
   paginationHidden?: boolean

@@ -1,10 +1,10 @@
 import { UploadFileCustom } from '@/components/molecules/UploadFileCustom'
-import { productApi } from '@/config/axios'
+import {  commonApi } from '@/config/axios'
 import { errorMsg } from '@/helper/message'
 import { ChangeEvent, useState } from 'react'
 
 export const fileUpload = (data: any, params: any = {}) => {
-  return productApi({
+  return  commonApi({
     method: 'post',
     headers: {
       'Content-Type': 'multipart/form-data',

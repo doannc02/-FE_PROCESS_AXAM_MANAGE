@@ -1,15 +1,16 @@
 import DeleteIcon from '@/assets/svg/action/delete.svg'
 import EditIcon from '@/assets/svg/action/edit.svg'
-import { productApi } from '@/config/axios'
+import { commonApi } from '@/config/axios'
 import { errorMsg } from '@/helper/message'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { Box, IconButton, Typography } from '@mui/material'
 import Image from 'next/image'
 import { ChangeEvent, useRef, useState } from 'react'
 import LoadingPage from '../../atoms/LoadingPage'
+import { common } from '@mui/material/colors'
 
 export const fileUpload = (data: any) => {
-  return productApi({
+  return commonApi({
     method: 'post',
     headers: {
       'Content-Type': 'multipart/form-data',

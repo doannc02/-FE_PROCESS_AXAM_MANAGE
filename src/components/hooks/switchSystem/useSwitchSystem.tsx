@@ -3,8 +3,6 @@ import ArrowsIcon from '@/assets/svg/arrows.svg'
 import { WHITE } from '@/helper/colors'
 import { MAX_VALUE } from '@/helper/contain'
 import { useAppSelector } from '@/redux/hook'
-import { useQueryGetSystemList } from '@/service/uaa/system/getList'
-import { System } from '@/service/uaa/system/getList/type'
 
 import {
   Box,
@@ -59,19 +57,9 @@ export const useSwitchSystem = () => {
   const handleOpenDialog = () => setOpen(true)
   const handleCloseDialog = () => setOpen(false)
 
-  const { data: systemList, isLoading: isLoadingSystem } =
-    useQueryGetSystemList(
-      {
-        page: 0,
-        size: MAX_VALUE,
-      },
-      {
-        enabled: open,
-      }
-    )
 
   const handleChangeSystem = useCallback(
-    (system: System) => {
+    (system: any) => {
       if (system?.homepage) {
         window.location.href = system.homepage
       }
@@ -113,23 +101,21 @@ export const useSwitchSystem = () => {
           </Box>
         </DialogTitle>
         <DialogContent>
-          {isLoadingSystem ? (
+          {false ? (
             <div className='min-h-[500px] min-w-[500px] flex justify-center items-center'>
               <CircularProgress />
             </div>
           ) : (
             <Box className='grid grid-cols-3 gap-15 mx-10 my-20'>
-              {(systemList ? systemList.data.content : []).map(
-                (item, index) => {
-                  return (
-                    <SystemAppBox
-                      item={item}
-                      key={index}
-                      handleChangeBizzApp={handleChangeSystem}
-                    />
-                  )
-                }
-              )}
+              {[].map((item, index) => {
+                return (
+                  <SystemAppBox
+                    item={item}
+                    key={index}
+                    handleChangeBizzApp={handleChangeSystem}
+                  />
+                )
+              })}
             </Box>
           )}
         </DialogContent>

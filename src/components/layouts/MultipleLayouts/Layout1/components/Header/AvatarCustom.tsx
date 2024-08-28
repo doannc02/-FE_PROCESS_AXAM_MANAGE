@@ -14,7 +14,6 @@ import {
 } from '@/helper/colors'
 import { useAppSelector } from '@/redux/hook'
 import { TRANSLATE } from '@/routes'
-import { useQueryGetCompanyOwningAndJoinList } from '@/service/apus/company/joinAndOwning'
 import KeyIcon from '@mui/icons-material/Key'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
@@ -57,7 +56,7 @@ export const AvatarCustom = ({
   const [anchorEl, setAnchorEl] = useState<any>(null)
   const [anchorEl1, setAnchorEl1] = useState<any>(null)
 
- // const { isLoading, data } = useQueryGetCompanyOwningAndJoinList()
+  // const { isLoading, data } = useQueryGetCompanyOwningAndJoinList()
 
   return (
     <>

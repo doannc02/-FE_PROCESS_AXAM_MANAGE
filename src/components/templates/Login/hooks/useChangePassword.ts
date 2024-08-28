@@ -1,11 +1,11 @@
-import { authUaaApi } from '@/config/axios'
+import { commonApi } from '@/config/axios'
 import { errorMsg, successMsg } from '@/helper/message'
 import { REGEX } from '@/helper/regex'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export const getOtpForgotPassword = (data: any) => {
-  return authUaaApi({
+  return commonApi({
     url: '/public-api/v1/user/forgot-password',
     method: 'post',
     data,
@@ -13,7 +13,7 @@ export const getOtpForgotPassword = (data: any) => {
 }
 
 export const submitChangePassword = (data: any) => {
-  return authUaaApi({
+  return commonApi({
     url: '/public-api/v1/user/submit-password',
     method: 'post',
     data,

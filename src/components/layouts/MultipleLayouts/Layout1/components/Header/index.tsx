@@ -1,23 +1,6 @@
-import { PRIMARY } from '@/helper/colors'
 import { useAppSelector } from '@/redux/hook'
-import dynamic from 'next/dynamic'
 import { AvatarCustom } from './AvatarCustom'
 import { Notifications } from './Notifications'
-import { SwitchSystem } from './SwitchSystem'
-
-const DynamicBranch = dynamic(
-  () => import('./Branch').then((com) => com.Branch),
-  {
-    loading: () => (
-      <div
-        className='flex justify-between h-[45px] top-0 sticky'
-        style={{
-          backgroundColor: PRIMARY,
-        }}
-      ></div>
-    ),
-  }
-)
 
 export const Header = () => {
   const { firstMainColor: PRIMARY } = useAppSelector(

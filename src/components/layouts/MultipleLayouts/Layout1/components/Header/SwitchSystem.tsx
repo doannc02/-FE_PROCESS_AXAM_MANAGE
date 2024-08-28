@@ -3,7 +3,6 @@ import IconApplication from '@/assets/svg/layout1/application.svg'
 import SquaresFour from '@/components/icons/SquaresFour'
 import { WHITE } from '@/helper/colors'
 import { useAppSelector } from '@/redux/hook'
-import { useQueryGetSystemByUserList } from '@/service/uaa/system/getByUser'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { IconButton, Menu, Typography } from '@mui/material'
 import Image from 'next/image'
@@ -12,8 +11,6 @@ import React from 'react'
 
 export const SwitchSystem = () => {
   const [anchorEl, setAnchorEl] = React.useState<any>(null)
-
-  const { data: systemList } = useQueryGetSystemByUserList()
 
   const { domain } = useAppSelector((state) => state.companyConfigData)
 
@@ -78,10 +75,10 @@ export const SwitchSystem = () => {
           </div>
 
           <div className='grid grid-cols-2 px-4 mt-10'>
-            {(systemList ? systemList.data : []).map((system) => {
+            {[].map((system: any, index) => {
               return (
                 <Link
-                  key={system.id}
+                  key={index}
                   href={`http://${domain}/${system.homepage}`}
                   target='_blank'
                   rel='noopener'

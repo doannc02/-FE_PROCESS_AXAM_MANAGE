@@ -2,7 +2,6 @@ import { ColumnProps, CoreTable } from '@/components/organism/CoreTable'
 import { CustomTable } from '@/components/organism/TableCustom'
 import { PAGE_SIZE } from '@/helper/contain'
 import { errorMsg } from '@/helper/message'
-import { Product } from '@/service/product/productController/getList/type'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import CloseIcon from '@mui/icons-material/Close'
 import {
@@ -155,7 +154,7 @@ export const SelectBoxCustom = (props: Props) => {
   }, [isClick, JSON.stringify(params)])
 
   const dataTable = useMemo(() => {
-    const dataFormated = data.map((item: Product | any) => {
+    const dataFormated = data.map((item:  any) => {
       const newDate: any = {
         ...item,
       }
