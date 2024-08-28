@@ -24,12 +24,12 @@ export const Header = () => {
     (state) => state.themeColorData
   )
 
-  const {
-    name: companyName,
-    username,
-    firstName,
-    lastName,
-  } = useAppSelector((state) => state.companyConfigData)
+  // const {
+  //   name: companyName,
+  //   username,
+  //   firstName,
+  //   lastName,
+  // } = useAppSelector((state) => state.companyConfigData)
 
   return (
     <div
@@ -39,18 +39,18 @@ export const Header = () => {
       }}
     >
       <div className='flex items-center gap-10 h-full'>
-        <SwitchSystem />
+        {/* <SwitchSystem /> */}
         <div className='w-[1px] h-1/3 bg-slate-300'></div>
-        <DynamicBranch />
+        {/* <DynamicBranch /> */}
       </div>
 
       <div className='flex items-center gap-6 px-5'>
         <Notifications numberUnRead={15} />
         <AvatarCustom
-          companyName={companyName}
-          username={username}
-          firstName={firstName}
-          lastName={lastName}
+          companyName={'company'}
+          username={'username'}
+          firstName={'firstName'}
+          lastName={'lastName'}
         />
       </div>
     </div>

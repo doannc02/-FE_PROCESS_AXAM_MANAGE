@@ -57,7 +57,7 @@ export const AvatarCustom = ({
   const [anchorEl, setAnchorEl] = useState<any>(null)
   const [anchorEl1, setAnchorEl1] = useState<any>(null)
 
-  const { isLoading, data } = useQueryGetCompanyOwningAndJoinList()
+ // const { isLoading, data } = useQueryGetCompanyOwningAndJoinList()
 
   return (
     <>
@@ -193,7 +193,7 @@ export const AvatarCustom = ({
                   <Typography variant='h6'>Lựa chọn workspace</Typography>
                 </div>
                 <div className='px-10 pb-10'>
-                  {isLoading ? (
+                  {/* {isLoading ? (
                     <CoreLoading />
                   ) : (
                     data?.data.map((tenant) => {
@@ -250,7 +250,8 @@ export const AvatarCustom = ({
                         </Link>
                       )
                     })
-                  )}
+                  )} */}
+                  <>Todo here!!!</>
                 </div>
               </div>
             </Menu>

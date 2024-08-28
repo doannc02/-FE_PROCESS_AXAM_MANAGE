@@ -1,3 +1,4 @@
+import { useFormCustom } from '@/lib/form'
 import defaultValue from '@/redux/defaultValue'
 import { useAppDispatch } from '@/redux/hook'
 import { setButtonConfig } from '@/redux/reducer/buttonReducer'
@@ -9,7 +10,7 @@ import { useQueryGetThemeConfigAPI } from '@/service/common/theme/get'
 
 export const useDashboard = () => {
   const dispatch = useAppDispatch()
-
+  const methodForm = useFormCustom()
   const {
     buttonDefaultConfig,
     themeColorDefaultConfig,
@@ -163,5 +164,5 @@ export const useDashboard = () => {
     }
   }
 
-  return [{}, {}] as const
+  return [{ methodForm }, { onSubmit: () => {} }] as const
 }

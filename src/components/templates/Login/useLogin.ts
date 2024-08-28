@@ -25,10 +25,11 @@ export const useLogin = () => {
         grant_type: 'password',
       }
       const data = await postLogin(requestBody)
-      setCmsToken(data?.data)
+      console.log(data, 'dataLogin')
+      setCmsToken(data)
       if (pathParams) {
         router.push(`https://${pathParams}${SUBDOMAIN}`)
-        setCmsToken(data?.data)
+        setCmsToken(data)
       } else router.push('/')
       setLoading(false)
     } catch (err) {

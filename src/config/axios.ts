@@ -8,27 +8,11 @@ import queryString from 'query-string'
 import { getCmsToken, removeCmsToken, setCmsToken } from './token'
 
 const {
-  publicRuntimeConfig: {
-    SUBDOMAIN,
-    AUTH_URL,
-    APUS_URL,
-    COMMON_URL,
-    UAA_URL,
-    PRODUCT_URL,
-    SO_URL,
-    PO_URL,
-    ASSET_URL,
-    WAREHOUSE_URL,
-    ACCOUNTING_URL,
-    FINANCE_URL,
-    MANUFACTORY_URL,
-    CONTRACT_URL,
-    HRM_URL
-  },
+  publicRuntimeConfig: { SUBDOMAIN, COMMON_URL },
 } = getConfig()
 
 const requestAuth = axios.create({
-  baseURL: AUTH_URL,
+  baseURL: COMMON_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -53,7 +37,7 @@ export const logoutAccount = async () => {
     localStorage.clear()
     sessionStorage.clear()
     await removeCmsToken()
-    window.location.replace('/accounting/login')
+    window.location.replace('/login')
   }
 }
 
@@ -61,9 +45,9 @@ export const middlewareRequest = async (config: any) => {
   try {
     const tokenAccess: any = JSON.parse(getCmsToken() ?? '{}')
     if (
-      config.url &&
-      config.url.includes('/oauth') &&
-      !config.url.includes('/oauth/logout')
+      config.url
+      // config.url.includes('/oauth') &&
+      // !config.url.includes('/oauth/logout')
     ) {
       return {
         ...config,
@@ -74,7 +58,7 @@ export const middlewareRequest = async (config: any) => {
             ? window.location.origin
                 .replace('https://', '')
                 .replace('http://', '')
-            : 'apodio' + SUBDOMAIN,
+            : SUBDOMAIN,
         },
       }
     }
@@ -89,7 +73,7 @@ export const middlewareRequest = async (config: any) => {
           ? window.location.origin
               .replace('https://', '')
               .replace('http://', '')
-          : 'apodio' + SUBDOMAIN,
+          : SUBDOMAIN,
       },
     }
   } catch (error) {
@@ -105,14 +89,13 @@ export const middlewareResponseError = async (error: any) => {
   const originalRequest = config
 
   const status = response?.status
-
+  console.log(response, 'res')
   if (!status || status === 503 || status === 404) {
     //   window.location.replace('/accounting/500')
   }
 
   if (
     status === 401 &&
-    !config.url.includes('/oauth') &&
     !originalRequest._retry
   ) {
     if (!isRefreshing) {
@@ -178,18 +161,8 @@ export const defaultOption = {
   refetchInterval: 0,
   keepPreviousData: false,
 }
-export const authApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: AUTH_URL,
-    ...options,
-  })
-}
-export const authWarehouseApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: WAREHOUSE_URL,
-    ...options,
-  })
-}
+
+
 export const commonApi = (options: AxiosRequestConfig) => {
   return requestAuth({
     baseURL: COMMON_URL,
@@ -197,86 +170,3 @@ export const commonApi = (options: AxiosRequestConfig) => {
   })
 }
 
-export const authUaaApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: UAA_URL,
-    ...options,
-  })
-}
-
-export const productApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: PRODUCT_URL,
-    ...options,
-  })
-}
-
-export const accountingApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: ACCOUNTING_URL,
-    ...options,
-  })
-}
-
-export const financeApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: FINANCE_URL,
-    ...options,
-  })
-}
-
-export const authCommonAPI = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: COMMON_URL,
-    ...options,
-  })
-}
-
-export const authSOApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: SO_URL,
-    ...options,
-  })
-}
-
-export const poApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: PO_URL,
-    ...options,
-  })
-}
-
-export const assetApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: ASSET_URL,
-    ...options,
-  })
-}
-
-export const authApusApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: APUS_URL,
-    ...options,
-  })
-}
-
-export const manufactoryApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: MANUFACTORY_URL,
-    ...options,
-  })
-}
-
-export const contractApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: CONTRACT_URL,
-    ...options,
-  })
-}
-
-export const hrmApi = (options: AxiosRequestConfig) => {
-  return requestAuth({
-    baseURL: HRM_URL,
-    ...options,
-  })
-}

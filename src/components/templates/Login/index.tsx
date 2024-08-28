@@ -48,7 +48,7 @@ const Login = () => {
             borderBottomRightRadius: '6px',
           }}
         >
-          <Box className='absolute top-10 right-10'>
+          <Box className='absolute flex top-10 right-10'>
             <LanguageButton />
           </Box>
 
@@ -64,7 +64,13 @@ const Login = () => {
           >
             <Box className='flex flex-col'>
               <Typography variant='h5' style={{ marginTop: 40 }}>
-                Chào mừng đến với Apodio
+                Module Quản Lý Quy Trình Tạo Đề Thi
+              </Typography>
+              <Typography
+                variant='h6'
+                style={{ marginLeft: 40, marginTop: 10 }}
+              >
+                Khoa Công Nghệ Thông Tin - VIU
               </Typography>
 
               <CoreInput
@@ -120,7 +126,6 @@ const Login = () => {
 
               <CoreButton
                 theme='submit'
-               
                 style={{
                   borderRadius: 6,
                   width: '100%',
@@ -142,7 +147,6 @@ const Login = () => {
 
               <CoreButton
                 theme='submit'
-               
                 //loading={loading}
                 style={{
                   borderRadius: 6,

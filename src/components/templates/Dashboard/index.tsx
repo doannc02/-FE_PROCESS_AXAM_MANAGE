@@ -2,6 +2,9 @@ import PageContainer from '@/components/organism/PageContainer'
 import { BLACK } from '@/helper/colors'
 import { Typography } from '@mui/material'
 import { useDashboard } from './useDashboard'
+import LoadingPage from '@/components/atoms/LoadingPage'
+import { FormProvider } from 'react-hook-form'
+import CoreNavbar from '@/components/organism/CoreNavbar'
 
 const Dashboard = () => {
   const [, _] = useDashboard()
@@ -19,15 +22,44 @@ const Dashboard = () => {
       console.error(error.message)
     }
   }
+
+  const [values, handles] = useDashboard()
+
+  const { methodForm } = values
+
+  const { onSubmit } = handles
   console.log('here !@!')
   getData()
   return (
     <PageContainer title=''>
       <div className='flex justify-center mt-[30px]'>
         <Typography fontSize={30} color={BLACK} fontWeight={700}>
-          WELCOME TO ACCOUNTING SERVICE
+          DASHBOARD
         </Typography>
       </div>
+      {false ? (
+        <LoadingPage />
+      ) : (
+        <FormProvider {...methodForm}>
+          <form onSubmit={onSubmit}>
+            <CoreNavbar
+              breadcrumbs={[
+                {
+                  title: 'Chi tiết',
+                  content: <>tab 1</>,
+                  rightAction: <>kkk</>,
+                },
+                {
+                  title: 'Bút toán',
+                  content: <>bt</>,
+                  rightAction: <>bt</>,
+                },
+              ]}
+              //  tabNumber={tabNumber}
+            />
+          </form>
+        </FormProvider>
+      )}
     </PageContainer>
   )
 }
