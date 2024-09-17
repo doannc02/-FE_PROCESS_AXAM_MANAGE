@@ -2,7 +2,7 @@ import { CurrencyFormatCustom } from '@/components/atoms/CurrencyFormatCustom'
 import InvoiceStatus from '@/components/atoms/InvoiceStatus'
 import PaymentStatus from '@/components/atoms/PaymentStatus'
 import { ColumnProps } from '@/components/organism/CoreTable'
-import { RED } from '@/helper/colors'
+import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { convertToDate } from '@/utils/date/convertToDate'
 import { useFormCustom } from '@/lib/form'
 import { useCheckPath } from '@/path'
@@ -16,10 +16,11 @@ import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useQueryGetProposalsList } from '@/service/proposals'
 import { MAX_VALUE } from '@/helper/contain'
+import DisplayStatus from '@/components/molecules/DisplayStatus'
 
 const defaultValues = {
   search: '',
-  page: 0,
+  page: 1,
   size: 20,
   startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
   endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
@@ -34,52 +35,14 @@ const useListProposals = () => {
     defaultValues,
   })
 
-  const { data, isLoading: isLoadingTable } = useQueryGetProposalsList({
-    page: 0,
-    size: MAX_VALUE,
-  })
-
-  const columns = useMemo(
-    () =>
-      [
-        {
-          header: 'Mã số phân công',
-          fieldName: 'code',
-        },
-        {
-          header: 'Học kỳ',
-          fieldName: 'semester',
-        },
-        {
-          header: 'Deadline',
-          fieldName: 'endDate',
-        },
-
-        {
-          header: 'Trạng thái',
-          fieldName: 'status',
-        },
-        {
-          header: t('table.amountTotal'),
-          fieldName: 'amountTotal',
-        },
-        {
-          header: t('table.paymentStatus'),
-          fieldName: 'paymentStatus',
-        },
-
-        {
-          header: t('table.state'),
-          fieldName: 'state',
-        },
-      ] as ColumnProps[],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [t]
-  )
-
   const [queryPage, setQueryPage] = useState<any>(
     _.omitBy(defaultValues, _.isNil)
   )
+
+  const { data, isLoading: isLoadingTable } = useQueryGetProposalsList({
+    ...queryPage,
+  })
+
   const onChangePageSize = (val: any) => {
     const { page, size } = val
     const input = { ...queryPage, page, size }
@@ -96,9 +59,62 @@ const useListProposals = () => {
   const onSubmit = methodForm.handleSubmit(async (input) => {
     setQueryPage(input)
   })
-
-  const tableData = [].map((item) => {
-    return {}
+  const columns = useMemo(
+    () =>
+      [
+        // {
+        //   header: 'Mã số phân công',
+        //   fieldName: 'code',
+        // },
+        {
+          header: 'GV thực hiện',
+          fieldName: 'userName',
+        },
+        {
+          header: 'Người phê duyệt',
+          fieldName: 'instructorName',
+        },
+        {
+          header: 'Học kỳ',
+          fieldName: 'semester',
+        },
+        {
+          header: 'Deadline',
+          fieldName: 'deadline',
+        },
+        {
+          header: 'Trạng thái',
+          fieldName: 'status',
+        },
+      ] as ColumnProps[],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [t]
+  )
+  const tableData = (data?.data?.content ?? []).map((item) => {
+    return {
+      ...item,
+      userName: item?.user?.name ?? '-',
+      instructorName: item?.instructor?.name ?? '-',
+      deadline: convertToDate(item?.deadline),
+      status: (
+        <DisplayStatus
+          text={
+            item?.status === 'AWAIT'
+              ? 'Chờ phê duyệt'
+              : item?.status === 'DRAFT'
+              ? 'Nháp'
+              : 'Đã phê duyệt'
+          }
+          color={
+            item?.status === 'AWAIT'
+              ? ORANGE
+              : item?.status === 'DRAFT'
+              ? BLACK
+              : GREEN
+          }
+        />
+      ),
+    }
   })
 
   return [

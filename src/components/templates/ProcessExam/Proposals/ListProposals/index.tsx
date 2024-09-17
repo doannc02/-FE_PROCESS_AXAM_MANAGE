@@ -11,8 +11,9 @@ import { paymentStatusEnum } from '@/enum'
 import { Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import useListProposals from './useListProposals'
+import { MENU_URL } from '@/routes'
 
-const InvoiceList = () => {
+const ListProposals = () => {
   const [values, handles] = useListProposals()
 
   const {
@@ -122,7 +123,15 @@ const InvoiceList = () => {
       <div className='py-4 flex justify-end gap-4 items-center'>
         <TopAction actionList={['import', 'export']} />
         <DotThree className='mt-3' onClick={() => {}} />
-        <CoreButton onClick={() => {}}>{t('common:btn.add')}</CoreButton>
+        <CoreButton
+          onClick={() => {
+            router.push({
+              pathname: `${MENU_URL.PROPOSALS_ASSIGNMENT}/addNew`,
+            })
+          }}
+        >
+          {t('common:btn.add')}
+        </CoreButton>
       </div>
 
       <CoreTable
@@ -137,7 +146,7 @@ const InvoiceList = () => {
         isShowColumnStt
         onRowClick={(id: number) => {
           router.push({
-            pathname: `/[id]`,
+            pathname: `${MENU_URL.PROPOSALS_ASSIGNMENT}/[id]`,
             query: {
               id,
               actionType: 'VIEW',
@@ -149,4 +158,4 @@ const InvoiceList = () => {
   )
 }
 
-export default InvoiceList
+export default ListProposals

@@ -37,7 +37,7 @@ export const TRANSLATE = {
 
 export const MENU_URL = {
   COURSE: '/course',
-  PROPOSALS_ASSIGNMENT: '/proposals_assignment',
+  PROPOSALS_ASSIGNMENT: '/proposalsAsignment',
 }
 
 export const listMenuRoutes: MenuPathProps[] = [
@@ -200,7 +200,7 @@ export const listMenuRoutes: MenuPathProps[] = [
   },
   {
     name: 'Đề xuất phê duyệt',
-    path: '/entry',
+    path: '/proposalsAsignment',
     icon: (
       <IconButton>
         <Image alt='' width={20} height={20} src={Pen} />

@@ -1,10 +1,11 @@
-import { PageResponse } from '../type'
+import { BaseResponse, CommonObject, PageResponse } from '../type'
 
 export type Proposals = {
   id?: number
-  academic_year: string
-  instructorId: string
-  user_id: string
+  academic_year: string | number
+  instructor: CommonObject
+  user: CommonObject
+  course: CommonObject
   status: 'AWAIT' | 'POSTED' | 'DRAFT'
   deadline: string
   semester: number | string
@@ -12,7 +13,7 @@ export type Proposals = {
 
 export type ResponseProposals = {
   GET: PageResponse<Proposals[]>
-  GET_DETAIL: Proposals
+  GET_DETAIL: BaseResponse<Proposals>
 }
 
 export type RequestProposals = {

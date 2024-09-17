@@ -28,9 +28,9 @@ export const useQueryGetProposalsList = (
   )
 }
 
-export const getDetailProposals = async (
-  params: ResponseProposals['GET_DETAIL']
-): Promise<ResponseProposals['GET_DETAIL']> => {
+export const getDetailProposals = async (params: {
+  id: number
+}): Promise<ResponseProposals['GET_DETAIL']> => {
   const { data } = await commonApi({
     method: 'get',
     url: URL_PROPOSALS + '/detail',
@@ -41,7 +41,7 @@ export const getDetailProposals = async (
 }
 
 export const useQueryGetDetailProposals = (
-  params: ResponseProposals['GET_DETAIL'],
+  params: { id: number },
   options?: any
 ) => {
   return useQuery<ResponseProposals['GET_DETAIL']>(
@@ -51,7 +51,6 @@ export const useQueryGetDetailProposals = (
   )
 }
 
-
 export const actionProposals = async (
   req: RequestProposals['ACTION']
 ): Promise<any> => {
@@ -59,7 +58,7 @@ export const actionProposals = async (
     method: req.method,
     url: URL_PROPOSALS,
     params: req.params,
-    data: req.data
+    data: req.data,
   })
   return data
 }

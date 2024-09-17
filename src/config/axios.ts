@@ -44,11 +44,13 @@ export const logoutAccount = async () => {
 export const middlewareRequest = async (config: any) => {
   try {
     const tokenAccess: any = JSON.parse(getCmsToken() ?? '{}')
+    console.log(tokenAccess, 'tkacc')
     if (
-      config.url
-      // config.url.includes('/oauth') &&
-      // !config.url.includes('/oauth/logout')
+      config.url &&
+      config.url.includes('/oauth') &&
+      !config.url.includes('/oauth/logout')
     ) {
+      console.log(tokenAccess, config, 'inconfig')
       return {
         ...config,
         headers: {
@@ -62,7 +64,7 @@ export const middlewareRequest = async (config: any) => {
         },
       }
     }
-
+    console.log(tokenAccess, config, 'inconfig2')
     return {
       ...config,
       headers: {
@@ -95,8 +97,9 @@ export const middlewareResponseError = async (error: any) => {
   }
 
   if (
-    status === 401 &&
-    !originalRequest._retry
+    status === 401
+    // &&
+    // !originalRequest._retry
   ) {
     if (!isRefreshing) {
       isRefreshing = true
@@ -162,11 +165,9 @@ export const defaultOption = {
   keepPreviousData: false,
 }
 
-
 export const commonApi = (options: AxiosRequestConfig) => {
   return requestAuth({
     baseURL: COMMON_URL,
     ...options,
   })
 }
-
