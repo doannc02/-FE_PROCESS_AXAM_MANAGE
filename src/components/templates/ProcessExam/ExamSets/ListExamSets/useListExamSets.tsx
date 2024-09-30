@@ -97,6 +97,7 @@ const useListExamSets = () => {
   const tableData = (data?.data?.content ?? []).map((item) => {
     return {
       ...item,
+      id: item?.exam_set_id,
       courseName: item?.course?.code + ' - ' + item?.course?.name,
       userName: item?.user?.name ?? '-',
       description: item?.description && (

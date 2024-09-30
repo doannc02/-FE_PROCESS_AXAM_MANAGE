@@ -127,7 +127,7 @@ const ListExamSets = () => {
         <CoreButton
           onClick={() => {
             router.push({
-              pathname: `${MENU_URL.PROPOSALS_ASSIGNMENT}/addNew`,
+              pathname: `${MENU_URL.EXAM_SET}/addNew`,
             })
           }}
         >
@@ -147,7 +147,7 @@ const ListExamSets = () => {
         isShowColumnStt
         onRowClick={(id: number) => {
           router.push({
-            pathname: `${MENU_URL.PROPOSALS_ASSIGNMENT}/[id]`,
+            pathname: `${MENU_URL.EXAM_SET}/[id]`,
             query: {
               id,
               actionType: 'VIEW',

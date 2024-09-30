@@ -36,32 +36,6 @@ export const useSaveProposals = () => {
   const isUpdate = !!id && !isAddNew
   const isView = actionType === 'VIEW'
 
-  const [isLoadingPage, setLoadingPage] = useState(false)
-
-  const [currentStep, setCurrentStep] = useState(0)
-
-  const [maxStep, setMaxStep] = useState(0)
-
-  const [dataStep2, setDataStep2] = useState<any>()
-
-  const handleStepClick = (index: number) => {
-    if (isView) {
-      setCurrentStep(index)
-    } else {
-      if (index <= maxStep) {
-        setCurrentStep(index)
-      }
-    }
-  }
-
-  const handleNext = () => {
-    setCurrentStep((prevCurrentStep) => prevCurrentStep + 1)
-    setMaxStep((prevCurrentStep) => prevCurrentStep + 1)
-  }
-
-  const handleBack = () => {
-    setCurrentStep((prevCurrentStep) => prevCurrentStep - 1)
-  }
   // get data detail step proposal
   const { data, isLoading, refetch } = useQueryGetDetailProposals(
     {
@@ -93,7 +67,7 @@ export const useSaveProposals = () => {
 
   useEffect(() => {
     if (isUpdate && data?.data) {
-      reset({ ...data?.data })
+      reset({ ...data?.data?.data })
     }
     console.log(watch('instructor'), data?.data, isUpdate)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,8 +93,7 @@ export const useSaveProposals = () => {
       isView,
       isUpdate,
       actionType,
-      currentStep,
     },
-    { onSubmit, t, handleStepClick },
+    { onSubmit, t },
   ] as const
 }

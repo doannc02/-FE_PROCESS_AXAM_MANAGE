@@ -29,7 +29,7 @@ export const useQueryGetExamSetList = (
 }
 
 export const getDetailExamSet = async (params: {
-  id: number
+  req: number
 }): Promise<ResponseProposals['GET_DETAIL']> => {
   const { data } = await commonApi({
     method: 'get',
@@ -41,7 +41,7 @@ export const getDetailExamSet = async (params: {
 }
 
 export const useQueryGetDetailExamSet = (
-  params: { id: number },
+  params: { req: number },
   options?: any
 ) => {
   return useQuery<ResponseProposals['GET_DETAIL']>(

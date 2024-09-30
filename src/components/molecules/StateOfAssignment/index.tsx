@@ -1,18 +1,15 @@
-import { BLUE, GREEN, RED } from '@/helper/colors'
+import { BLUE, GREEN, ORANGE, RED } from '@/helper/colors'
 import { memo } from 'react'
 import CustomState from './customState'
 
 const typePaymentBGColor = {
-  AWAIT: BLUE,
-  POSTED: GREEN,
-  DRAFT: RED,
+  pending_approval: ORANGE,
+  approved: GREEN,
+  rejected: RED,
+  in_progress: BLUE,
 }
 
-const StateOfAssignment = ({
-  state,
-}: {
-  state: string
-}) => {
+const StateOfAssignment = ({ state }: { state: string }) => {
   return (
     <>
       {
@@ -20,18 +17,26 @@ const StateOfAssignment = ({
           className='absolute top-50 right-10 h-50 w-60'
           style={{
             backgroundColor:
-              typePaymentBGColor[state as 'AWAIT' | 'POSTED' | 'DRAFT'],
+              typePaymentBGColor[
+                state as
+                  | 'approved'
+                  | 'in_progress'
+                  | 'pending_approval'
+                  | 'rejected'
+              ],
             clipPath: ' polygon(0 0, 33% 0, 100% 66%, 100% 100%)',
           }}
         >
           {
             <CustomState
               listStep={[
-                state === 'AWAIT'
-                  ? 'Đang xử lý'
-                  : state === 'DRAFT'
-                  ? 'Bản lưu nháp'
-                  : 'Đã phê duyệt',
+                state === 'pending_approval'
+                  ? 'Đang chờ duyệt'
+                  : state === 'in_progress'
+                  ? 'Đang thực hiện'
+                  : state === 'approved'
+                  ? 'Đã phê duyệt'
+                  : 'Bị từ chối',
               ]}
               index={1}
               enableNextStep={false}

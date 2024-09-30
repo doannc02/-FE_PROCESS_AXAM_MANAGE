@@ -38,6 +38,7 @@ export const TRANSLATE = {
 export const MENU_URL = {
   COURSE: '/course',
   PROPOSALS_ASSIGNMENT: '/proposalsAsignment',
+  EXAM_SET: '/examSet'
 }
 
 export const listMenuRoutes: MenuPathProps[] = [

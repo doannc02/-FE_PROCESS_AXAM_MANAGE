@@ -7,7 +7,9 @@ export type CommonObject = {
 export type BaseResponse<T> = {
   message: string
   traceId: string
-  data: T
+  data: {
+    data: T
+  }
 }
 
 export type ErrorCodes = {
