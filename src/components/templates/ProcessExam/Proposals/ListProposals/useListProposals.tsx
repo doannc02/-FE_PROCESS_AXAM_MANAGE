@@ -62,10 +62,6 @@ const useListProposals = () => {
   const columns = useMemo(
     () =>
       [
-        // {
-        //   header: 'Mã số phân công',
-        //   fieldName: 'code',
-        // },
         {
           header: 'GV thực hiện',
           fieldName: 'userName',
@@ -77,6 +73,14 @@ const useListProposals = () => {
         {
           header: 'Học kỳ',
           fieldName: 'semester',
+        },
+        {
+          header: 'Học phần',
+          fieldName: 'courseName',
+        },
+        {
+          header: 'Số lượng đề cương',
+          fieldName: 'number',
         },
         {
           header: 'Deadline',
@@ -93,6 +97,8 @@ const useListProposals = () => {
   const tableData = (data?.data?.content ?? []).map((item) => {
     return {
       ...item,
+      courseName: item?.course?.code + ' - ' +  item?.course?.name,
+      number: item?.number_of_assignment,
       userName: item?.user?.name ?? '-',
       instructorName: item?.instructor?.name ?? '-',
       deadline: convertToDate(item?.deadline),

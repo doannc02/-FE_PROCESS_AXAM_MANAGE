@@ -12,13 +12,14 @@ import {
   useQueryGetDetailProposals,
 } from '@/service/proposals'
 import { Proposals, ResponseProposals } from '@/service/proposals/type'
+import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
 
 const defaultValues = {
-  academic_year: new Date().getFullYear(),
+  academic_year: new Date().getFullYear().toString(),
   status: 'DRAFT' as any,
 }
 export const useSaveProposals = () => {
@@ -35,6 +36,33 @@ export const useSaveProposals = () => {
   const isUpdate = !!id && !isAddNew
   const isView = actionType === 'VIEW'
 
+  const [isLoadingPage, setLoadingPage] = useState(false)
+
+  const [currentStep, setCurrentStep] = useState(0)
+
+  const [maxStep, setMaxStep] = useState(0)
+
+  const [dataStep2, setDataStep2] = useState<any>()
+
+  const handleStepClick = (index: number) => {
+    if (isView) {
+      setCurrentStep(index)
+    } else {
+      if (index <= maxStep) {
+        setCurrentStep(index)
+      }
+    }
+  }
+
+  const handleNext = () => {
+    setCurrentStep((prevCurrentStep) => prevCurrentStep + 1)
+    setMaxStep((prevCurrentStep) => prevCurrentStep + 1)
+  }
+
+  const handleBack = () => {
+    setCurrentStep((prevCurrentStep) => prevCurrentStep - 1)
+  }
+  // get data detail step proposal
   const { data, isLoading, refetch } = useQueryGetDetailProposals(
     {
       id: Number(id),
@@ -42,6 +70,7 @@ export const useSaveProposals = () => {
     { enabled: !!id }
   )
 
+  // mutate proposal
   const { mutate, isLoading: isLoadingSubmit } = useMutation(actionProposals, {
     onSuccess: (res: any) => {
       successMsg(t('common:message.success'))
@@ -67,14 +96,20 @@ export const useSaveProposals = () => {
       reset({ ...data?.data })
     }
     console.log(watch('instructor'), data?.data, isUpdate)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, isUpdate, reset])
 
   const onSubmit = handleSubmit(async (input) => {
     mutate({
       method: isUpdate ? 'put' : 'post',
-      data: input,
+      data: {
+        ...input,
+        start: convertToOffsetDateTime(input.start),
+        deadline: convertToOffsetDateTime(input.deadline),
+      },
     })
   })
+
   return [
     {
       methodForm,
@@ -84,7 +119,8 @@ export const useSaveProposals = () => {
       isView,
       isUpdate,
       actionType,
+      currentStep,
     },
-    { onSubmit, t },
+    { onSubmit, t, handleStepClick },
   ] as const
 }

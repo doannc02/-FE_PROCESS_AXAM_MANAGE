@@ -13,7 +13,6 @@ import companyConfigSlice from './reducer/companyConfigReducer'
 import fontConfigSlice from './reducer/fontReducer'
 import tableSlice from './reducer/tableReducer'
 import themeColorSlice from './reducer/themeColorReducer'
-import ledgerRefSlice from './reducer/ledgerRefReducer'
 
 const reducers = combineReducers({
   themeColorData: themeColorSlice,
@@ -22,7 +21,6 @@ const reducers = combineReducers({
   companyConfigData: companyConfigSlice,
   tableConfigData: tableSlice,
   branchData: branchSlice,
-  ledgerRefData: ledgerRefSlice,
 })
 
 const persistConfig = {

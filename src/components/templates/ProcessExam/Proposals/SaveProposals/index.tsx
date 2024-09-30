@@ -1,8 +1,8 @@
 import PageContainer from '@/components/organism/PageContainer'
 import { BLACK } from '@/helper/colors'
-import { Grid, Typography } from '@mui/material'
+import { Collapse, Grid, Typography } from '@mui/material'
 import LoadingPage from '@/components/atoms/LoadingPage'
-import { FormProvider } from 'react-hook-form'
+import { Form, FormProvider } from 'react-hook-form'
 import CoreNavbar from '@/components/organism/CoreNavbar'
 import { useSaveProposals } from './useSaveProposals'
 import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
@@ -16,23 +16,14 @@ import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
 import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
 import StateOfAssignment from '@/components/molecules/StateOfAssignment'
 import { CoreButton } from '@/components/atoms/CoreButton'
+import CustomStep from '@/components/atoms/CustomSteps'
+import CustomStepV2 from '@/components/atoms/CustomStepV2/indext'
+import { AccordionCustom } from '@/components/atoms/AccordionCustom'
+
+const steps = ['Phân công thực hiện đề cương', 'Đề xuất phê duyệt']
 
 const SaveProposals = () => {
   const [, _] = useSaveProposals()
-  async function getData() {
-    const url = '/api/hello'
-    try {
-      const response = await fetch(url)
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`)
-      }
-
-      const json = await response.json()
-      console.log(json)
-    } catch (error: any) {
-      console.error(error.message)
-    }
-  }
 
   const [values, handles] = useSaveProposals()
 
@@ -91,90 +82,176 @@ const SaveProposals = () => {
                   }`,
                   content: (
                     <>
-                      <StateOfAssignment state={watch('status')} />
-                      <Grid container className='pt-35' spacing={{ xs: 1, sm: 2, md: 3 }}>
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
-                          <CoreInput
-                            isViewProp={true}
-                            control={control}
-                            label='Năm học'
-                            name='academic_year'
-                          />
-                        </Grid>
+                      {/* <StateOfAssignment state={watch('status')} /> */}
+                      <div>
+                        <Grid
+                          container
+                          className=''
+                          spacing={{ xs: 1, sm: 2, md: 3 }}
+                        >
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <CoreInput
+                              isViewProp={true}
+                              control={control}
+                              label='Năm học'
+                              name='academic_year'
+                            />
+                          </Grid>
 
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
-                          <CoreAutocomplete
-                            control={control}
-                            label='Học kỳ'
-                            name='semester'
-                            options={[
-                              { value: 1, label: 'Học kỳ 1' },
-                              { value: 2, label: 'Học kỳ 2' },
-                              { value: 3, label: 'Học kỳ 3' },
-                              { value: 4, label: 'Học kỳ 4' },
-                            ]}
-                          />
-                        </Grid>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <CoreAutocomplete
+                              control={control}
+                              label='Học kỳ'
+                              name='semester'
+                              options={[
+                                { value: 'I', label: 'Học kỳ 1' },
+                                { value: 'II', label: 'Học kỳ 2' },
+                                { value: 'III', label: 'Học kỳ 3' },
+                                { value: 'IV', label: 'Học kỳ 4' },
+                              ]}
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
+                            />
+                          </Grid>
 
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
-                          <CoreAutoCompleteAPI
-                            placeholder='Chọn người thực hiện'
-                            control={control}
-                            params={{
-                              page: 1,
-                              size: 20,
-                            }}
-                            label='Người thực hiện'
-                            name='user'
-                            fetchDataFn={getListUser}
-                          />
-                        </Grid>
-
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
-                          <CoreAutoCompleteAPI
-                            placeholder='Chọn người phê duyệt'
-                            control={control}
-                            labelPath='name'
-                            valuePath='id'
-                            label='Người phê duyệt'
-                            name='instructor'
-                            params={{
-                              page: 1,
-                              size: 20,
-                            }}
-                            fetchDataFn={getListUser}
-                          />
-                        </Grid>
-
-                        {watch('user.id') && (
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreAutoCompleteAPI
-                              placeholder='Chọn học phần'
-                              control={control}
-                              labelPath='name'
+                              placeholder='Chọn người thực hiện'
+                              labelPath2='name'
+                              labelPath='fullname'
                               valuePath='id'
-                              label='Học phần cần phê duyệt'
-                              name='course'
+                              control={control}
                               params={{
-                                userId: watch('user.id'),
+                                exceptId: 1,
                                 page: 1,
                                 size: 20,
                               }}
-                              fetchDataFn={getListCourse}
+                              label='Người thực hiện'
+                              name='user'
+                              fetchDataFn={getListUser}
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
                             />
                           </Grid>
-                        )}
 
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
-                          <CoreDatePicker
-                            control={control}
-                            title='Ngày đề xuất hoàn thành'
-                            name='deadline'
-                            format='MM-DD-YYYY'
-                          />
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <CoreAutoCompleteAPI
+                              placeholder='Chọn người phê duyệt'
+                              control={control}
+                              labelPath='name'
+                              valuePath='id'
+                              label='Người phê duyệt'
+                              name='instructor'
+                              params={{
+                                roleId: 1,
+                                page: 1,
+                                size: 20,
+                              }}
+                              fetchDataFn={getListUser}
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
+                            />
+                          </Grid>
+
+                          {watch('user') && watch('instructor') && (
+                            <Grid item xs={12} sm={12} md={4} lg={4}>
+                              <CoreAutoCompleteAPI
+                                placeholder='Chọn học phần'
+                                control={control}
+                                labelPath='name'
+                                valuePath='id'
+                                label='Học phần cần phê duyệt'
+                                name='course'
+                                params={{
+                                  userId: watch('user')?.id,
+                                  page: 1,
+                                  size: 20,
+                                }}
+                                fetchDataFn={getListCourse}
+                                required
+                                rules={{
+                                  required: t('common:validation.required'),
+                                }}
+                              />
+                            </Grid>
+                          )}
+                          {watch('course') && (
+                            <Grid item xs={12} sm={12} md={4} lg={4}>
+                              <CoreInput
+                                // InputProps={{
+                                //   startAdornment: (
+                                //     <div className='w-full'>
+
+                                //     </div>
+                                //   ),
+                                // }}
+                                control={control}
+                                type='number'
+                                name='number_of_assignment'
+                                label='Số lượng đề thực hiện'
+                                placeholder='Chọn số lượng đề'
+                                required
+                                rules={{
+                                  required: t('common:validation.required'),
+                                  validate: (val: number) => {
+                                    if (val > 50) {
+                                      return 'Số lượng không hợp lệ'
+                                    }
+                                  },
+                                }}
+                              />
+                            </Grid>
+                          )}
+
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <CoreDatePicker
+                              control={control}
+                              title='Ngày bắt đầu'
+                              name='start'
+                              format='YYYY-MM-DD'
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
+                            />
+                          </Grid>
+
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <CoreDatePicker
+                              control={control}
+                              title='Ngày đề xuất hoàn thành'
+                              name='deadline'
+                              format='YYYY-MM-DD'
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
+                            />
+                          </Grid>
+
+                          <Grid item xs={12} sm={12} md={12}></Grid>
                         </Grid>
+                      </div>
 
-                        <Grid item xs={12} sm={12} md={12}>
+                      <Typography className='py-5' variant='subtitle1'>
+                        Danh sách bộ đề
+                      </Typography>
+
+                      <AccordionCustom
+                        title={
+                          <Typography variant='subtitle2'>Test</Typography>
+                        }
+                      >
+                        Tesst
+                      </AccordionCustom>
+
+                      <div>
                         {!isView ? (
                           <div className='space-x-12 text-center my-10'>
                             <CoreButton
@@ -188,9 +265,7 @@ const SaveProposals = () => {
 
                             <CoreButton
                               theme='draft'
-                              onClick={async () => {
-                                
-                              }}
+                              onClick={async () => {}}
                               loading={isLoadingSubmit}
                             >
                               {t('common:btn.draft')}
@@ -207,8 +282,7 @@ const SaveProposals = () => {
                             </CoreButton>
                           </div>
                         ) : null}
-                      </Grid>
-                      </Grid>
+                      </div>
                     </>
                   ),
                   rightAction: (

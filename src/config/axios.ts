@@ -91,9 +91,9 @@ export const middlewareResponseError = async (error: any) => {
   const originalRequest = config
 
   const status = response?.status
-  console.log(response, 'res')
+  console.log(error, response, 'res')
   if (!status || status === 503 || status === 404) {
-    //   window.location.replace('/accounting/500')
+   // window.location.replace('/accounting/500')
   }
 
   if (

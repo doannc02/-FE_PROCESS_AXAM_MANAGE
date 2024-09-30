@@ -74,13 +74,11 @@ export const TableCellWithBorderRight = styled(TableCell)(() => ({
 }))
 export const TableCellWithBorderBottom = styled(TableCell)(() => ({
   borderBottom: '1px solid #DFE0EB',
-
 }))
 
 export const TableCellWithBorderBottomRight = styled(TableCell)(() => ({
   borderBottom: '1px solid #DFE0EB',
   borderRight: '1px solid #DFE0EB',
-
 }))
 
 export const TableHeadCommon = styled(TableHead)(
@@ -103,7 +101,7 @@ export const CoreTable = ({
   tableName,
   data,
   columns,
-  page = 0,
+  page = 1,
   size = 20,
   totalPages,
   paginationHidden,
@@ -133,7 +131,7 @@ export const CoreTable = ({
 
   if (isShowColumnStt) {
     data = (data ?? []).map((item: any, index: number) => {
-      const noNumber = page * size + index + 1
+      const noNumber = page * index + 1
       return {
         ...item,
         index: noNumber > 9 ? noNumber : `0${noNumber}`,

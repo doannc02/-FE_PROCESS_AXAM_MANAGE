@@ -1,19 +1,20 @@
 import React from 'react'
 import Image from 'next/image'
 import { useTooltip } from '@/components/hooks/tooltip'
-import { Typography } from '@mui/material'
+import { Typography, Tooltip as TooltipMUI } from '@mui/material'
 import { GREY } from '@/helper/colors'
 
 interface TooltipProps {
-  tooltips: Tooltip[]
+  tooltips?: Tooltip[]
   showText: boolean
+  isShowIcon?: boolean
 }
 export type Tooltip = {
   title: string
   description?: string
 }
 
-export const Tooltip = ({ tooltips, showText }: TooltipProps) => {
+export const Tooltip = ({ tooltips, showText, isShowIcon }: TooltipProps) => {
   const { tooltipVisible, showTooltip, hideTooltip } = useTooltip()
 
   const styles: React.CSSProperties = {
@@ -68,6 +69,8 @@ export const Tooltip = ({ tooltips, showText }: TooltipProps) => {
           width={12}
           alt='question'
         />
+      ) : isShowIcon ? (
+        <Image alt='' src={require('@/assets/svg/tooltipIcon.svg')} />
       ) : (
         <p className='text-[#00CC6A] font-normal text-xs italic pl-2 cursor-pointer translate-y-[-13px]'>
           Xem thêm
@@ -76,7 +79,7 @@ export const Tooltip = ({ tooltips, showText }: TooltipProps) => {
 
       {tooltipVisible && (
         <div style={tooltipStyles}>
-          {tooltips.map((tooltip: Tooltip, index) => (
+          {tooltips?.map((tooltip: Tooltip, index) => (
             <div className='flex items-center' key={index}>
               <Typography
                 style={{

@@ -8,7 +8,9 @@ export type Proposals = {
   course: CommonObject
   status: 'AWAIT' | 'POSTED' | 'DRAFT'
   deadline: string
+  start: string
   semester: number | string
+  number_of_assignment: number
 }
 
 export type ResponseProposals = {

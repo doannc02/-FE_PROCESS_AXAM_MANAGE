@@ -1,5 +1,6 @@
 import { getCmsToken, removeCmsToken, setCmsToken } from '@/config/token'
 import { errorMsg } from '@/helper/message'
+import { useAppDispatch } from '@/redux/hook'
 import { postLogin } from '@/service/auth/login'
 import { postLogout } from '@/service/auth/logout'
 import getConfig from 'next/config'
@@ -9,7 +10,7 @@ import { useState } from 'react'
 export const useLogin = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-
+  const dispatch = useAppDispatch()
   const pathParams = router.query?.redirect
   const {
     publicRuntimeConfig: { SUBDOMAIN },
@@ -26,6 +27,7 @@ export const useLogin = () => {
       }
       const data = await postLogin(requestBody)
       console.log(data, 'dataLogin')
+      
       setCmsToken(data)
       if (pathParams) {
         router.push(`https://${pathParams}${SUBDOMAIN}`)

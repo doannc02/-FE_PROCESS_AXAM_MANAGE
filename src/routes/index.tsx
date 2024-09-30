@@ -207,4 +207,13 @@ export const listMenuRoutes: MenuPathProps[] = [
       </IconButton>
     ),
   },
+  {
+    name: 'Tạo bộ đề',
+    path: '/examSet',
+    icon: (
+      <IconButton>
+        <Image alt='' width={20} height={20} src={Pen} />
+      </IconButton>
+    ),
+  },
 ]

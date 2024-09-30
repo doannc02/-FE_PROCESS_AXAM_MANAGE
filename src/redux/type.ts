@@ -46,6 +46,10 @@ export type FontConfig = {
   captionSize: number
 }
 
+export type userConfig = {
+  userId: number
+}
+
 export type ThemeColorConfig = {
   layout?: string | null
   theme?: string | null
