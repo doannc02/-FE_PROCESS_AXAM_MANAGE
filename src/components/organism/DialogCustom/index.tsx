@@ -61,6 +61,7 @@ export type Props = {
   bottomNode?: ReactNode
   onClose: () => void
   width?: number
+  height?: number
   fontSize?: number
 } & Omit<DialogProps, 'open' | 'title'>
 
@@ -73,6 +74,7 @@ export const DialogCustom = ({
   bottomNode,
   fullScreen,
   width = 640,
+  height,
   onClose,
   ...other
 }: Props) => {
@@ -88,10 +90,12 @@ export const DialogCustom = ({
       fullScreen={fullScreen || fullScreenValue}
       PaperProps={{
         style: {
+          height: height,
           width: '100%',
           minWidth: `${width}px`,
           maxWidth: `${width}px`,
           overflowY: 'auto',
+         // overflowX: 'hidden',
         },
       }}
       sx={{

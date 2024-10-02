@@ -44,14 +44,14 @@ export const useExamsTable = () => {
           header: 'Năm học',
           fieldName: 'academic_year_name',
         },
-        {
-          header: 'Mô tả',
-          fieldName: 'description',
-        },
-        {
-          header: 'Comment',
-          fieldName: 'comment',
-        },
+        // {
+        //   header: 'Mô tả',
+        //   fieldName: 'description',
+        // },
+        // {
+        //   header: 'Comment',
+        //   fieldName: 'comment',
+        // },
         {
           header: 'Trạng thái',
           fieldName: 'status',

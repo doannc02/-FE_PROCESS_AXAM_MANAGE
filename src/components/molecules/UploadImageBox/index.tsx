@@ -9,7 +9,7 @@ export const fileUpload = (data: any, params: any = {}) => {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    url: '/api/v1/file-upload',
+    url: '/api/v1/upload-file',
     data,
     params,
   })

@@ -18,7 +18,7 @@ export const UploadFileCustom: React.FC<UploadFileProps> = ({
 }) => {
   return (
     <div className='flex flex-col justify-between gap-1'>
-      <Typography variant='body1'>Ảnh sản phẩm</Typography>
+      <Typography variant='body1'>Tệp đính kèm</Typography>
       <label className='flex flex-wrap flex-col gap-3 items-center justify-center py-[80px]  border border-solid border-[#DFE0EB]  rounded-md cursor-pointer '>
         {loading ? (
           <LoadingPage />

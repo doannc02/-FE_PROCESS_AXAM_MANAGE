@@ -36,9 +36,11 @@ export const TRANSLATE = {
 }
 
 export const MENU_URL = {
+  CONFIG: '/config',
+  MANAGER: '/manager',
   COURSE: '/course',
   PROPOSALS_ASSIGNMENT: '/proposalsAsignment',
-  EXAM_SET: '/examSet'
+  EXAM_SET: '/examSet',
 }
 
 export const listMenuRoutes: MenuPathProps[] = [
@@ -190,6 +192,24 @@ export const listMenuRoutes: MenuPathProps[] = [
   //   ],
   // },
 
+  {
+    name: 'Quản lý chung',
+    path: MENU_URL.COURSE,
+    icon: (
+      <IconButton>
+        <Image alt='' width={23} height={23} src={Debt} />
+      </IconButton>
+    ),
+  },
+  {
+    name: 'Cấu hình',
+    path: MENU_URL.COURSE,
+    icon: (
+      <IconButton>
+        <Image alt='' width={23} height={23} src={Debt} />
+      </IconButton>
+    ),
+  },
   {
     name: 'Học phần',
     path: MENU_URL.COURSE,
