@@ -39,6 +39,7 @@ export const MENU_URL = {
   CONFIG: '/config',
   MANAGER: '/manager',
   COURSE: '/course',
+  PROPOSAL : '/proposal',
   PROPOSALS_ASSIGNMENT: '/proposalsAsignment',
   EXAM_SET: '/examSet',
 }
@@ -220,8 +221,8 @@ export const listMenuRoutes: MenuPathProps[] = [
     ),
   },
   {
-    name: 'Đề xuất phê duyệt',
-    path: '/proposalsAsignment',
+    name: 'Tạo kế hoạch',
+    path: '/examSet',
     icon: (
       <IconButton>
         <Image alt='' width={20} height={20} src={Pen} />
@@ -231,6 +232,15 @@ export const listMenuRoutes: MenuPathProps[] = [
   {
     name: 'Tạo bộ đề',
     path: '/examSet',
+    icon: (
+      <IconButton>
+        <Image alt='' width={20} height={20} src={Pen} />
+      </IconButton>
+    ),
+  },
+  {
+    name: 'Đề xuất phê duyệt',
+    path: '/proposalsAsignment',
     icon: (
       <IconButton>
         <Image alt='' width={20} height={20} src={Pen} />

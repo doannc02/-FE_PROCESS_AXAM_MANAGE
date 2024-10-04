@@ -4,6 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Grid } from '@mui/material'
 
 type Props = {
   title: string | React.ReactNode

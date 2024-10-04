@@ -75,16 +75,12 @@ const useListProposals = () => {
           fieldName: 'semester',
         },
         {
-          header: 'Học phần',
-          fieldName: 'courseName',
+          header: 'Ngày bắt đầu',
+          fieldName: 'start_date',
         },
         {
-          header: 'Số lượng đề cương',
-          fieldName: 'number',
-        },
-        {
-          header: 'Deadline',
-          fieldName: 'deadline',
+          header: 'Ngày kết thúc',
+          fieldName: 'end_date',
         },
         {
           header: 'Trạng thái',
@@ -97,11 +93,13 @@ const useListProposals = () => {
   const tableData = (data?.data?.content ?? []).map((item) => {
     return {
       ...item,
-      courseName: item?.course?.code + ' - ' +  item?.course?.name,
+      id: item?.proposal_id,
+      courseName: item?.course?.code + ' - ' + item?.course?.name,
       number: item?.number_of_assignment,
       userName: item?.user?.name ?? '-',
       instructorName: item?.instructor?.name ?? '-',
-      deadline: convertToDate(item?.deadline),
+      end_date: convertToDate(item?.end_date),
+      start_date: convertToDate(item?.start_date),
       status: (
         <DisplayStatus
           text={

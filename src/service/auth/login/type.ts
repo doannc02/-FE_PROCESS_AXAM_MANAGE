@@ -6,6 +6,7 @@ export type Token = {
   refreshToken: string
   expiresIn: number
   scopes: string[]
+  role: string
   userId: number
   jti: string
 }

@@ -27,6 +27,7 @@ const SaveExamSet = () => {
   const [values, handles] = useSaveExamSet()
 
   const {
+    id,
     nameExamSet,
     methodForm,
     isLoading,
@@ -56,7 +57,7 @@ const SaveExamSet = () => {
                   {isUpdate
                     ? actionType === 'VIEW'
                       ? nameExamSet
-                      : t('common:btn.edit')
+                      : nameExamSet
                     : t('common:btn.add')}
                 </Typography>
               ),
@@ -145,7 +146,7 @@ const SaveExamSet = () => {
                             />
                           </Grid>
 
-                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                          {/* <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreAutoCompleteAPI
                               placeholder='Chọn người phê duyệt'
                               control={control}
@@ -164,15 +165,16 @@ const SaveExamSet = () => {
                                 required: t('common:validation.required'),
                               }}
                             />
-                          </Grid>
+                          </Grid> */}
 
                           {watch('user')?.id && (
                             <Grid item xs={12} sm={12} md={4} lg={4}>
                               <CoreAutoCompleteAPI
                                 placeholder='Chọn học phần'
                                 control={control}
-                                labelPath='name'
-                                valuePath='id'
+                                labelPath='course_name'
+                                labelPath2='course_code'
+                                valuePath='course_id'
                                 label='Học phần cần phê duyệt'
                                 name='course'
                                 params={{
@@ -241,7 +243,14 @@ const SaveExamSet = () => {
                         ] as any
                       }
                       onDeleteAction={() => {}}
-                      onEditAction={() => {}}
+                      onEditAction={() => {
+                        router.push({
+                          pathname: `${MENU_URL.EXAM_SET}/[id]`,
+                          query: {
+                            id: Number(id),
+                          },
+                        })
+                      }}
                     />
                   ),
                 },

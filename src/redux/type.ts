@@ -126,3 +126,10 @@ export type CurrentLedgerRef = {
   name: string | null
   code: string
 }
+
+export type CurrentLogin = {
+  id: number | null
+  email: string | null
+  role: string 
+  avatar?: string
+}

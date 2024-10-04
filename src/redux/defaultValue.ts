@@ -16,6 +16,7 @@ import {
   TableConfig,
   ThemeColorConfig,
   CurrentLedgerRef,
+  CurrentLogin,
 } from '@/redux/type'
 
 const themeColorDefaultConfig: ThemeColorConfig = {
@@ -159,6 +160,13 @@ const ledgerRefDefault: CurrentLedgerRef = {
   code: '',
 }
 
+const userLoginDefault: CurrentLogin = {
+  id: null,
+  email: '',
+  role: '',
+  avatar: '',
+}
+
 const defaultValue = {
   themeColorDefaultConfig,
   fontDefaultConfig,
@@ -167,6 +175,7 @@ const defaultValue = {
   tableConfig,
   branchDefault,
   ledgerRefDefault,
+  userLoginDefault
 }
 
 export default defaultValue

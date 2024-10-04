@@ -48,9 +48,11 @@ export const useSaveExamSet = () => {
   // mutate proposal
   const { mutate, isLoading: isLoadingSubmit } = useMutation(actionExamSet, {
     onSuccess: (res: any) => {
-      successMsg(t('common:message.success'))
-
+      if (res?.errs) {
+        errorMsg(res?.message ?? 'Đã tồn tại', setError)
+      }
       if (res?.data?.data?.id) {
+        successMsg(t('common:message.success'))
         router.push({
           pathname: `${MENU_URL.EXAM_SET}/[id]`,
           query: {
@@ -73,16 +75,14 @@ export const useSaveExamSet = () => {
     }
   }, [data?.data, isUpdate, reset])
 
-
-
-
   const onSubmit = handleSubmit(async (input) => {
     mutate({
-      method: isUpdate ? 'put' : 'post',
+      method: isUpdate ? 'post' : 'post',
       data: {
         ...input,
       },
     })
+    //console.log(input, "DICAILON")
   })
 
   return [
@@ -95,6 +95,7 @@ export const useSaveExamSet = () => {
       isView,
       isUpdate,
       actionType,
+      id,
     },
     { onSubmit, t },
   ] as const

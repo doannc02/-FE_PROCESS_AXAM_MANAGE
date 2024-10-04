@@ -1,5 +1,5 @@
 import PageContainer from '@/components/organism/PageContainer'
-import { BLACK } from '@/helper/colors'
+import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { Collapse, Grid, Typography } from '@mui/material'
 import LoadingPage from '@/components/atoms/LoadingPage'
 import { Form, FormProvider } from 'react-hook-form'
@@ -19,6 +19,8 @@ import { CoreButton } from '@/components/atoms/CoreButton'
 import CustomStep from '@/components/atoms/CustomSteps'
 import CustomStepV2 from '@/components/atoms/CustomStepV2/indext'
 import { AccordionCustom } from '@/components/atoms/AccordionCustom'
+import DisplayStatus from '@/components/molecules/DisplayStatus'
+import { TableExams } from '@/components/organism/TableExams'
 
 const steps = ['Phân công thực hiện đề cương', 'Đề xuất phê duyệt']
 
@@ -35,6 +37,8 @@ const SaveProposals = () => {
     isUpdate,
     actionType,
     isView,
+    isAddNew,
+    role,
   } = values
 
   const { onSubmit, t } = handles
@@ -94,24 +98,27 @@ const SaveProposals = () => {
                               isViewProp={true}
                               control={control}
                               label='Năm học'
-                              name='academic_year'
-                            />
-                          </Grid>
-
-                          <Grid item xs={12} sm={12} md={4} lg={4}>
-                            <CoreAutocomplete
-                              control={control}
-                              label='Học kỳ'
-                              name='semester'
-                              options={[
-                                { value: 'I', label: 'Học kỳ 1' },
-                                { value: 'II', label: 'Học kỳ 2' },
-                                { value: 'III', label: 'Học kỳ 3' },
-                                { value: 'IV', label: 'Học kỳ 4' },
-                              ]}
-                              required
-                              rules={{
-                                required: t('common:validation.required'),
+                              name='academic_year.name'
+                              InputProps={{
+                                endAdornment: (
+                                  <CoreAutocomplete
+                                    control={control}
+                                    className='w-full'
+                                    placeholder='Chọn học kỳ'
+                                    // label='Học kỳ'
+                                    name='semester'
+                                    options={[
+                                      { value: '1', label: 'Học kỳ 1' },
+                                      { value: '2', label: 'Học kỳ 2' },
+                                      { value: '3', label: 'Học kỳ 3' },
+                                      { value: '4', label: 'Học kỳ 4' },
+                                    ]}
+                                    required
+                                    rules={{
+                                      required: t('common:validation.required'),
+                                    }}
+                                  />
+                                ),
                               }}
                             />
                           </Grid>
@@ -119,8 +126,8 @@ const SaveProposals = () => {
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreAutoCompleteAPI
                               placeholder='Chọn người thực hiện'
-                              labelPath2='name'
-                              labelPath='fullname'
+                              // labelPath2='fullname'
+                              labelPath='name'
                               valuePath='id'
                               control={control}
                               params={{
@@ -138,32 +145,35 @@ const SaveProposals = () => {
                             />
                           </Grid>
 
-                          <Grid item xs={12} sm={12} md={4} lg={4}>
-                            <CoreAutoCompleteAPI
-                              placeholder='Chọn người phê duyệt'
-                              control={control}
-                              labelPath='name'
-                              valuePath='id'
-                              label='Người phê duyệt'
-                              name='instructor'
-                              params={{
-                                roleId: 1,
-                                page: 1,
-                                size: 20,
-                              }}
-                              fetchDataFn={getListUser}
-                              required
-                              rules={{
-                                required: t('common:validation.required'),
-                              }}
-                            />
-                          </Grid>
+                          {role !== 'Admin' && (
+                            <Grid item xs={12} sm={12} md={4} lg={4}>
+                              <CoreAutoCompleteAPI
+                                placeholder='Chọn người phê duyệt'
+                                control={control}
+                                labelPath='name'
+                                valuePath='id'
+                                label='Người phê duyệt'
+                                name='instructor'
+                                params={{
+                                  roleId: 1,
+                                  page: 1,
+                                  size: 20,
+                                }}
+                                fetchDataFn={getListUser}
+                                required
+                                rules={{
+                                  required: t('common:validation.required'),
+                                }}
+                              />
+                            </Grid>
+                          )}
 
                           {watch('user') && watch('instructor') && (
                             <Grid item xs={12} sm={12} md={4} lg={4}>
                               <CoreAutoCompleteAPI
                                 placeholder='Chọn học phần'
                                 control={control}
+                                labelPath2='code'
                                 labelPath='name'
                                 valuePath='id'
                                 label='Học phần cần phê duyệt'
@@ -181,39 +191,12 @@ const SaveProposals = () => {
                               />
                             </Grid>
                           )}
-                          {watch('course') && (
-                            <Grid item xs={12} sm={12} md={4} lg={4}>
-                              <CoreInput
-                                // InputProps={{
-                                //   startAdornment: (
-                                //     <div className='w-full'>
-
-                                //     </div>
-                                //   ),
-                                // }}
-                                control={control}
-                                type='number'
-                                name='number_of_assignment'
-                                label='Số lượng đề thực hiện'
-                                placeholder='Chọn số lượng đề'
-                                required
-                                rules={{
-                                  required: t('common:validation.required'),
-                                  validate: (val: number) => {
-                                    if (val > 50) {
-                                      return 'Số lượng không hợp lệ'
-                                    }
-                                  },
-                                }}
-                              />
-                            </Grid>
-                          )}
 
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreDatePicker
                               control={control}
                               title='Ngày bắt đầu'
-                              name='start'
+                              name='start_date'
                               format='YYYY-MM-DD'
                               required
                               rules={{
@@ -226,7 +209,7 @@ const SaveProposals = () => {
                             <CoreDatePicker
                               control={control}
                               title='Ngày đề xuất hoàn thành'
-                              name='deadline'
+                              name='end_date'
                               format='YYYY-MM-DD'
                               required
                               rules={{
@@ -235,21 +218,106 @@ const SaveProposals = () => {
                             />
                           </Grid>
 
-                          <Grid item xs={12} sm={12} md={12}></Grid>
+                          <Grid item xs={12} sm={12} md={12}>
+                            <CoreInput
+                              className='mt-5'
+                              control={control}
+                              name='content'
+                              label='Nội dung kế hoạch'
+                              multiline
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
+                            />
+                          </Grid>
                         </Grid>
                       </div>
 
-                      <Typography className='py-5' variant='subtitle1'>
-                        Danh sách bộ đề
-                      </Typography>
+                      {!isAddNew
+                        ? (watch('exam_sets') ?? []).length > 0 && (
+                            <>
+                              <Typography className='py-5' variant='subtitle1'>
+                                Danh sách bộ đề
+                              </Typography>
 
-                      <AccordionCustom
-                        title={
-                          <Typography variant='subtitle2'>Test</Typography>
-                        }
-                      >
-                        Tesst
-                      </AccordionCustom>
+                              <FormProvider {...methodForm}>
+                                {watch('exam_sets').map((item, index) => {
+                                  return (
+                                    <>
+                                      <AccordionCustom
+                                        title={
+                                          <Grid container>
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              sm={12}
+                                              md={4}
+                                              lg={4}
+                                            >
+                                              <Typography>
+                                                {item?.exam_set_name}
+                                              </Typography>
+                                            </Grid>
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              sm={12}
+                                              md={4}
+                                              lg={4}
+                                            >
+                                              <DisplayStatus
+                                                text={
+                                                  item?.status ===
+                                                  'pending_approval'
+                                                    ? 'Chờ phê duyệt'
+                                                    : item?.status ===
+                                                      'in_progress'
+                                                    ? 'Đang thực hiện'
+                                                    : item?.status ===
+                                                      'approved'
+                                                    ? 'Đã phê duyệt'
+                                                    : 'Bị từ chối'
+                                                }
+                                                color={
+                                                  item?.status ===
+                                                  'pending_approval'
+                                                    ? ORANGE
+                                                    : item?.status ===
+                                                      'in_progress'
+                                                    ? BLACK
+                                                    : item?.status ===
+                                                      'approved'
+                                                    ? GREEN
+                                                    : RED
+                                                }
+                                              />
+                                            </Grid>
+
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              sm={12}
+                                              md={4}
+                                              lg={4}
+                                            >
+                                              <Typography>
+                                                Số đề chi tiết:
+                                                {item?.exam_quantity}
+                                              </Typography>
+                                            </Grid>
+                                          </Grid>
+                                        }
+                                      >
+                                        <>Todo here</>
+                                      </AccordionCustom>
+                                    </>
+                                  )
+                                })}
+                              </FormProvider>
+                            </>
+                          )
+                        : null}
 
                       <div>
                         {!isView ? (

@@ -9,6 +9,11 @@ export const getCmsToken = () => {
   return cookie.get('ACCESS_TOKEN')
 }
 
+export const getRole = () => {
+  const val = cookie.get('ACCESS_TOKEN')
+  return JSON.parse(val ?? '').role
+}
+
 export const setCmsToken = (val: any) => {
   if (window.location.origin.includes('localhost')) {
     return cookie.set('ACCESS_TOKEN', JSON.stringify(val))

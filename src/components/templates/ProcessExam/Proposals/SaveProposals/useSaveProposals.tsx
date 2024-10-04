@@ -1,3 +1,7 @@
+import DisplayStatus from '@/components/molecules/DisplayStatus'
+import { Tooltip } from '@/components/molecules/Tooltip'
+import { getCmsToken, getRole } from '@/config/token'
+import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
 import defaultValue from '@/redux/defaultValue'
@@ -13,16 +17,24 @@ import {
 } from '@/service/proposals'
 import { Proposals, ResponseProposals } from '@/service/proposals/type'
 import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
+import { Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
 
-const defaultValues = {
-  academic_year: new Date().getFullYear().toString(),
-  status: 'DRAFT' as any,
-}
 export const useSaveProposals = () => {
+  const role = getRole()
+  const defaultValues = {
+    academic_year: new Date().getFullYear().toString(),
+    status: 'DRAFT' as any,
+    instructor:
+      role === 'Admin'
+        ? {
+            id: 1,
+          }
+        : null,
+  }
   const { t } = useTranslation('')
   const dispatch = useAppDispatch()
   const methodForm = useFormCustom<Proposals>({
@@ -78,8 +90,8 @@ export const useSaveProposals = () => {
       method: isUpdate ? 'put' : 'post',
       data: {
         ...input,
-        start: convertToOffsetDateTime(input.start),
-        deadline: convertToOffsetDateTime(input.deadline),
+        start_date: convertToOffsetDateTime(input.start_date),
+        end_date: convertToOffsetDateTime(input.end_date),
       },
     })
   })
@@ -93,6 +105,8 @@ export const useSaveProposals = () => {
       isView,
       isUpdate,
       actionType,
+      isAddNew,
+      role,
     },
     { onSubmit, t },
   ] as const

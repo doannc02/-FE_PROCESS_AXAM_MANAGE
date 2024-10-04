@@ -1,3 +1,5 @@
+import CoreDocxViewer from '@/components/atoms/CoreDocxViewer'
+import DocViewer from '@/components/atoms/CoreDocxViewer'
 import dynamic from 'next/dynamic'
 
 const CorePdfViewer = dynamic(
@@ -19,18 +21,19 @@ const PdfWrapper = dynamic(
 const getType = (src: string) => {
   const numOfDot = src.lastIndexOf('.')
   const extension = src.slice(numOfDot + 1, src.length)
-  if (['pdf'].includes(extension)) return 'document'
+  if (['pdf'].includes(extension)) return 'pdf'
+  if (['docx'].includes(extension)) return 'docx'
   if (['mp4', 'ogg'].includes(extension)) return 'media'
   return 'image'
 }
 
 export default function CoreViewFile({ src }: { src: string }) {
   return (
-    <div className='relative w-[1100px] h-[99vh] '>
+    <div className='relative w-[1100px] h-[99vh] flex justify-center'>
       {src && (
         <PdfWrapper>
-          {getType(src) === 'document' && <CorePdfViewer pdfFilePath={src} />}
-
+          {getType(src) === 'pdf' && <CorePdfViewer pdfFilePath={src} />}
+          
           {/* {getType(src) === 'image' && (
                 <div className='w-full h-full flex justify-center items-center mt-6'>
                   <Image
