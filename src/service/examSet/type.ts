@@ -1,5 +1,9 @@
 import { BaseResponse, CommonObject, PageResponse } from '../type'
-
+export type state =
+  | 'approved'
+  | 'in_progress'
+  | 'pending_approval'
+  | 'rejected'
 export type ExamSet = {
   exam_set_id: number
   exam_set_name: string
@@ -8,7 +12,7 @@ export type ExamSet = {
   total_exams: number
   exam_quantity: number
   description: string
-  status: 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
+  status: state
   course: {
     code: string
     name: string
@@ -18,10 +22,10 @@ export type ExamSet = {
     name: string
     id: number
   }
-  exams: exam[]
+  exams: Exam[]
 }
 
-export type exam = {
+export type Exam = {
   exam_id: number
   exam_code: string
   exam_name: string

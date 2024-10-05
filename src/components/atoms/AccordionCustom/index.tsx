@@ -7,12 +7,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Grid } from '@mui/material'
 
 type Props = {
+  height?: string
+  bgColor?: string
   title: string | React.ReactNode
   children: React.ReactNode
   defaultOpen?: boolean
 }
 
 export const AccordionCustom = ({
+  height,
+  bgColor,
   title,
   children,
   defaultOpen = false,
@@ -25,8 +29,8 @@ export const AccordionCustom = ({
           aria-controls='panel1a-content'
           id='panel1a-header'
           style={{
-            backgroundColor: '#F6F7FB',
-            height: '48px',
+            backgroundColor: bgColor ? bgColor : '#F6F7FB',
+            height: height ? height : '48px',
             borderTop: '1px solid #DFE0EB',
             borderBottom: '1px solid #DFE0EB',
           }}

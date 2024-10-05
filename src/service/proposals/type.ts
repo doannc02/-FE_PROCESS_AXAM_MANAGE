@@ -7,7 +7,7 @@ export type Proposals = {
   instructor: CommonObject | null
   user: CommonObject
   course: CommonObject
-  status: 'AWAIT' | 'POSTED' | 'DRAFT'
+  status: 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
   end_date: string
   start_date: string
   semester: number | string

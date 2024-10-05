@@ -67,6 +67,10 @@ const useListProposals = () => {
           fieldName: 'userName',
         },
         {
+          header: 'Mã kế hoạch',
+          fieldName: 'plan_code',
+        },
+        {
           header: 'Người phê duyệt',
           fieldName: 'instructorName',
         },
@@ -103,18 +107,22 @@ const useListProposals = () => {
       status: (
         <DisplayStatus
           text={
-            item?.status === 'AWAIT'
+            item?.status === 'pending_approval'
               ? 'Chờ phê duyệt'
-              : item?.status === 'DRAFT'
-              ? 'Nháp'
-              : 'Đã phê duyệt'
+              : item?.status === 'in_progress'
+              ? 'Đang thực hiện'
+              : item?.status === 'approved'
+              ? 'Đã phê duyệt'
+              : 'Bị từ chối'
           }
           color={
-            item?.status === 'AWAIT'
+            item?.status === 'pending_approval'
               ? ORANGE
-              : item?.status === 'DRAFT'
+              : item?.status === 'in_progress'
               ? BLACK
-              : GREEN
+              : item?.status === 'approved'
+              ? GREEN
+              : RED
           }
         />
       ),

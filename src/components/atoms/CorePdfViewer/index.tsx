@@ -29,16 +29,18 @@ const CorePdfViewer = ({ pdfFilePath }: PDFViewerAppProps) => {
   const key = useId()
 
   return (
-    <PdfWrapper key={key}>
-      <PDFSlickViewer className='p-8' {...{ viewerRef, usePDFSlickStore }} />
-      {data.isDocumentLoaded ? (
-        <PDFNavigation {...{ usePDFSlickStore }} />
-      ) : (
-        <div className='mt-[35vh]'>
-          <CoreLoading />
-        </div>
-      )}
-    </PdfWrapper>
+    <div className='overflow-x-hidden'>
+      <PdfWrapper key={key}>
+        <PDFSlickViewer className='p-6' {...{ viewerRef, usePDFSlickStore }} />
+        {data.isDocumentLoaded ? (
+          <PDFNavigation {...{ usePDFSlickStore }} />
+        ) : (
+          <div className='mt-[35vh]'>
+            <CoreLoading />
+          </div>
+        )}
+      </PdfWrapper>
+    </div>
   )
 }
 

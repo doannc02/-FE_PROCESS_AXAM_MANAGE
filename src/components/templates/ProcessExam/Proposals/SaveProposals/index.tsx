@@ -21,6 +21,7 @@ import CustomStepV2 from '@/components/atoms/CustomStepV2/indext'
 import { AccordionCustom } from '@/components/atoms/AccordionCustom'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { TableExams } from '@/components/organism/TableExams'
+import DetailExamSet from './Components/DetailExamSet'
 
 const steps = ['Phân công thực hiện đề cương', 'Đề xuất phê duyệt']
 
@@ -86,13 +87,26 @@ const SaveProposals = () => {
                   }`,
                   content: (
                     <>
-                      {/* <StateOfAssignment state={watch('status')} /> */}
+                      <StateOfAssignment state={watch('status')} />
                       <div>
                         <Grid
                           container
                           className=''
                           spacing={{ xs: 1, sm: 2, md: 3 }}
                         >
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <CoreInput
+                              control={control}
+                              name='plan_code'
+                              label='Mã kế hoạch'
+                              isViewProp={isUpdate}
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
+                            />
+                          </Grid>
+
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreInput
                               isViewProp={true}
@@ -255,10 +269,26 @@ const SaveProposals = () => {
                                               md={4}
                                               lg={4}
                                             >
-                                              <Typography>
-                                                {item?.exam_set_name}
+                                              <Typography fontWeight={'600'}>
+                                                Tên bộ đề: {item?.exam_set_name}
                                               </Typography>
                                             </Grid>
+
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              sm={12}
+                                              md={4}
+                                              lg={4}
+                                            >
+                                              <Typography fontWeight={'600'}>
+                                                Số đề thực hiện/số đề yêu cầu:
+                                                &nbsp;{' '}
+                                                {item?.exams?.length ?? 0}/
+                                                {item?.exam_quantity}
+                                              </Typography>
+                                            </Grid>
+
                                             <Grid
                                               item
                                               xs={12}
@@ -293,23 +323,13 @@ const SaveProposals = () => {
                                                 }
                                               />
                                             </Grid>
-
-                                            <Grid
-                                              item
-                                              xs={12}
-                                              sm={12}
-                                              md={4}
-                                              lg={4}
-                                            >
-                                              <Typography>
-                                                Số đề chi tiết:
-                                                {item?.exam_quantity}
-                                              </Typography>
-                                            </Grid>
                                           </Grid>
                                         }
                                       >
-                                        <>Todo here</>
+                                        <DetailExamSet
+                                          indexExamSet={index}
+                                          item={item}
+                                        />
                                       </AccordionCustom>
                                     </>
                                   )
@@ -359,7 +379,7 @@ const SaveProposals = () => {
                         [
                           ...(isUpdate ? ['delete'] : []),
                           ...(isView ? ['delete', 'edit'] : []),
-                          ...(methodForm.watch('status') === 'POSTED'
+                          ...(methodForm.watch('status') === 'approved'
                             ? []
                             : []),
                         ] as any

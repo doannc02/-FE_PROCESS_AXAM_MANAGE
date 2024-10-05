@@ -20,7 +20,7 @@ export default function PDFNavigation({
   const scale = usePDFSlickStore((s) => s.scale)
   return (
     <div className='relative'>
-      <div className='absolute z-50 h-fit pointer-events-none flex justify-center bottom-[-130px] w-full translate-y-[84vh]'>
+      <div className='absolute z-50 h-fit pointer-events-none flex justify-center bottom-[-105px] w-full translate-y-[84vh]'>
         <div className='bg-[#34322c] w-fit h-24 rounded-xl sticky opacity-[4]'>
           <div className='flex justify-center p-8 -mt-4 '>
             <div
