@@ -63,7 +63,7 @@ export const useSaveProposals = () => {
 
       if (res?.data?.data?.id) {
         router.push({
-          pathname: `${MENU_URL.PROPOSALS_ASSIGNMENT}/[id]`,
+          pathname: `${MENU_URL.PROPOSAL}/[id]`,
           query: {
             id: res?.data?.data?.id,
             actionType: 'VIEW',

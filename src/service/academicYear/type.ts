@@ -1,28 +1,30 @@
 import { Exam, state } from '../examSet/type'
 import { BaseResponse, PageResponse } from '../type'
 
-export type ResponseExam = {
+export type ResponseAcademicYear = {
   UPDATE_STATE: BaseResponse<{
     id: number
     state: state
   }>
-  DETAIL: BaseResponse<Exam>
-  LIST: PageResponse<Exam[]>
+  DETAIL: BaseResponse<AcademicYear>
+  LIST: PageResponse<AcademicYear[]>
 }
 
-export type RequestExam = {
-  UPDATE_STATE: {
-    id: number
-    state: state
-    comment?: string
-  }
+export type RequestAcademicYear = {
   DETAIL: { id: number }
   LIST: any
   ACTION: {
     params?: {
       id: number
     }
-    data?: Exam[] | Exam
+    data?: Exam
     method: 'put' | 'delete' | 'post'
   }
+}
+
+export type AcademicYear = {
+  id: number
+  name: string
+  start_year: number
+  end_year: number
 }

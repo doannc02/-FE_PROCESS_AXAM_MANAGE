@@ -46,7 +46,7 @@ export const TableExams = ({
       {
         header: 'STT',
         fieldName: 'index',
-        styleCell: { style: { minWidth: 90 } },
+        styleCell: { style: { minWidth: 50 } },
       },
       ...columns,
     ]

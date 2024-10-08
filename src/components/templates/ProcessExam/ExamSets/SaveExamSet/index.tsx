@@ -49,7 +49,7 @@ const SaveExamSet = () => {
           breadcrumbs={[
             {
               title: 'Danh sách bộ đề',
-              pathname: MENU_URL.PROPOSALS_ASSIGNMENT,
+              pathname: MENU_URL.EXAM_SET,
             },
             {
               title: (
@@ -95,7 +95,7 @@ const SaveExamSet = () => {
                               isViewProp={isUpdate}
                               control={control}
                               label='Tên bộ đề'
-                              name='exam_set_name'
+                              name='name'
                             />
                           </Grid>
 

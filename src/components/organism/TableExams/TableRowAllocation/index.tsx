@@ -18,13 +18,15 @@ import { useState } from 'react'
 import { WHITE } from '@/helper/colors'
 import { useRouter } from 'next/router'
 import { useTableRowAllocation } from './useTableRowAllocation'
-import { subjectType } from '@/enum'
 import { ActionTable } from '@/components/organism/TableCustomDnd/ActionTable'
 import { AccordionCustom } from '@/components/atoms/AccordionCustom'
 import CoreInput from '@/components/atoms/CoreInput'
 import UploadAndEditFile from '@/components/molecules/UploadAndEditFile'
 import { UploadFileCustom } from '@/components/molecules/UploadFileCustom'
 import UploadBox, { fileUpload } from '@/components/molecules/UploadBox'
+import { useTranslation } from 'react-i18next'
+import { FormProvider } from 'react-hook-form'
+import { getRole } from '@/config/token'
 
 type Props = {
   index: number
@@ -34,13 +36,15 @@ type Props = {
 }
 
 export const TableRowPE = (props: Props) => {
+  const { t } = useTranslation()
+  const role = getRole()
   const router = useRouter()
   const { actionType } = router.query
   const { index, id, row, columns } = props
   const [openChildIndex, setOpenChildIndex] = useState<number | null>(null)
   const [values, handles] = useTableRowAllocation({ index })
   const { methodForm } = values
-  const { control } = methodForm
+  const { control, watch, setValue } = methodForm
   const {} = handles
 
   const colorRowTable =
@@ -67,6 +71,7 @@ export const TableRowPE = (props: Props) => {
               return (
                 <TableCell
                   onClick={() => {
+                    if (column?.fieldName !== 'index') return
                     setOpenChildIndex(openChildIndex === index ? null : index)
                   }}
                   key={indexColumn}
@@ -126,31 +131,80 @@ export const TableRowPE = (props: Props) => {
                     <div className='p-10 w-full'>
                       <Box className='flex flex-wrap'>
                         <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
-                          <Grid item xs={12} sm={12} md={6} lg={6}>
+                          <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={
+                              role === 'Admin' &&
+                              watch(`exams.${index}.comment`)
+                                ? 6
+                                : 12
+                            }
+                            lg={
+                              role === 'Admin' &&
+                              watch(`exams.${index}.comment`)
+                                ? 6
+                                : 12
+                            }
+                          >
                             <CoreInput
                               control={control}
+                              isViewProp={role === 'Admin'}
                               label='Mô tả'
                               placeholder='Nhập mô tả'
                               name={`exams.${index}.description`}
                               multiline
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
                             />
                           </Grid>
 
-                          <Grid item xs={12} sm={12} md={6} lg={6}>
-                            <CoreInput
-                              control={control}
-                              label='comment'
-                              placeholder='Nhập comment'
-                              name={`exams.${index}.comment`}
-                              multiline
-                            />
-                          </Grid>
+                          {watch(`exams.${index}.comment`) && (
+                            <Grid item xs={12} sm={12} md={6} lg={6}>
+                              <CoreInput
+                                control={control}
+                                isViewProp={role !== 'Admin'}
+                                label={
+                                  watch(`exams.${index}.status`) === 'rejected'
+                                    ? 'Lý do không phê duyệt'
+                                    : 'Nhận xét'
+                                }
+                                placeholder={
+                                  watch(`exams.${index}.status`) === 'rejected'
+                                    ? 'Nhập Lý do không phê duyệt'
+                                    : 'Nhập Nhận xét'
+                                }
+                                name={`exams.${index}.comment`}
+                                multiline
+                                required
+                                rules={{
+                                  required: t('common:validation.required'),
+                                }}
+                              />
+                            </Grid>
+                          )}
 
-                          <Grid item xs={12}>
-                            <UploadBox
-                              setUrl={(url) => console.log(url, 'Jack')}
-                            />
-                          </Grid>
+                          {
+                            <Grid item xs={12}>
+                              <FormProvider {...methodForm}>
+                                <UploadBox
+                                  name={`exams.${index}.attached_file`}
+                                  url={watch(`exams.${index}.attached_file`)}
+                                  setUrl={(url) => {
+                                    if (url) {
+                                      setValue(
+                                        `exams.${index}.attached_file`,
+                                        url
+                                      )
+                                    }
+                                  }}
+                                />
+                              </FormProvider>
+                            </Grid>
+                          }
                         </Grid>
                       </Box>
                     </div>

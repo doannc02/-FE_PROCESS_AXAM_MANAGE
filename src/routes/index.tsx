@@ -1,21 +1,12 @@
-import Moving from '@/assets/svg/Moving.svg'
-import Bank from '@/assets/svg/bank.svg'
-import Cash from '@/assets/svg/cash.svg'
 import Debt from '@/assets/svg/debt.svg'
 import Pen from '@/assets/svg/pen.svg'
-import Setting from '@/assets/svg/setting.svg'
-import Surplus from '@/assets/svg/surplus.svg'
-import Warehouse from '@/assets/svg/warehouse.svg'
-
-import {
-  Dashboard,
-  ImportContacts,
-  PriceChangeSharp,
-  TaxiAlertTwoTone,
-} from '@mui/icons-material'
-import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined'
-import Inventory2Icon from '@mui/icons-material/Inventory2'
-import LockOpenIcon from '@mui/icons-material/LockOpen'
+import AutoStoriesIcon from '@mui/icons-material/AutoStories'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import SubjectIcon from '@mui/icons-material/Subject'
+import BorderColorIcon from '@mui/icons-material/BorderColor'
+import EditNoteIcon from '@mui/icons-material/EditNote'
+import HandymanIcon from '@mui/icons-material/Handyman'
+import { Dashboard } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import Image from 'next/image'
 import { ReactNode } from 'react'
@@ -39,8 +30,9 @@ export const MENU_URL = {
   CONFIG: '/config',
   MANAGER: '/manager',
   COURSE: '/course',
-  PROPOSAL : '/proposal',
-  PROPOSALS_ASSIGNMENT: '/proposalsAsignment',
+  EXAM: '/exam',
+  PROPOSAL: '/proposal',
+  APPROVE: '/approve',
   EXAM_SET: '/examSet',
 }
 
@@ -204,46 +196,56 @@ export const listMenuRoutes: MenuPathProps[] = [
   },
   {
     name: 'Cấu hình',
+    path: MENU_URL.CONFIG,
+    icon: (
+      <IconButton>
+        <HandymanIcon />
+      </IconButton>
+    ),
+  },
+  {
+    name: 'QL Học phần',
     path: MENU_URL.COURSE,
     icon: (
       <IconButton>
-        <Image alt='' width={23} height={23} src={Debt} />
+        <BorderColorIcon />
       </IconButton>
     ),
   },
+
   {
-    name: 'Học phần',
-    path: MENU_URL.COURSE,
+    name: 'QL Đề chi tiết',
+    path: MENU_URL.EXAM,
     icon: (
       <IconButton>
-        <Image alt='' width={23} height={23} src={Debt} />
+        <SubjectIcon />
       </IconButton>
     ),
   },
   {
-    name: 'Tạo kế hoạch',
+    name: 'QL Bộ đề',
     path: '/examSet',
     icon: (
       <IconButton>
-        <Image alt='' width={20} height={20} src={Pen} />
+        <AutoStoriesIcon />
       </IconButton>
     ),
   },
   {
-    name: 'Tạo bộ đề',
-    path: '/examSet',
+    name: 'QL Kế hoạch',
+    path: MENU_URL.PROPOSAL,
     icon: (
       <IconButton>
-        <Image alt='' width={20} height={20} src={Pen} />
+        <EditNoteIcon />
       </IconButton>
     ),
   },
   {
     name: 'Đề xuất phê duyệt',
-    path: '/proposalsAsignment',
+    path: MENU_URL.APPROVE,
     icon: (
       <IconButton>
-        <Image alt='' width={20} height={20} src={Pen} />
+        <AssignmentIcon />
       </IconButton>
     ),
   },

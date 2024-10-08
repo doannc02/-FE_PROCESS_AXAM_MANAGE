@@ -12,7 +12,7 @@ export const MenuCustom = (
   const { t } = useTranslation()
 
   const { itemList = [], onItemAction, currentValue = '', ...rest } = props
-
+  console.log(itemList, 'll')
   return (
     <Menu {...rest}>
       {Array.isArray(itemList) && itemList.length === 0 && (
@@ -35,7 +35,7 @@ export const MenuCustom = (
             </Typography>
 
             <div className='w-[15px]'>
-              {[item.name, item.id].includes(currentValue) && (
+              {[item.name, item.value].includes(currentValue) && (
                 <DoneIcon
                   color='primary'
                   style={{

@@ -7,7 +7,7 @@ export type ResponseUsers = {
 
 type User = {
   id: number
-  name: string
+  fullname: string
   email: string
   createAt: string
   updatedAt: string

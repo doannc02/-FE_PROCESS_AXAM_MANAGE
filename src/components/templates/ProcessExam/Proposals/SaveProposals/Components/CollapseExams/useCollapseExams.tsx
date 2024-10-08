@@ -16,9 +16,9 @@ export const useCollapseExams = () => {
     keyName: 'key',
   })
   const a = {
-    exam_id: 3,
-    exam_code: 'EXAM003',
-    exam_name: 'Midterm Exam 2',
+    id: 3,
+    code: 'EXAM003',
+    name: 'Midterm Exam 2',
     attached_file: '/files/exam3.pdf',
     comment: 'Second midterm exam',
     description: 'Covers chapters 4-6',
@@ -34,11 +34,11 @@ export const useCollapseExams = () => {
       [
         {
           header: 'Mã đề',
-          fieldName: 'exam_code',
+          fieldName: 'code',
         },
         {
           header: 'Tên đề',
-          fieldName: 'exam_name',
+          fieldName: 'name',
         },
         {
           header: 'Năm học',
@@ -72,9 +72,9 @@ export const useCollapseExams = () => {
   const tableData = (fields ?? []).map((item, index) => {
     return {
       ...item,
-      id: item?.exam_id,
-      exam_code: item?.exam_code,
-      exam_name: item?.exam_code,
+      id: item?.id,
+      code: item?.code,
+      name: item?.code,
       //  upload_date: <Core
       attached_file: <Checkbox checked={!!item?.attached_file} />,
       status: (

@@ -1,0 +1,193 @@
+import PageContainer from '@/components/organism/PageContainer'
+import { BLACK } from '@/helper/colors'
+import { Collapse, Grid, Typography } from '@mui/material'
+import LoadingPage from '@/components/atoms/LoadingPage'
+import { Form, FormProvider } from 'react-hook-form'
+import CoreNavbar from '@/components/organism/CoreNavbar'
+import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
+import { MENU_URL } from '@/routes'
+import { TopAction } from '@/components/molecules/TopAction'
+import CoreInput from '@/components/atoms/CoreInput'
+import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
+import { getListUser } from '@/service/auth/getUser'
+import { getListCourse } from '@/service/course'
+import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
+import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
+import StateOfAssignment from '@/components/molecules/StateOfAssignment'
+import { CoreButton } from '@/components/atoms/CoreButton'
+import CustomStep from '@/components/atoms/CustomSteps'
+import CustomStepV2 from '@/components/atoms/CustomStepV2/indext'
+import { AccordionCustom } from '@/components/atoms/AccordionCustom'
+import useSaveExams from './useSaveExams'
+import { useTranslation } from 'react-i18next'
+import { TableExams } from '@/components/organism/TableExams'
+import { ActionTable } from '@/components/organism/TableCustomDnd/ActionTable'
+import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
+
+const SaveExams = () => {
+  const { t } = useTranslation()
+  const [values, handles] = useSaveExams()
+
+  const {
+    router,
+    methodForm,
+    columns,
+    id,
+    isUpdate,
+    tableData,
+    actionType,
+    name,
+    isView,
+    isLoading,
+    isLoadingSubmit,
+    isLoadingUpdateStateExam,
+    role,
+  } = values
+
+  const { append, remove, onSubmit, changeStateExam, onReRequest } = handles
+
+  const { watch, control, setValue } = methodForm
+  return (
+    <PageContainer
+      title={
+        <CoreBreadcrumbs
+          isShowDashboard
+          breadcrumbs={[
+            {
+              title: 'Danh sách đề',
+              pathname: MENU_URL.EXAM,
+            },
+            {
+              title: (
+                <Typography>
+                  {isUpdate
+                    ? actionType === 'VIEW'
+                      ? name
+                      : name
+                    : t('common:btn.add')}
+                </Typography>
+              ),
+            },
+          ]}
+        />
+      }
+    >
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <FormProvider {...methodForm}>
+          <form onSubmit={onSubmit}>
+            <CoreNavbar
+              breadcrumbs={[
+                {
+                  title: `${
+                    isUpdate
+                      ? actionType === 'VIEW'
+                        ? t('common:detail')
+                        : t('common:btn.edit')
+                      : t('common:btn.add')
+                  }`,
+                  content: (
+                    <>
+                      <Typography className='py-5' variant='subtitle1'>
+                        {isUpdate
+                          ? 'Chi tiết đề' + ' ' + watch(`exams.0.name`)
+                          : 'Thêm mới đề chi tiết'}
+                      </Typography>
+                      <TableExams
+                        isShowColumnStt
+                        fieldsName='exams'
+                        paginationHidden
+                        columns={columns}
+                        data={tableData}
+                        isLoading={isLoading}
+                        actionTable={
+                          isView ? null : (
+                            <ActionTable
+                              append={append}
+                              defaultValueLine={{
+                                id: null,
+                                status: 'in_progress',
+                                upload_date: convertToOffsetDateTime(
+                                  new Date()
+                                ),
+                              }}
+                            />
+                          )
+                        }
+                      />
+                      <div>
+                        {!isView ? (
+                          <div className='space-x-12 text-center my-10'>
+                            <CoreButton
+                              theme='cancel'
+                              onClick={() => {
+                                router.back()
+                              }}
+                            >
+                              {t('common:btn.cancel')}
+                            </CoreButton>
+
+                            {watch('exams.0.status') === 'rejected' &&
+                              role !== 'Admin' && (
+                                <CoreButton
+                                  theme='draft'
+                                  onClick={() => {
+                                    setValue(
+                                      'exams.0.status',
+                                      'pending_approval'
+                                    )
+                                    onReRequest()
+                                  }}
+                                  loading={isLoadingSubmit}
+                                >
+                                  Yêu cầu phê duyệt lại
+                                </CoreButton>
+                              )}
+
+                            <CoreButton
+                              theme='submit'
+                              type='submit'
+                              loading={isLoadingSubmit}
+                            >
+                              {isUpdate
+                                ? t('common:btn.edit')
+                                : t('common:btn.add')}
+                            </CoreButton>
+                          </div>
+                        ) : null}
+                      </div>
+                    </>
+                  ),
+                  rightAction: (
+                    <TopAction
+                      actionList={
+                        [
+                          ...(isUpdate ? ['delete'] : []),
+                          ...(isView ? ['delete', 'edit'] : []),
+                          ...(watch('exams.0.status') === 'approved' ? [] : []),
+                        ] as any
+                      }
+                      onDeleteAction={() => {}}
+                      onEditAction={() => {
+                        router.push({
+                          pathname: `${MENU_URL.EXAM}/[id]`,
+                          query: {
+                            id: Number(id),
+                          },
+                        })
+                      }}
+                    />
+                  ),
+                },
+              ]}
+              //  tabNumber={tabNumber}
+            />
+          </form>
+        </FormProvider>
+      )}
+    </PageContainer>
+  )
+}
+
+export default SaveExams

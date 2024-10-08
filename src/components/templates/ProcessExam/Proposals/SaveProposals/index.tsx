@@ -53,7 +53,7 @@ const SaveProposals = () => {
           breadcrumbs={[
             {
               title: 'Danh sách phê duyệt',
-              pathname: MENU_URL.PROPOSALS_ASSIGNMENT,
+              pathname: MENU_URL.PROPOSAL,
             },
             {
               title: (
@@ -97,7 +97,7 @@ const SaveProposals = () => {
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreInput
                               control={control}
-                              name='plan_code'
+                              name='code'
                               label='Mã kế hoạch'
                               isViewProp={isUpdate}
                               required
@@ -270,7 +270,7 @@ const SaveProposals = () => {
                                               lg={4}
                                             >
                                               <Typography fontWeight={'600'}>
-                                                Tên bộ đề: {item?.exam_set_name}
+                                                Tên bộ đề: {item?.name}
                                               </Typography>
                                             </Grid>
 

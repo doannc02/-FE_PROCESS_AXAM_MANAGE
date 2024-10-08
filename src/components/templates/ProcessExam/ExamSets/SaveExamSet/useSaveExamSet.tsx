@@ -88,7 +88,7 @@ export const useSaveExamSet = () => {
   return [
     {
       methodForm,
-      nameExamSet: watch('exam_set_name'),
+      nameExamSet: watch('name'),
       isLoading,
       router,
       isLoadingSubmit,

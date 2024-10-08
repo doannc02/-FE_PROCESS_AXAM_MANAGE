@@ -1,7 +1,6 @@
 import { BaseResponse, CommonObject, PageResponse } from '../type'
 
 export type Proposals = {
-  proposal_id: string
   id?: number
   academic_year: string | number
   instructor: CommonObject | null
@@ -16,8 +15,8 @@ export type Proposals = {
 }
 
 export type Exam_Set = {
-  exam_set_id: number
-  exam_set_name: string
+  id: number
+  name: string
   department: string
   major: string
   total_exams: number
@@ -33,9 +32,9 @@ export type Exam_Set = {
 }
 
 export type Exam = {
-  exam_id: number
-  exam_code: string
-  exam_name: string
+  id: number
+  code: string
+  name: string
   attached_file: string
   comment: string
   description: string

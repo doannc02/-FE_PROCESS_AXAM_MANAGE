@@ -5,7 +5,7 @@ import { defaultOption } from '@/config/reactQuery'
 
 const URL_EXAM = '/api/v1/exam'
 
-export const getExamSetList = async (
+export const getExamList = async (
   params: RequestExam['LIST']
 ): Promise<ResponseExam['LIST']> => {
   const { data } = await commonApi({
@@ -17,19 +17,19 @@ export const getExamSetList = async (
   return data
 }
 
-export const useQueryGetExamSetList = (
+export const useQueryGetExamList = (
   params: RequestExam['LIST'],
   options?: any
 ) => {
   return useQuery<ResponseExam['LIST']>(
-    ['api/v1/exam-set/list', params],
-    () => getExamSetList(params),
+    ['api/v1/exam/list', params],
+    () => getExamList(params),
     { ...defaultOption, ...options }
   )
 }
 
-export const getDetailExamSet = async (params: {
-  id: number
+export const getDetailExam = async (params: {
+  examId: number
 }): Promise<ResponseExam['DETAIL']> => {
   const { data } = await commonApi({
     method: 'get',
@@ -40,13 +40,13 @@ export const getDetailExamSet = async (params: {
   return data
 }
 
-export const useQueryGetDetailExamSet = (
-  params: { id: number },
+export const useQueryGetDetailExam = (
+  params: { examId: number },
   options?: any
 ) => {
   return useQuery<ResponseExam['DETAIL']>(
-    ['api/v1/exam-set/detail', params],
-    () => getDetailExamSet(params),
+    ['api/v1/exam/detail', params],
+    () => getDetailExam(params),
     { ...defaultOption, ...options }
   )
 }
@@ -61,9 +61,7 @@ export const changeStateExam = async (
   })
   return data
 }
-export const actionExamSet = async (
-  req: RequestExam['ACTION']
-): Promise<any> => {
+export const actionExams = async (req: RequestExam['ACTION']): Promise<any> => {
   const { data } = await commonApi({
     method: req.method,
     url: URL_EXAM,

@@ -1,38 +1,31 @@
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { Tooltip } from '@/components/molecules/Tooltip'
 import { ColumnProps } from '@/components/organism/CoreTable'
-import { getCmsToken } from '@/config/token'
+import { getRole } from '@/config/token'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { useFormCustom } from '@/lib/form'
-import { useQueryGetExamSetList } from '@/service/examSet'
-import { Stack, Typography } from '@mui/material'
+import { useQueryGetExamList } from '@/service/exam'
+import { Exam } from '@/service/examSet/type'
+import { convertToDate } from '@/utils/date/convertToDate'
+import { Typography } from '@mui/material'
+import { Stack } from '@mui/system'
 import _ from 'lodash'
-import { useTranslation } from 'next-i18next'
-import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
+import { useFieldArray } from 'react-hook-form'
 
 const defaultValues = {
-  search: '',
+  // status: 'pending_approval',
   page: 1,
   size: 20,
-  //   startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
-  //   endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
-}
-
-const useListExamSets = () => {
-  const { t } = useTranslation('')
-
-  const router = useRouter()
-
-  const methodForm = useFormCustom<any>({
-    defaultValues,
-  })
-
+} as any
+const useListExams = () => {
+  const methodForm = useFormCustom<any>({ defaultValues })
+  const role = getRole()
   const [queryPage, setQueryPage] = useState<any>(
     _.omitBy(defaultValues, _.isNil)
   )
 
-  const { data, isLoading: isLoadingTable } = useQueryGetExamSetList({
+  const { data, isLoading } = useQueryGetExamList({
     ...queryPage,
   })
 
@@ -52,55 +45,56 @@ const useListExamSets = () => {
   const onSubmit = methodForm.handleSubmit(async (input) => {
     setQueryPage(input)
   })
+  const { getValues, control, setValue } = methodForm
+
   const columns = useMemo(
     () =>
       [
         {
-          header: 'Bộ đề',
+          header: 'Tên đề chi tiết',
           fieldName: 'name',
         },
         {
-          header: 'Ngành',
-          fieldName: 'department',
+          header: 'Mã đề',
+          fieldName: 'code',
         },
-        {
-          header: 'Chuyên ngành',
-          fieldName: 'major',
-        },
-        {
-          header: 'Số đề đang thực hiện',
-          fieldName: 'total_exams',
-        },
-        {
-          header: 'Số đề yêu cầu',
-          fieldName: 'exam_quantity',
-        },
+        ...(role === 'Admin'
+          ? [
+              {
+                header: 'Người thực hiện',
+                fieldName: 'user',
+              },
+            ]
+          : []),
         {
           header: 'Mô tả',
           fieldName: 'description',
         },
         {
-          header: 'Giảng viên thực hiện',
-          fieldName: 'userName',
+          header: 'Nhận xét',
+          fieldName: 'comment',
         },
         {
-          header: 'Học phần',
-          fieldName: 'courseName',
+          header: 'Năm học áp dụng',
+          fieldName: 'academic_year',
+        },
+        {
+          header: 'Ngày upload',
+          fieldName: 'upload_date',
         },
         {
           header: 'Trạng thái',
           fieldName: 'status',
         },
       ] as ColumnProps[],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [t]
+    [role]
   )
-  const tableData = (data?.data?.content ?? []).map((item) => {
+
+  const tableData = (data?.data?.content ?? []).map((item, index) => {
     return {
       ...item,
-      id: item?.id,
-      courseName: item?.course?.code + ' - ' + item?.course?.name,
-      userName: item?.user?.name ?? '-',
+      academic_year: item?.academic_year?.name,
+      upload_date: convertToDate(item?.upload_date),
       description: item?.description && (
         <Stack direction='row' justifyContent='space-between'>
           <Typography>{item?.description.slice(0, 19)}</Typography>
@@ -117,6 +111,23 @@ const useListExamSets = () => {
           )}
         </Stack>
       ),
+      comment: item?.comment && (
+        <Stack direction='row' justifyContent='space-between'>
+          <Typography>{item?.comment.slice(0, 19)}</Typography>
+          {item?.comment?.length > 20 ? (
+            <div className='w-1/3'>
+              <Tooltip
+                isShowIcon
+                showText
+                tooltips={[{ title: item?.comment ?? '' }]}
+              ></Tooltip>
+            </div>
+          ) : (
+            <div className='w-1/3'></div>
+          )}
+        </Stack>
+      ),
+      user: item?.user?.name,
       status: (
         <DisplayStatus
           text={
@@ -146,14 +157,14 @@ const useListExamSets = () => {
     {
       methodForm,
       columns,
-      isLoadingTable,
+      isLoadingTable: isLoading,
       tableData,
       page: data?.data?.page,
       size: data?.data?.size,
       totalPages: data?.data?.totalPages,
     },
-    { t, onSubmit, onReset, onChangePageSize },
+    { onChangePageSize, onSubmit, onReset },
   ] as const
 }
 
-export default useListExamSets
+export default useListExams

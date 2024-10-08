@@ -7,7 +7,6 @@ import DotThree from '@/components/icons/DotThree'
 import { TopAction } from '@/components/molecules/TopAction'
 import { CoreTable } from '@/components/organism/CoreTable'
 import PageContainer from '@/components/organism/PageContainer'
-import { paymentStatusEnum } from '@/enum'
 import { Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 
@@ -53,16 +52,6 @@ const ListExamSets = () => {
               name='search'
               label={t('common:form.search.label')}
               placeholder={t('common:form.search.placeholder')}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreAutocomplete
-              control={control}
-              name='paymentStatus'
-              label='Thanh toán'
-              placeholder='Chọn thanh toán'
-              options={paymentStatusEnum}
             />
           </Grid>
 

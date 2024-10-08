@@ -1,22 +1,14 @@
-import { CurrencyFormatCustom } from '@/components/atoms/CurrencyFormatCustom'
-import InvoiceStatus from '@/components/atoms/InvoiceStatus'
-import PaymentStatus from '@/components/atoms/PaymentStatus'
+import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { ColumnProps } from '@/components/organism/CoreTable'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
-import { convertToDate } from '@/utils/date/convertToDate'
 import { useFormCustom } from '@/lib/form'
-import { useCheckPath } from '@/path'
-import { useAppSelector } from '@/redux/hook'
-import { TRANSLATE } from '@/routes'
-import { Typography } from '@mui/material'
+import { useQueryGetProposalsList } from '@/service/proposals'
+import { convertToDate } from '@/utils/date/convertToDate'
 import _ from 'lodash'
 import moment from 'moment'
 import { useTranslation } from 'next-i18next'
-import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useQueryGetProposalsList } from '@/service/proposals'
-import { MAX_VALUE } from '@/helper/contain'
-import DisplayStatus from '@/components/molecules/DisplayStatus'
+import { useMemo, useState } from 'react'
 
 const defaultValues = {
   search: '',
@@ -97,7 +89,7 @@ const useListProposals = () => {
   const tableData = (data?.data?.content ?? []).map((item) => {
     return {
       ...item,
-      id: item?.proposal_id,
+      id: item?. id,
       courseName: item?.course?.code + ' - ' + item?.course?.name,
       number: item?.number_of_assignment,
       userName: item?.user?.name ?? '-',

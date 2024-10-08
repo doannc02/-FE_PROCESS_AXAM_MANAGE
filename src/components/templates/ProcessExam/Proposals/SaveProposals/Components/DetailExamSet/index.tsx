@@ -53,7 +53,7 @@ const DetailExamSet = ({
                 <div className='w-full flex justify-between'>
                   <div className='w-1/3 flex justify-start'>
                     <Typography fontWeight={'600'}>
-                      {ele?.exam_name} - {ele?.exam_code} &nbsp;
+                      {ele?.name} - {ele?.code} &nbsp;
                     </Typography>
                     {/* <Typography fontWeight={'600'}>Xem chi tiết: </Typography> */}
                     <IconButton
@@ -126,7 +126,7 @@ const DetailExamSet = ({
                           submitChangeStateExam(
                             indexExamSet,
                             index,
-                            ele?.exam_id,
+                            ele?.id,
                             'approved'
                           )
                         }}
@@ -139,7 +139,7 @@ const DetailExamSet = ({
                           submitChangeStateExam(
                             indexExamSet,
                             index,
-                            ele?.exam_id,
+                            ele?.id,
                             'rejected'
                           )
                         }}

@@ -1,33 +1,33 @@
-import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
-import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
+import { CoreTable } from '@/components/organism/CoreTable'
+import useListExams from './useListExams'
 import { CoreButton } from '@/components/atoms/CoreButton'
-import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
-import CoreInput from '@/components/atoms/CoreInput'
 import DotThree from '@/components/icons/DotThree'
 import { TopAction } from '@/components/molecules/TopAction'
-import { CoreTable } from '@/components/organism/CoreTable'
-import PageContainer from '@/components/organism/PageContainer'
-import { Grid } from '@mui/material'
-import { useRouter } from 'next/router'
-import useListProposals from './useListProposals'
 import { MENU_URL } from '@/routes'
+import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
+import { Grid } from '@mui/material'
+import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
+import CoreInput from '@/components/atoms/CoreInput'
+import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
+import PageContainer from '@/components/organism/PageContainer'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 
-const ListProposals = () => {
-  const [values, handles] = useListProposals()
-
+const ListExams = () => {
+  const { t } = useTranslation()
+  const [values, handles] = useListExams()
   const {
-    methodForm,
     columns,
-    tableData,
-    totalPages,
-    size,
-    page,
     isLoadingTable,
+    page,
+    size,
+    totalPages,
+    methodForm,
+    tableData,
   } = values
-
   const { control } = methodForm
 
-  const { t, onSubmit, onChangePageSize, onReset } = handles
+  const { onSubmit, onChangePageSize, onReset } = handles
   const router = useRouter()
 
   return (
@@ -115,7 +115,7 @@ const ListProposals = () => {
         <CoreButton
           onClick={() => {
             router.push({
-              pathname: `${MENU_URL.APPROVE}/addNew`,
+              pathname: `${MENU_URL.EXAM}/addNew`,
             })
           }}
         >
@@ -135,7 +135,7 @@ const ListProposals = () => {
         isShowColumnStt
         onRowClick={(id: number) => {
           router.push({
-            pathname: `${MENU_URL.APPROVE}/[id]`,
+            pathname: `${MENU_URL.EXAM}/[id]`,
             query: {
               id,
               actionType: 'VIEW',
@@ -146,5 +146,4 @@ const ListProposals = () => {
     </PageContainer>
   )
 }
-
-export default ListProposals
+export default ListExams
