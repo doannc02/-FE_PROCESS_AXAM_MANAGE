@@ -108,7 +108,7 @@ const useSaveExams = () => {
           fieldName: 'status',
         },
       ] as ColumnProps[],
-    [role]
+    [role, isView]
   )
 
   const tableData = (fields ?? []).map((item, index) => {
@@ -270,28 +270,31 @@ const useSaveExams = () => {
 
   const { mutate, isLoading: isLoadingSubmit } = useMutation(actionExams, {
     onSuccess: (res: any) => {
-      refetch()
       if (res?.data?.errs) {
         errorMsg(res?.data?.message ?? 'Đã tồn tại')
         ;(res?.data?.errs ?? []).map((item: any) => {
           setError(item.code, item.message)
         })
+        return
       }
       if (res?.data && res?.data?.id) {
         successMsg(t('common:message.success'))
         router.push({
-          pathname: `${MENU_URL.EXAM}/[id]`,
+          pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
           query: {
             id: res?.data?.id,
             actionType: 'VIEW',
           },
         })
+        refetch()
+        return
       }
       if (Array.isArray(res?.data) && res?.data?.length > 0) {
         successMsg(t('common:message.success'))
         router.push({
-          pathname: `${MENU_URL.EXAM}`,
+          pathname: `${MENU_URL.DETAIL_EXAM}`,
         })
+        refetch()
       }
     },
     onError: (error: any) => {
@@ -310,6 +313,7 @@ const useSaveExams = () => {
       }
       reset({ exams: [format] })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.data])
 
   const onSubmit = handleSubmit(async (input) => {

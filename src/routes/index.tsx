@@ -30,7 +30,7 @@ export const MENU_URL = {
   CONFIG: '/config',
   MANAGER: '/manager',
   COURSE: '/course',
-  EXAM: '/exam',
+  DETAIL_EXAM: '/detailExam',
   PROPOSAL: '/proposal',
   APPROVE: '/approve',
   EXAM_SET: '/examSet',
@@ -215,7 +215,7 @@ export const listMenuRoutes: MenuPathProps[] = [
 
   {
     name: 'QL Đề chi tiết',
-    path: MENU_URL.EXAM,
+    path: MENU_URL.DETAIL_EXAM,
     icon: (
       <IconButton>
         <SubjectIcon />

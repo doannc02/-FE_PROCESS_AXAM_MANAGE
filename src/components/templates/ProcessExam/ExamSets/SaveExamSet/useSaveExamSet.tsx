@@ -71,15 +71,19 @@ export const useSaveExamSet = () => {
   useEffect(() => {
     if (isUpdate && data?.data) {
       console.log(data?.data)
-      reset({ ...data?.data?.data })
+      reset({
+        ...data?.data?.data,
+        isCreateExam: data?.data?.data?.exams?.length > 0 ? true : false,
+      })
     }
   }, [data?.data, isUpdate, reset])
 
   const onSubmit = handleSubmit(async (input) => {
+    const { isCreateExam, ...rest } = input
     mutate({
       method: isUpdate ? 'post' : 'post',
       data: {
-        ...input,
+        ...rest,
       },
     })
     //console.log(input, "DICAILON")

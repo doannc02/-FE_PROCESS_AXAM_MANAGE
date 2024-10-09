@@ -20,6 +20,8 @@ import CustomStepV2 from '@/components/atoms/CustomStepV2/indext'
 import { AccordionCustom } from '@/components/atoms/AccordionCustom'
 import { useSaveExamSet } from './useSaveExamSet'
 import CollapseExams from './Components/CollapseExams'
+import { getMajorList } from '@/service/major'
+import CoreCheckbox from '@/components/atoms/CoreCheckbox'
 
 const steps = ['Phân công thực hiện đề cương', 'Đề xuất phê duyệt']
 
@@ -84,7 +86,7 @@ const SaveExamSet = () => {
                   content: (
                     <>
                       <StateOfAssignment state={watch('status')} />
-                      <div>
+                      <div className='mt-20'>
                         <Grid
                           container
                           className=''
@@ -101,7 +103,6 @@ const SaveExamSet = () => {
 
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreInput
-                              isViewProp={true}
                               control={control}
                               label='Khoa'
                               name='department'
@@ -109,10 +110,15 @@ const SaveExamSet = () => {
                           </Grid>
 
                           <Grid item xs={12} sm={12} md={4} lg={4}>
-                            <CoreInput
-                              isViewProp={true}
+                            <CoreAutoCompleteAPI
+                              params={{
+                                page: 1,
+                                size: 20,
+                              }}
+                              fetchDataFn={getMajorList}
                               control={control}
                               label='Chuyên ngành'
+                              placeholder='Chọn chuyên ngành'
                               name='major'
                             />
                           </Grid>
@@ -120,6 +126,11 @@ const SaveExamSet = () => {
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreInput
                               control={control}
+                              type='number'
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
                               label='Số lượng đề phải hoàn thành'
                               name='exam_quantity'
                             />
@@ -128,6 +139,7 @@ const SaveExamSet = () => {
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreAutoCompleteAPI
                               placeholder='Chọn người thực hiện'
+                              labelPath2='fullname'
                               labelPath='name'
                               valuePath='id'
                               control={control}
@@ -172,9 +184,7 @@ const SaveExamSet = () => {
                               <CoreAutoCompleteAPI
                                 placeholder='Chọn học phần'
                                 control={control}
-                                labelPath='course_name'
-                                labelPath2='course_code'
-                                valuePath='course_id'
+                                labelPath2='code'
                                 label='Học phần cần phê duyệt'
                                 name='course'
                                 params={{
@@ -192,11 +202,19 @@ const SaveExamSet = () => {
                           )}
                         </Grid>
                       </div>
-
-                      <Typography className='py-5' variant='subtitle1'>
-                        Danh sách bộ đề
-                      </Typography>
-                      <CollapseExams />
+                      <CoreCheckbox
+                        control={control}
+                        label='Tạo bộ đề kèm theo đề chi tiết'
+                        name='isCreateExam'
+                      />
+                      {watch('isCreateExam') && (
+                        <>
+                          <Typography className='py-5' variant='subtitle1'>
+                            Danh sách bộ đề
+                          </Typography>
+                          <CollapseExams />
+                        </>
+                      )}
                       <div>
                         {!isView ? (
                           <div className='space-x-12 text-center my-10'>
@@ -214,7 +232,7 @@ const SaveExamSet = () => {
                               onClick={async () => {}}
                               loading={isLoadingSubmit}
                             >
-                              {t('common:btn.draft')}
+                              Lưu đang thực hiện
                             </CoreButton>
 
                             <CoreButton
@@ -222,9 +240,7 @@ const SaveExamSet = () => {
                               type='submit'
                               loading={isLoadingSubmit}
                             >
-                              {isUpdate
-                                ? t('common:btn.edit')
-                                : t('common:btn.add')}
+                              Lưu và yêu cầu duyệt
                             </CoreButton>
                           </div>
                         ) : null}

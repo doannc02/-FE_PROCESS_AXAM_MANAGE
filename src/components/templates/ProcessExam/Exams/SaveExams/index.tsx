@@ -55,7 +55,7 @@ const SaveExams = () => {
           breadcrumbs={[
             {
               title: 'Danh sách đề',
-              pathname: MENU_URL.EXAM,
+              pathname: MENU_URL.DETAIL_EXAM,
             },
             {
               title: (
@@ -102,7 +102,7 @@ const SaveExams = () => {
                         data={tableData}
                         isLoading={isLoading}
                         actionTable={
-                          isView ? null : (
+                          isUpdate ? null : (
                             <ActionTable
                               append={append}
                               defaultValueLine={{
@@ -171,7 +171,7 @@ const SaveExams = () => {
                       onDeleteAction={() => {}}
                       onEditAction={() => {
                         router.push({
-                          pathname: `${MENU_URL.EXAM}/[id]`,
+                          pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
                           query: {
                             id: Number(id),
                           },

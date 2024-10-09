@@ -22,7 +22,7 @@ const useListProposals = () => {
   const { t } = useTranslation('')
 
   const router = useRouter()
-
+  const isProposal = router.asPath.includes('/proposal')
   const methodForm = useFormCustom<any>({
     defaultValues,
   })
@@ -60,7 +60,7 @@ const useListProposals = () => {
         },
         {
           header: 'Mã kế hoạch',
-          fieldName: 'plan_code',
+          fieldName: 'code',
         },
         {
           header: 'Người phê duyệt',
@@ -89,7 +89,7 @@ const useListProposals = () => {
   const tableData = (data?.data?.content ?? []).map((item) => {
     return {
       ...item,
-      id: item?. id,
+      id: item?.id,
       courseName: item?.course?.code + ' - ' + item?.course?.name,
       number: item?.number_of_assignment,
       userName: item?.user?.name ?? '-',
@@ -130,6 +130,7 @@ const useListProposals = () => {
       page: data?.data?.page,
       size: data?.data?.size,
       totalPages: data?.data?.totalPages,
+      isProposal,
     },
     { t, onSubmit, onReset, onChangePageSize },
   ] as const

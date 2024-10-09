@@ -23,6 +23,7 @@ const ListProposals = () => {
     size,
     page,
     isLoadingTable,
+    isProposal,
   } = values
 
   const { control } = methodForm
@@ -114,8 +115,14 @@ const ListProposals = () => {
         <DotThree className='mt-3' onClick={() => {}} />
         <CoreButton
           onClick={() => {
+            let pathname = ''
+            if (isProposal) {
+              pathname = MENU_URL.PROPOSAL
+            } else {
+              pathname = MENU_URL.APPROVE
+            }
             router.push({
-              pathname: `${MENU_URL.APPROVE}/addNew`,
+              pathname: `${pathname}/addNew`,
             })
           }}
         >
@@ -134,8 +141,14 @@ const ListProposals = () => {
         isLoading={isLoadingTable}
         isShowColumnStt
         onRowClick={(id: number) => {
+          let pathname = ''
+          if (isProposal) {
+            pathname = MENU_URL.PROPOSAL
+          } else {
+            pathname = MENU_URL.APPROVE
+          }
           router.push({
-            pathname: `${MENU_URL.APPROVE}/[id]`,
+            pathname: `${pathname}/[id]`,
             query: {
               id,
               actionType: 'VIEW',

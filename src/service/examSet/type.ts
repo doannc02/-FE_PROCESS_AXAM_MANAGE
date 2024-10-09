@@ -19,6 +19,7 @@ export type ExamSet = {
     id: number
   }
   exams: Exam[]
+  isCreateExam?: boolean
 }
 
 export type Exam = {
