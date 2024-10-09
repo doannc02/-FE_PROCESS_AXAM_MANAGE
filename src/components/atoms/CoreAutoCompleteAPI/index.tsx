@@ -98,10 +98,10 @@ const CoreAutoCompleteAPI: <
   const { actionType } = router.query
   const isView = isViewProp !== undefined ? isViewProp : actionType === 'VIEW'
 
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [isClick, setIsClick] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [totalPages, setTotalPages] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
   const [search, setSearch] = useState('')
   const debounceSearch = useDebounce(search, 700)
   const [data, setData] = useState<any>([])
@@ -114,7 +114,7 @@ const CoreAutoCompleteAPI: <
     setIsLoading(true)
     const data = await fetchDataFn(
       {
-        page: 0,
+        page: 1,
         size: PAGE_SIZE,
         search: debounceSearch,
         ...(params ? params : {}),
@@ -152,7 +152,7 @@ const CoreAutoCompleteAPI: <
         setIsLoading(true)
         const pageValue = pageOption ?? page
 
-        if (pageValue !== 0 && pageValue >= totalPages) {
+        if (pageValue !== 1 && pageValue >= totalPages) {
           setIsLoading(false)
           return
         }
@@ -172,7 +172,7 @@ const CoreAutoCompleteAPI: <
             [valuePath]: get(item, valuePath),
           }))
 
-          if (pageValue === 0) {
+          if (pageValue === 1) {
             setDataPage0(dataValue)
           }
 
@@ -218,7 +218,7 @@ const CoreAutoCompleteAPI: <
       if (debounceSearch) {
         handleSearchData()
       } else {
-        setPage(() => 0)
+        setPage(() => 1)
         setData(dataPage0)
       }
     }

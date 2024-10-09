@@ -67,10 +67,10 @@ const useListExamSets = () => {
           header: 'Chuyên ngành',
           fieldName: 'major',
         },
-        {
-          header: 'Số đề đang thực hiện',
-          fieldName: 'total_exams',
-        },
+        // {
+        //   header: 'Số đề đang thực hiện',
+        //   fieldName: 'total_exams',
+        // },
         {
           header: 'Số đề yêu cầu',
           fieldName: 'exam_quantity',
@@ -99,6 +99,8 @@ const useListExamSets = () => {
     return {
       ...item,
       id: item?.id,
+      major: item?.major?.name,
+      department: item?.department?.name,
       courseName: item?.course?.code + ' - ' + item?.course?.name,
       userName: item?.user?.name ?? '-',
       description: item?.description && (

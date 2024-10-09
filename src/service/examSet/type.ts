@@ -3,8 +3,16 @@ export type state = 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
 export type ExamSet = {
   id: number
   name: string
-  department: string
-  major: string
+  department: {
+    id: number
+    code: string
+    name: string
+  }
+  major: {
+    id: number
+    code: string
+    name: string
+  }
   total_exams: number
   exam_quantity: number
   description: string
@@ -18,7 +26,7 @@ export type ExamSet = {
     name: string
     id: number
   }
-  exams: Exam[]
+  exams: CommonObject[] | Exam[]
   isCreateExam?: boolean
 }
 

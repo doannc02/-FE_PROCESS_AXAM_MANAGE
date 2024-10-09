@@ -95,7 +95,9 @@ export const middlewareResponseError = async (error: any) => {
   if (!status || status === 503 || status === 404) {
    // window.location.replace('/accounting/500')
   }
-
+  if (!status && status === 200) {
+     window.location.replace('/accounting/403')
+   }
   if (
     status === 401
     // &&

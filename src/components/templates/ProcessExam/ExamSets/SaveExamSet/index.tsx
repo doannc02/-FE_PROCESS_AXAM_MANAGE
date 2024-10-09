@@ -22,6 +22,10 @@ import { useSaveExamSet } from './useSaveExamSet'
 import CollapseExams from './Components/CollapseExams'
 import { getMajorList } from '@/service/major'
 import CoreCheckbox from '@/components/atoms/CoreCheckbox'
+import { ActionTable } from '@/components/organism/TableCustomDnd/ActionTable'
+import { TableExams } from '@/components/organism/TableExams'
+import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
+import { getDepartment } from '@/service/department'
 
 const steps = ['Phân công thực hiện đề cương', 'Đề xuất phê duyệt']
 
@@ -38,11 +42,13 @@ const SaveExamSet = () => {
     isUpdate,
     actionType,
     isView,
+    tableData,
+    columns,
   } = values
 
-  const { onSubmit, t } = handles
+  const { onSubmit, t, append } = handles
 
-  const { watch, control, getValues } = methodForm
+  const { control, watch, getValues, setValue } = methodForm
   return (
     <PageContainer
       title={
@@ -85,7 +91,7 @@ const SaveExamSet = () => {
                   }`,
                   content: (
                     <>
-                      <StateOfAssignment state={watch('status')} />
+                      <StateOfAssignment state={getValues('status')} />
                       <div className='mt-20'>
                         <Grid
                           container
@@ -102,10 +108,12 @@ const SaveExamSet = () => {
                           </Grid>
 
                           <Grid item xs={12} sm={12} md={4} lg={4}>
-                            <CoreInput
+                            <CoreAutoCompleteAPI
                               control={control}
                               label='Khoa'
                               name='department'
+                              placeholder='Chọn khoa'
+                              fetchDataFn={getDepartment}
                             />
                           </Grid>
 
@@ -120,6 +128,9 @@ const SaveExamSet = () => {
                               label='Chuyên ngành'
                               placeholder='Chọn chuyên ngành'
                               name='major'
+                              onChangeValue={() => {
+                                setValue('course', null as unknown as any)
+                              }}
                             />
                           </Grid>
 
@@ -158,27 +169,6 @@ const SaveExamSet = () => {
                             />
                           </Grid>
 
-                          {/* <Grid item xs={12} sm={12} md={4} lg={4}>
-                            <CoreAutoCompleteAPI
-                              placeholder='Chọn người phê duyệt'
-                              control={control}
-                              labelPath='name'
-                              valuePath='id'
-                              label='Người phê duyệt'
-                              name='instructor'
-                              params={{
-                                roleId: 1,
-                                page: 1,
-                                size: 20,
-                              }}
-                              fetchDataFn={getListUser}
-                              required
-                              rules={{
-                                required: t('common:validation.required'),
-                              }}
-                            />
-                          </Grid> */}
-
                           {watch('user')?.id && (
                             <Grid item xs={12} sm={12} md={4} lg={4}>
                               <CoreAutoCompleteAPI
@@ -188,6 +178,7 @@ const SaveExamSet = () => {
                                 label='Học phần cần phê duyệt'
                                 name='course'
                                 params={{
+                                  majorId: watch('major')?.id,
                                   userId: watch('user')?.id,
                                   page: 1,
                                   size: 20,
@@ -202,17 +193,38 @@ const SaveExamSet = () => {
                           )}
                         </Grid>
                       </div>
-                      <CoreCheckbox
-                        control={control}
-                        label='Tạo bộ đề kèm theo đề chi tiết'
-                        name='isCreateExam'
-                      />
+                      {!isUpdate && (
+                        <CoreCheckbox
+                          control={control}
+                          label='Tạo bộ đề kèm theo đề chi tiết'
+                          name='isCreateExam'
+                        />
+                      )}
                       {watch('isCreateExam') && (
                         <>
                           <Typography className='py-5' variant='subtitle1'>
                             Danh sách bộ đề
                           </Typography>
-                          <CollapseExams />
+                          <TableExams
+                            isShowColumnStt
+                            showInfoText={false}
+                            fieldsName='exams'
+                            paginationHidden
+                            columns={columns}
+                            data={tableData}
+                            isLoading={isLoading}
+                            actionTable={
+                              isView ? null : (
+                                <ActionTable
+                                  append={append}
+                                  defaultValueLine={{
+                                    code: '',
+                                    name: '',
+                                  }}
+                                />
+                              )
+                            }
+                          />
                         </>
                       )}
                       <div>
