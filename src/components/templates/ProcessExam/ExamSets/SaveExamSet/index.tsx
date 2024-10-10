@@ -45,6 +45,7 @@ const SaveExamSet = () => {
     tableData,
     columns,
     role,
+    fields,
   } = values
 
   const { onSubmit, t, append, onSubmitInProgress } = handles
@@ -173,7 +174,7 @@ const SaveExamSet = () => {
                             </Grid>
                           )}
 
-                          {watch('user')?.id && (
+                          {
                             <Grid item xs={12} sm={12} md={4} lg={4}>
                               <CoreAutoCompleteAPI
                                 placeholder='Chọn học phần'
@@ -194,7 +195,7 @@ const SaveExamSet = () => {
                                 }}
                               />
                             </Grid>
-                          )}
+                          }
                         </Grid>
                       </div>
                       {!isView && (
@@ -218,7 +219,8 @@ const SaveExamSet = () => {
                             data={tableData}
                             isLoading={isLoading}
                             actionTable={
-                              isView ? null : (
+                              isView ? null : (fields ?? []).length <
+                                getValues('exam_quantity') ? (
                                 <ActionTable
                                   append={append}
                                   defaultValueLine={{
@@ -226,7 +228,7 @@ const SaveExamSet = () => {
                                     name: '',
                                   }}
                                 />
-                              )
+                              ) : null
                             }
                           />
                         </>

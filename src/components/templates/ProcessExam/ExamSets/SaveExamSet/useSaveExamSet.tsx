@@ -44,7 +44,8 @@ export const useSaveExamSet = () => {
   const methodForm = useFormCustom<ExamSet>({
     defaultValues,
   })
-  const { control, watch, reset, setValue, setError, handleSubmit } = methodForm
+  const { control, watch, reset, setValue, getValues, setError, handleSubmit } =
+    methodForm
   const router = useRouter()
   const isAddNew = router.asPath.includes('/addNew')
   const { actionType, id } = router.query
@@ -238,6 +239,7 @@ export const useSaveExamSet = () => {
       data: {
         ...rest,
         status: 'pending_approval',
+        exams: !!getValues('isCreateExam') ? input.exams : [],
       },
     })
     //console.log(input, "DICAILON")
@@ -251,6 +253,7 @@ export const useSaveExamSet = () => {
       data: {
         ...rest,
         status: 'in_progress',
+        exams: !!getValues('isCreateExam') ? input.exams : [],
       },
     })
     //console.log(input, "DICAILON")
@@ -270,6 +273,7 @@ export const useSaveExamSet = () => {
       columns,
       tableData,
       role,
+      fields,
     },
     { onSubmit, append, t, onSubmitInProgress },
   ] as const

@@ -273,7 +273,7 @@ const useSaveExams = () => {
       if (res?.data?.errs) {
         errorMsg(res?.data?.message ?? 'Đã tồn tại')
         ;(res?.data?.errs ?? []).map((item: any) => {
-          setError(item.code, item.message)
+          setError(item.field, item.message)
         })
         return
       }
