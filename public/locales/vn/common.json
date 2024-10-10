@@ -22,7 +22,6 @@
   "option": {
     "ALL": "Tất cả"
   },
-
   "form": {
     "search": {
       "label": "Tìm kiếm",
@@ -44,14 +43,14 @@
     "saveConfig": "Lưu cấu hình",
     "back": "Trở lại",
     "delete": "Xóa",
-    "draft" :"Lưu nháp",
+    "draft": "Lưu nháp",
     "confirm": "Xác nhận",
     "viewDetail": "Xem chi tiết",
     "deny": "Từ chối",
     "approve": "Phê duyệt",
     "history": "Lịch sử",
     "view": "Xem",
-    "copy" : "Copy",
+    "copy": "Copy",
     "export": "Export",
     "import": "Import"
   },
@@ -61,7 +60,7 @@
     "jumpToPage": "Nhảy tới trang",
     "no": "STT",
     "no_exist_page": "Trang không tồn tại",
-    "action":"Hành động"
+    "action": "Hành động"
   },
   "validation": {
     "password_required": "Bạn chưa nhập mật khẩu",
@@ -97,7 +96,7 @@
     "emailPhoneInvalid": "Không đúng định dạng số điện thoại hoặc email"
   },
   "footer": {
-    "label": "Copyright © 2021. Bản quyền site thuộc về Công ty TNHH một thành viên Apodio."
+    "label": "Copyright © 2024. Bản quyền site thuộc về khoa công nghệ thông tin - Trường ĐHCN Việt Hung."
   },
   "bizzapp": {
     "label": "Chuyển đổi hệ thống"

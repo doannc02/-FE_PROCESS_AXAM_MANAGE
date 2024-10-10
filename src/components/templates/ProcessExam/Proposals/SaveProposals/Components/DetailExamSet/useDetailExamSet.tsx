@@ -45,7 +45,7 @@ const useDetailExamSet = () => {
     }
   }
   return [
-    { methodForm, isLoadingUpdateStateExam },
+    { methodForm, role, isLoadingUpdateStateExam },
     { submitChangeStateExam },
   ] as const
 }

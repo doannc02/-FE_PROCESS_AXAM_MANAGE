@@ -61,14 +61,24 @@ const useListProposals = () => {
         {
           header: 'Mã kế hoạch',
           fieldName: 'code',
+          styleCell: {
+            style: {
+              minWidth: '90px',
+            },
+          },
         },
-        {
-          header: 'Người phê duyệt',
-          fieldName: 'instructorName',
-        },
+        // {
+        //   header: 'Người phê duyệt',
+        //   fieldName: 'instructorName',
+        // },
         {
           header: 'Học kỳ',
           fieldName: 'semester',
+          styleCell: {
+            style: {
+              minWidth: '60px',
+            },
+          },
         },
         {
           header: 'Ngày bắt đầu',

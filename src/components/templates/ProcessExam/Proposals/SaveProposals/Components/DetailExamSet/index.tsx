@@ -20,7 +20,7 @@ const DetailExamSet = ({
 }) => {
   const { t } = useTranslation()
   const [values, handles] = useDetailExamSet()
-  const { methodForm, isLoadingUpdateStateExam } = values
+  const { methodForm, isLoadingUpdateStateExam, role } = values
   const { submitChangeStateExam } = handles
   const { watch, getValues, setValue, control } = methodForm
 
@@ -110,6 +110,7 @@ const DetailExamSet = ({
                 <Box>
                   <CoreInput
                     multiline
+                    isViewProp={role !== 'Admin'}
                     control={control}
                     label='Nhận xét chi tiết đề'
                     name={`exam_sets.${indexExamSet}.exams.${index}.comment`}

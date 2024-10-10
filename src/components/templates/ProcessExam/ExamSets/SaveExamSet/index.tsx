@@ -44,9 +44,10 @@ const SaveExamSet = () => {
     isView,
     tableData,
     columns,
+    role,
   } = values
 
-  const { onSubmit, t, append } = handles
+  const { onSubmit, t, append, onSubmitInProgress } = handles
 
   const { control, watch, getValues, setValue } = methodForm
   return (
@@ -147,27 +148,30 @@ const SaveExamSet = () => {
                             />
                           </Grid>
 
-                          <Grid item xs={12} sm={12} md={4} lg={4}>
-                            <CoreAutoCompleteAPI
-                              placeholder='Chọn người thực hiện'
-                              labelPath2='fullname'
-                              labelPath='name'
-                              valuePath='id'
-                              control={control}
-                              params={{
-                                exceptId: 1,
-                                page: 1,
-                                size: 20,
-                              }}
-                              label='Người thực hiện'
-                              name='user'
-                              fetchDataFn={getListUser}
-                              required
-                              rules={{
-                                required: t('common:validation.required'),
-                              }}
-                            />
-                          </Grid>
+                          {role === 'Admin' && (
+                            <Grid item xs={12} sm={12} md={4} lg={4}>
+                              <CoreAutoCompleteAPI
+                                placeholder='Chọn người thực hiện'
+                                labelPath2='fullname'
+                                labelPath='name'
+                                valuePath='id'
+                                isViewProp={true}
+                                control={control}
+                                params={{
+                                  exceptId: 1,
+                                  page: 1,
+                                  size: 20,
+                                }}
+                                label='Người thực hiện'
+                                name='user'
+                                fetchDataFn={getListUser}
+                                required
+                                rules={{
+                                  required: t('common:validation.required'),
+                                }}
+                              />
+                            </Grid>
+                          )}
 
                           {watch('user')?.id && (
                             <Grid item xs={12} sm={12} md={4} lg={4}>
@@ -193,7 +197,7 @@ const SaveExamSet = () => {
                           )}
                         </Grid>
                       </div>
-                      {!isUpdate && (
+                      {!isView && (
                         <CoreCheckbox
                           control={control}
                           label='Tạo bộ đề kèm theo đề chi tiết'
@@ -228,7 +232,7 @@ const SaveExamSet = () => {
                         </>
                       )}
                       <div>
-                        {!isView ? (
+                        {!isView && role !== 'Admin' ? (
                           <div className='space-x-12 text-center my-10'>
                             <CoreButton
                               theme='cancel'
@@ -241,7 +245,9 @@ const SaveExamSet = () => {
 
                             <CoreButton
                               theme='draft'
-                              onClick={async () => {}}
+                              onClick={async () => {
+                                onSubmitInProgress()
+                              }}
                               loading={isLoadingSubmit}
                             >
                               Lưu đang thực hiện

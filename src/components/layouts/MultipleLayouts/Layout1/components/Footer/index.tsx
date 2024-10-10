@@ -19,9 +19,9 @@ const Footer = () => {
 
         <Image
           alt=''
-          src={require('@/assets/svg/layout1/logo-apus.svg')}
-          height={40}
-          width={112}
+          src={require('@/assets/jpg/logoVH.jpg')}
+          height={38}
+          width={40}
         />
       </div>
     </div>

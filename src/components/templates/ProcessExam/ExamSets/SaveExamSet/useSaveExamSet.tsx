@@ -1,7 +1,9 @@
 import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { Tooltip } from '@/components/molecules/Tooltip'
+import { TopAction } from '@/components/molecules/TopAction'
 import { ColumnProps } from '@/components/organism/CoreTable'
+import { getRole } from '@/config/token'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
@@ -37,6 +39,7 @@ const defaultValues = {
 }
 export const useSaveExamSet = () => {
   const { t } = useTranslation('')
+  const role = getRole()
   const dispatch = useAppDispatch()
   const methodForm = useFormCustom<ExamSet>({
     defaultValues,
@@ -79,6 +82,10 @@ export const useSaveExamSet = () => {
         {
           header: 'Trạng thái',
           fieldName: 'status',
+        },
+        {
+          header: '',
+          fieldName: 'action',
         },
       ] as ColumnProps[],
     []
@@ -168,6 +175,17 @@ export const useSaveExamSet = () => {
         />
       ),
       code: watch(`exams.${index}.code`),
+      action: !isView &&
+        watch(`exams.${index}.status`) !== 'approved' &&
+        index > 0 && (
+          <TopAction
+            isShowText={false}
+            actionList={['delete']}
+            onDeleteAction={() => {
+              remove(index)
+            }}
+          />
+        ),
     }
   })
 
@@ -214,11 +232,25 @@ export const useSaveExamSet = () => {
 
   const onSubmit = handleSubmit(async (input) => {
     const { isCreateExam, ...rest } = input
-   
+
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: {
         ...rest,
+        status: 'pending_approval',
+      },
+    })
+    //console.log(input, "DICAILON")
+  })
+
+  const onSubmitInProgress = handleSubmit(async (input) => {
+    const { isCreateExam, ...rest } = input
+
+    mutate({
+      method: isUpdate ? 'put' : 'post',
+      data: {
+        ...rest,
+        status: 'in_progress',
       },
     })
     //console.log(input, "DICAILON")
@@ -237,7 +269,8 @@ export const useSaveExamSet = () => {
       id,
       columns,
       tableData,
+      role,
     },
-    { onSubmit, append, t },
+    { onSubmit, append, t, onSubmitInProgress },
   ] as const
 }

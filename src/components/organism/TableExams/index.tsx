@@ -31,8 +31,10 @@ export const TableExams = ({
   setValue = (name: string, value: any) => null,
   watch = (name: string) => null,
   fieldsName,
+  showInfoText,
   actionTable,
 }: CoreTableProps & {
+  showInfoText?: boolean
   fieldsName: string
   setValue?: any // required with case change data of form
   watch?: (name: string) => void // required with case change data of form
@@ -137,20 +139,22 @@ export const TableExams = ({
                     </TableRow>
                   ) : renderRow().length === 0 ? (
                     <TableRow>
-                      <TableCell
-                        colSpan={10}
-                        variant='body'
-                        align='center'
-                        className='py-8'
-                      >
-                        <div className='flex justify-center min-h-[60px] flex-col'>
-                          <EmptyIcon />
+                      {showInfoText ? (
+                        <TableCell
+                          colSpan={10}
+                          variant='body'
+                          align='center'
+                          className='py-8'
+                        >
+                          <div className='flex justify-center min-h-[60px] flex-col'>
+                            <EmptyIcon />
 
-                          <Typography variant='body2'>
-                            Không có dữ liệu
-                          </Typography>
-                        </div>
-                      </TableCell>
+                            <Typography variant='body2'>
+                              Không có dữ liệu
+                            </Typography>
+                          </div>
+                        </TableCell>
+                      ) : null}
                     </TableRow>
                   ) : (
                     renderRow()
