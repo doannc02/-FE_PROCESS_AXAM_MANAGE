@@ -196,6 +196,20 @@ const SaveExamSet = () => {
                               />
                             </Grid>
                           }
+                          <Grid item xs={12}>
+                            <CoreInput
+                              className='mt-20 mb-5'
+                              placeholder='Mô tả bộ đề'
+                              control={control}
+                              label='Nhập mô tả cho bộ đề'
+                              name='description'
+                              multiline
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
+                            />
+                          </Grid>
                         </Grid>
                       </div>
                       {!isView && (
@@ -255,13 +269,17 @@ const SaveExamSet = () => {
                               Lưu đang thực hiện
                             </CoreButton>
 
-                            <CoreButton
-                              theme='submit'
-                              type='submit'
-                              loading={isLoadingSubmit}
-                            >
-                              Lưu và yêu cầu duyệt
-                            </CoreButton>
+                            {watch('status') !== 'approved' &&
+                              watch('exam_quantity') ===
+                                (fields ?? []).length && (
+                                <CoreButton
+                                  theme='submit'
+                                  type='submit'
+                                  loading={isLoadingSubmit}
+                                >
+                                  Lưu và yêu cầu duyệt
+                                </CoreButton>
+                              )}
                           </div>
                         ) : null}
                       </div>

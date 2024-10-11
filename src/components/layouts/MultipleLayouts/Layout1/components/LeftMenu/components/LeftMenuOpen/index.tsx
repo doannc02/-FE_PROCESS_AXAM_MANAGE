@@ -1,6 +1,10 @@
 import { actionList } from '@/helper/actionList'
 import { useAppSelector } from '@/redux/hook'
-import { TRANSLATE, listMenuRoutes } from '@/routes'
+import {
+  listMenuForAdminRoutes,
+  listMenuForUserRoutes,
+  TRANSLATE,
+} from '@/routes'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Box, Typography } from '@mui/material'
 import { useTranslation } from 'next-i18next'
@@ -8,13 +12,16 @@ import { memo, useState } from 'react'
 import { MenuCustom } from '../../../MenuCustom'
 import MenuItemOpen from './MenuItemOpen'
 import { useRouter } from 'next/router'
+import { getRole } from '@/config/token'
 
 const LeftMenuOpen = () => {
   const { t } = useTranslation(TRANSLATE.COMMON)
   const { firstMainColor: PRIMARY } = useAppSelector(
     (state) => state.themeColorData
   )
-
+  const role = getRole()
+  const listMenuRoutes =
+    role === 'Admin' ? listMenuForAdminRoutes : listMenuForUserRoutes
   const [menuList, setMenuList] = useState(listMenuRoutes)
 
   const [titleSubMenu, setTitleSubMenu] = useState('')

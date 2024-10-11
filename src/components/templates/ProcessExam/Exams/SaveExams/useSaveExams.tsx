@@ -4,6 +4,7 @@ import CoreInput from '@/components/atoms/CoreInput'
 import { MenuCustom } from '@/components/layouts/MultipleLayouts/Layout1/components/MenuCustom'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { Tooltip } from '@/components/molecules/Tooltip'
+import { TopAction } from '@/components/molecules/TopAction'
 import { ColumnProps } from '@/components/organism/CoreTable'
 import { getRole } from '@/config/token'
 import { menuState, menuStateUser, stateEnum, stateEnumUser } from '@/enum'
@@ -45,9 +46,18 @@ const useSaveExams = () => {
     exams: Exam[]
   }>({ defaultValues })
 
-  const { getValues, control, setValue, handleSubmit, watch, setError, reset } =
-    methodForm
+  const {
+    getValues,
+    control,
+    trigger,
+    setValue,
+    handleSubmit,
+    watch,
+    setError,
+    reset,
+  } = methodForm
   const role = getRole()
+
   const [isLoadingUpdateStateExam, setLoadingUpdateStateExam] =
     useState<boolean>()
 
@@ -106,6 +116,20 @@ const useSaveExams = () => {
         {
           header: 'Trạng thái',
           fieldName: 'status',
+          styleCell: {
+            style: {
+              minWidth: '80px',
+            },
+          },
+        },
+        {
+          header: '',
+          fieldName: 'action',
+          styleCell: {
+            style: {
+              minWidth: '50px',
+            },
+          },
         },
       ] as ColumnProps[],
     [role, isView]
@@ -265,6 +289,17 @@ const useSaveExams = () => {
           />
         </div>
       ),
+      action: !isView &&
+        watch(`exams.${index}.status`) !== 'approved' &&
+        index > 0 && (
+          <TopAction
+            isShowText={false}
+            actionList={['delete']}
+            onDeleteAction={() => {
+              remove(index)
+            }}
+          />
+        ),
     }
   })
 
@@ -317,7 +352,22 @@ const useSaveExams = () => {
   }, [data?.data?.data])
 
   const onSubmit = handleSubmit(async (input) => {
-    console.log(input, 'JACkJACk')
+    const exams = input.exams || []
+    let isValid = true
+
+    for (let i = 0; i < exams.length; i++) {
+      console.log(input, 'aaaa')
+      if (!exams[i].description || !exams[i].attached_file) {
+        isValid = false
+        setError(`exams.${i}.description`, {
+          message: 'Đây là trường bắt buộc',
+        })
+      }
+    }
+    if (!isValid) {
+      errorMsg('Vui lòng nhập mô tả và chọn tệp đính kèm!!')
+      return
+    }
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: isUpdate ? input.exams[0] : (input.exams as Exam[]),
@@ -325,6 +375,20 @@ const useSaveExams = () => {
   })
 
   const onReRequest = handleSubmit(async (input) => {
+    const exams = input.exams || []
+    let isValid = true
+
+    if (!exams[0].description || !exams[0].attached_file) {
+      isValid = false
+      setError(`exams.${0}.description`, {
+        message: 'Đây là trường bắt buộc',
+      })
+    }
+
+    if (!isValid) {
+      errorMsg('Vui lòng nhập mô tả và chọn tệp đính kèm!!')
+      return
+    }
     mutate({
       method: 'put',
       data: input.exams[0],

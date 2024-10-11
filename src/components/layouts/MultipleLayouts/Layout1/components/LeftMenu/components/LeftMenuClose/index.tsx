@@ -1,14 +1,17 @@
 import SwitchSystemIcon from '@/components/icons/SwitchSystemIcon'
-import { listMenuRoutes } from '@/routes'
+import { listMenuForUserRoutes, listMenuForAdminRoutes } from '@/routes'
 import { memo } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { isOpenLeftMenuRecoil } from '../../recoil'
 import MenuItemClose from './MenuItemClose'
 import { MenuItemCloseWithChid } from './MenuItemCloseWithChid'
+import { getRole } from '@/config/token'
 
 const LeftMenuClose = () => {
   const setIsOpenLeftMenu = useSetRecoilState(isOpenLeftMenuRecoil)
-
+  const role = getRole()
+  const listMenuRoutes =
+    role === 'Admin' ? listMenuForAdminRoutes : listMenuForUserRoutes
   return (
     <div className='z-100 relative flex flex-col h-full scale-100 cursor-pointer'>
       <div

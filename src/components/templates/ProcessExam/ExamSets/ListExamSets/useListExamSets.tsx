@@ -1,7 +1,7 @@
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { Tooltip } from '@/components/molecules/Tooltip'
 import { ColumnProps } from '@/components/organism/CoreTable'
-import { getCmsToken } from '@/config/token'
+import { getCmsToken, getRole } from '@/config/token'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { useFormCustom } from '@/lib/form'
 import { useQueryGetExamSetList } from '@/service/examSet'
@@ -23,7 +23,7 @@ const useListExamSets = () => {
   const { t } = useTranslation('')
 
   const router = useRouter()
-
+  const role = getRole()
   const methodForm = useFormCustom<any>({
     defaultValues,
   })
@@ -153,6 +153,8 @@ const useListExamSets = () => {
       page: data?.data?.page,
       size: data?.data?.size,
       totalPages: data?.data?.totalPages,
+      role,
+      router,
     },
     { t, onSubmit, onReset, onChangePageSize },
   ] as const

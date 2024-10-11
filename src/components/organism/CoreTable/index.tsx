@@ -131,7 +131,7 @@ export const CoreTable = ({
 
   if (isShowColumnStt) {
     data = (data ?? []).map((item: any, index: number) => {
-      const noNumber = page * index + 1
+      const noNumber = (page - 1) * size + index + 1
       return {
         ...item,
         index: noNumber > 9 ? noNumber : `0${noNumber}`,

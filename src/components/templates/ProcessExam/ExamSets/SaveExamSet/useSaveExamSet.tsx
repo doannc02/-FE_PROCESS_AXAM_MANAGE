@@ -173,6 +173,10 @@ export const useSaveExamSet = () => {
           onChangeValue={(val) => {
             setValue(`exams.${index}`, val)
           }}
+          required
+          rules={{
+            required: t('common:validation.required'),
+          }}
         />
       ),
       code: watch(`exams.${index}.code`),
@@ -233,7 +237,23 @@ export const useSaveExamSet = () => {
 
   const onSubmit = handleSubmit(async (input) => {
     const { isCreateExam, ...rest } = input
-
+    let isValid = true
+    if (input.exam_quantity) {
+      input.exams.map((item, index) => {
+        console.log('zzzzzl')
+        if (!item.code) {
+          console.log('lmm')
+          setError(`exams.${index}`, {
+            message: 'Trường này là bắt buộc',
+          })
+          isValid = false
+        }
+      })
+    }
+    if (!isValid) {
+      errorMsg('Vui lòng chọn đề chi tiết')
+      return
+    }
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: {

@@ -18,18 +18,19 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { TableRowPE } from './TableRowAllocation'
 import EmptyIcon from '@/components/icons/EmptyIcon'
 import CoreLoading from '@/components/molecules/CoreLoading'
+import { useFormContext } from 'react-hook-form'
+import { Exam } from '@/service/examSet/type'
 
 export const TableExams = ({
   isLoading,
   className,
   data,
   columns,
-  page = 0,
+  page = 1,
   size = 20,
   isShowColumnStt = false,
   maxHeight,
   setValue = (name: string, value: any) => null,
-  watch = (name: string) => null,
   fieldsName,
   showInfoText,
   actionTable,
@@ -37,26 +38,38 @@ export const TableExams = ({
   showInfoText?: boolean
   fieldsName: string
   setValue?: any // required with case change data of form
-  watch?: (name: string) => void // required with case change data of form
   actionTable?: null | ReactElement
 }) => {
   console.log('render xxxx')
   const router = useRouter()
+  const methodForm =
+    useFormContext<{
+      exams: Exam[]
+    }>()
+  const { watch } = methodForm
   const { actionType } = router.query
   if (isShowColumnStt) {
     columns = [
       {
         header: 'STT',
         fieldName: 'index',
-        styleCell: { style: { minWidth: 50 } },
+        styleCell: { style: { minWidth: '50px' } },
       },
       ...columns,
     ]
     data = data.map((item: any, index: number) => {
-      const noNumber = page * size + index + 1
+      const noNumber = (page - 1) * size + index + 1
       return {
         ...item,
-        index: noNumber > 9 ? noNumber : `0${noNumber}`,
+        index: (
+          <Typography style={{ minWidth: '50px' }}>
+            {noNumber > 9 ? noNumber : `0${noNumber}`}
+            {!watch(`exams.${index}.attached_file`) ||
+            !watch(`exams.${index}.description`) ? (
+              <span className='text-red-500'>*</span>
+            ) : null}
+          </Typography>
+        ),
       }
     })
   }
@@ -75,7 +88,7 @@ export const TableExams = ({
     }
 
     const newData = reOrder(
-      watch(fieldsName),
+      watch('exams'),
       result.source.index,
       result.destination.index
     )

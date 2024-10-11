@@ -1,4 +1,3 @@
-import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
 import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import { CoreButton } from '@/components/atoms/CoreButton'
 import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
@@ -8,8 +7,6 @@ import { TopAction } from '@/components/molecules/TopAction'
 import { CoreTable } from '@/components/organism/CoreTable'
 import PageContainer from '@/components/organism/PageContainer'
 import { Grid } from '@mui/material'
-import { useRouter } from 'next/router'
-
 import { MENU_URL } from '@/routes'
 import useListExamSets from './useListExamSets'
 
@@ -24,12 +21,13 @@ const ListExamSets = () => {
     size,
     page,
     isLoadingTable,
+    role,
+    router,
   } = values
 
   const { control } = methodForm
 
   const { t, onSubmit, onChangePageSize, onReset } = handles
-  const router = useRouter()
 
   return (
     <PageContainer
@@ -38,7 +36,7 @@ const ListExamSets = () => {
           isShowDashboard
           breadcrumbs={[
             {
-              title: 'Đề xuất phê duyệt',
+              title: 'Danh sách bộ đề',
             },
           ]}
         />
@@ -110,19 +108,21 @@ const ListExamSets = () => {
         </div>
       </form>
 
-      <div className='py-4 flex justify-end gap-4 items-center'>
-        <TopAction actionList={['import', 'export']} />
-        <DotThree className='mt-3' onClick={() => {}} />
-        <CoreButton
-          onClick={() => {
-            router.push({
-              pathname: `${MENU_URL.EXAM_SET}/addNew`,
-            })
-          }}
-        >
-          {t('common:btn.add')}
-        </CoreButton>
-      </div>
+      {role !== 'Admin' && (
+        <div className='py-4 flex justify-end gap-4 items-center'>
+          <TopAction actionList={['import', 'export']} />
+          <DotThree className='mt-3' onClick={() => {}} />
+          <CoreButton
+            onClick={() => {
+              router.push({
+                pathname: `${MENU_URL.EXAM_SET}/addNew`,
+              })
+            }}
+          >
+            {t('common:btn.add')}
+          </CoreButton>
+        </div>
+      )}
 
       <CoreTable
         columns={columns}

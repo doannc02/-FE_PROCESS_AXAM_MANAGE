@@ -26,14 +26,14 @@ interface Props {
 const CoreTablePagination = (props: Props) => {
   const { page, size, totalPages, onChangePagination } = props
   const [rowPerPages, setRowPerPages] = useState(size ?? 10)
-  const [currentPage, setCurrentPage] = useState(page + 1 ?? 1)
+  const [currentPage, setCurrentPage] = useState(Number(page + 1) ?? 1)
   const { t } = useTranslation('common')
 
   const pageSizeOptions = [5, 10, 20, 50, 100]
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {
-      jump_to_page: page + 1 ?? null,
+      jump_to_page: Number(page + 1) ?? null,
     },
   })
 
@@ -42,7 +42,7 @@ const CoreTablePagination = (props: Props) => {
   }, [currentPage])
 
   useEffect(() => {
-    setCurrentPage(page ? page + 1 : 1)
+    setCurrentPage(page ? page : 1)
   }, [page])
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const CoreTablePagination = (props: Props) => {
           }}
           value={size}
           onChange={(e: any) =>
-            onChangePagination({ page: 0, size: e.target.value })
+            onChangePagination({ page: 1, size: e.target.value })
           }
         >
           {map(pageSizeOptions, (option) => (
@@ -84,7 +84,7 @@ const CoreTablePagination = (props: Props) => {
             setCurrentPage(value)
             onChangePagination({
               size: rowPerPages,
-              page: value - 1,
+              page: value,
             })
           }}
           siblingCount={1}
