@@ -12,3 +12,11 @@ export function convertToOffsetDateTime(date: string | any): string {
   const momentDate = momentTimeZone.tz(date, format, targetTimeZone)
   return momentDate.format('YYYY-MM-DDTHH:mm:ssZ')
 }
+
+
+export function convertToDateTimeReq(date: string | any): string {
+  let format = 'YYYY-MM-DD'
+  const targetTimeZone = 'Asia/Ho_Chi_Minh'
+  const momentDate = momentTimeZone.tz(date, format, targetTimeZone)
+  return momentDate.format('YYYY-MM-DDTHH:mm:ssZ')
+}

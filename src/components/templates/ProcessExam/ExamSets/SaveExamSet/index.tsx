@@ -318,7 +318,8 @@ const SaveExamSet = () => {
                     <TopAction
                       actionList={
                         role === 'Admin'
-                          ? methodForm.watch('status') === 'in_progress'
+                          ? methodForm.watch('status') === 'in_progress' ||
+                            methodForm.watch('status') === 'approved'
                             ? []
                             : ['edit']
                           : ([

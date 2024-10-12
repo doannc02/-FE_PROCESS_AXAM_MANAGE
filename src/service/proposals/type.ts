@@ -1,34 +1,17 @@
+import { ExamSet } from '../examSet/type'
 import { BaseResponse, CommonObject, PageResponse } from '../type'
 
 export type Proposals = {
   id?: number
-  academic_year: string | number
-  instructor: CommonObject | null
+  code: string
+  academic_year: CommonObject
   user: CommonObject
-  course: CommonObject
   status: 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
   end_date: string
   start_date: string
-  semester: number | string
-  number_of_assignment: number
-  exam_sets: Exam_Set[]
-}
-
-export type Exam_Set = {
-  id: number
-  name: string
-  department: string
-  major: string
-  total_exams: number
-  exam_quantity: number
-  description: string
-  status: 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
-  course: {
-    code: string
-    name: string
-    id: number
-  }
-  exams: Exam[]
+  semester: number
+  exam_sets: ExamSet[]
+  isCreateExamSet?: boolean
 }
 
 export type Exam = {

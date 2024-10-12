@@ -2,7 +2,6 @@ import { AccordionCustom } from '@/components/atoms/AccordionCustom'
 import CoreInput from '@/components/atoms/CoreInput'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
-import { Exam_Set, Proposals } from '@/service/proposals/type'
 import { Box, Grid, IconButton, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useFieldArray, useFormContext } from 'react-hook-form'
@@ -10,12 +9,14 @@ import { useTranslation } from 'react-i18next'
 import ViewIcon from '@/assets/svg/Eye.svg'
 import useDetailExamSet from './useDetailExamSet'
 import { CoreButton } from '@/components/atoms/CoreButton'
+import { ExamSet } from '@/service/examSet/type'
+import { TopAction } from '@/components/molecules/TopAction'
 
 const DetailExamSet = ({
   item,
   indexExamSet,
 }: {
-  item: Exam_Set
+  item: ExamSet
   indexExamSet: number
 }) => {
   const { t } = useTranslation()
@@ -41,9 +42,7 @@ const DetailExamSet = ({
         />
       </Grid>
       {(item?.exams ?? []).map((ele, index) => {
-        const status = getValues(
-          `exam_sets.${indexExamSet}.exams.${index}.status`
-        )
+        const status = watch(`exam_sets.${indexExamSet}.exams.${index}.status`)
         return (
           <Grid key={index} item xs={12}>
             <AccordionCustom
@@ -127,7 +126,11 @@ const DetailExamSet = ({
                           submitChangeStateExam(
                             indexExamSet,
                             index,
-                            ele?.id,
+                            Number(
+                              getValues(
+                                `exam_sets.${indexExamSet}.exams.${index}.id`
+                              )
+                            ),
                             'approved'
                           )
                         }}
@@ -140,7 +143,11 @@ const DetailExamSet = ({
                           submitChangeStateExam(
                             indexExamSet,
                             index,
-                            ele?.id,
+                            Number(
+                              getValues(
+                                `exam_sets.${indexExamSet}.exams.${index}.id`
+                              )
+                            ),
                             'rejected'
                           )
                         }}

@@ -100,10 +100,7 @@ const useListProposals = () => {
     return {
       ...item,
       id: item?.id,
-      courseName: item?.course?.code + ' - ' + item?.course?.name,
-      number: item?.number_of_assignment,
       userName: item?.user?.name ?? '-',
-      instructorName: item?.instructor?.name ?? '-',
       end_date: convertToDate(item?.end_date),
       start_date: convertToDate(item?.start_date),
       status: (

@@ -25,18 +25,14 @@ const useDetailExamSet = () => {
     try {
       setLoadingUpdateStateExam(true)
       const res = await changeStateExam({
-        id: idExam,
-        state: state,
+        examId: idExam,
+        status: state,
         comment:
           getValues(`exam_sets.${indexExamSet}.exams.${indexExam}.comment`) ??
           '',
       })
       if (res.data) {
         successMsg('Update trạng thái thành công!!')
-        setValue(
-          `exam_sets.${indexExamSet}.exams.${indexExam}.status`,
-          res?.data?.data.state
-        )
         setLoadingUpdateStateExam(false)
       }
     } catch (ex: any) {

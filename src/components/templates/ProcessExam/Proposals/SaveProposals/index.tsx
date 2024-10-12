@@ -1,6 +1,6 @@
 import PageContainer from '@/components/organism/PageContainer'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
-import { Collapse, Grid, Typography } from '@mui/material'
+import { Collapse, Grid, IconButton, Typography } from '@mui/material'
 import LoadingPage from '@/components/atoms/LoadingPage'
 import { Form, FormProvider } from 'react-hook-form'
 import CoreNavbar from '@/components/organism/CoreNavbar'
@@ -22,8 +22,11 @@ import { AccordionCustom } from '@/components/atoms/AccordionCustom'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { TableExams } from '@/components/organism/TableExams'
 import DetailExamSet from './Components/DetailExamSet'
-
-const steps = ['Phân công thực hiện đề cương', 'Đề xuất phê duyệt']
+import CoreCheckbox from '@/components/atoms/CoreCheckbox'
+import { getExamList } from '@/service/exam'
+import { getExamSetList } from '@/service/examSet'
+import { useState } from 'react'
+import { getAcademicYears } from '@/service/academicYear'
 
 const SaveProposals = () => {
   const [, _] = useSaveProposals()
@@ -31,6 +34,7 @@ const SaveProposals = () => {
   const [values, handles] = useSaveProposals()
 
   const {
+    id,
     methodForm,
     isLoading,
     isLoadingSubmit,
@@ -40,11 +44,16 @@ const SaveProposals = () => {
     isView,
     isAddNew,
     role,
+    columns,
+    tableData,
+    fields,
   } = values
 
-  const { onSubmit, t } = handles
+  const { onSubmitDraft, onSubmitPendingApprove, setValue, t, append, remove } =
+    handles
 
   const { watch, control, getValues } = methodForm
+
   return (
     <PageContainer
       title={
@@ -62,6 +71,8 @@ const SaveProposals = () => {
                     ? actionType === 'VIEW'
                       ? t('common:detail')
                       : t('common:btn.edit')
+                    : role === 'Admin'
+                    ? 'Tạo mới Kế hoạch cho giảng viên'
                     : t('common:btn.add')}
                 </Typography>
               ),
@@ -74,7 +85,7 @@ const SaveProposals = () => {
         <LoadingPage />
       ) : (
         <FormProvider {...methodForm}>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmitPendingApprove}>
             <CoreNavbar
               breadcrumbs={[
                 {
@@ -88,7 +99,7 @@ const SaveProposals = () => {
                   content: (
                     <>
                       <StateOfAssignment state={watch('status')} />
-                      <div>
+                      <div className='mt-30'>
                         <Grid
                           container
                           className=''
@@ -108,58 +119,62 @@ const SaveProposals = () => {
                           </Grid>
 
                           <Grid item xs={12} sm={12} md={4} lg={4}>
-                            <CoreInput
-                              isViewProp={true}
-                              control={control}
-                              label='Năm học'
-                              name='academic_year.name'
-                              InputProps={{
-                                endAdornment: (
-                                  <CoreAutocomplete
-                                    control={control}
-                                    className='w-full'
-                                    placeholder='Chọn học kỳ'
-                                    // label='Học kỳ'
-                                    name='semester'
-                                    options={[
-                                      { value: '1', label: 'Học kỳ 1' },
-                                      { value: '2', label: 'Học kỳ 2' },
-                                      { value: '3', label: 'Học kỳ 3' },
-                                      { value: '4', label: 'Học kỳ 4' },
-                                    ]}
-                                    required
-                                    rules={{
-                                      required: t('common:validation.required'),
-                                    }}
-                                  />
-                                ),
-                              }}
-                            />
-                          </Grid>
-
-                          <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreAutoCompleteAPI
-                              placeholder='Chọn người thực hiện'
-                              // labelPath2='fullname'
-                              labelPath='name'
-                              valuePath='id'
-                              control={control}
+                              placeholder='Chọn năm học'
+                              fetchDataFn={getAcademicYears}
                               params={{
-                                exceptId: 1,
                                 page: 1,
                                 size: 20,
                               }}
-                              label='Người thực hiện'
-                              name='user'
-                              fetchDataFn={getListUser}
+                              control={control}
+                              label='Năm học'
+                              name='academic_year'
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={12} md={4} lg={4}>
+                            <CoreAutocomplete
+                              control={control}
+                              className='w-full'
+                              placeholder='Chọn học kỳ'
+                              label='Học kỳ'
+                              name='semester'
+                              options={[
+                                { value: '1', label: 'Học kỳ 1' },
+                                { value: '2', label: 'Học kỳ 2' },
+                                { value: '3', label: 'Học kỳ 3' },
+                                { value: '4', label: 'Học kỳ 4' },
+                              ]}
                               required
                               rules={{
                                 required: t('common:validation.required'),
                               }}
                             />
                           </Grid>
+                          {role === 'Admin' && (
+                            <Grid item xs={12} sm={12} md={4} lg={4}>
+                              <CoreAutoCompleteAPI
+                                placeholder='Chọn người thực hiện'
+                                // labelPath2='fullname'
+                                labelPath='name'
+                                valuePath='id'
+                                control={control}
+                                params={{
+                                  exceptId: 1,
+                                  page: 1,
+                                  size: 20,
+                                }}
+                                label='Người thực hiện'
+                                name='user'
+                                fetchDataFn={getListUser}
+                                required
+                                rules={{
+                                  required: t('common:validation.required'),
+                                }}
+                              />
+                            </Grid>
+                          )}
 
-                          {role !== 'Admin' && (
+                          {/* {role !== 'Admin' && (
                             <Grid item xs={12} sm={12} md={4} lg={4}>
                               <CoreAutoCompleteAPI
                                 placeholder='Chọn người phê duyệt'
@@ -180,31 +195,7 @@ const SaveProposals = () => {
                                 }}
                               />
                             </Grid>
-                          )}
-
-                          {watch('user') && watch('instructor') && (
-                            <Grid item xs={12} sm={12} md={4} lg={4}>
-                              <CoreAutoCompleteAPI
-                                placeholder='Chọn học phần'
-                                control={control}
-                                labelPath2='code'
-                                labelPath='name'
-                                valuePath='id'
-                                label='Học phần cần phê duyệt'
-                                name='course'
-                                params={{
-                                  userId: watch('user')?.id,
-                                  page: 1,
-                                  size: 20,
-                                }}
-                                fetchDataFn={getListCourse}
-                                required
-                                rules={{
-                                  required: t('common:validation.required'),
-                                }}
-                              />
-                            </Grid>
-                          )}
+                          )} */}
 
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreDatePicker
@@ -247,97 +238,168 @@ const SaveProposals = () => {
                           </Grid>
                         </Grid>
                       </div>
+                      {!isView && (
+                        <CoreCheckbox
+                          control={control}
+                          label='Tạo kế hoạch kèm theo bộ đề'
+                          name='isCreateExamSet'
+                          onChangeValue={() => {
+                            append({ name: '' } as any)
+                          }}
+                        />
+                      )}
 
-                      {!isAddNew
-                        ? (watch('exam_sets') ?? []).length > 0 && (
-                            <>
-                              <Typography className='py-5' variant='subtitle1'>
-                                Danh sách bộ đề
-                              </Typography>
+                      {!!watch('isCreateExamSet') && (
+                        <>
+                          <Typography className='py-5' variant='subtitle1'>
+                            Danh sách bộ đề
+                          </Typography>
 
-                              <FormProvider {...methodForm}>
-                                {watch('exam_sets').map((item, index) => {
-                                  return (
-                                    <>
-                                      <AccordionCustom
-                                        title={
-                                          <Grid container>
-                                            <Grid
-                                              item
-                                              xs={12}
-                                              sm={12}
-                                              md={4}
-                                              lg={4}
-                                            >
-                                              <Typography fontWeight={'600'}>
-                                                Tên bộ đề: {item?.name}
-                                              </Typography>
-                                            </Grid>
+                          <FormProvider {...methodForm}>
+                            {(watch('exam_sets') ?? []).map((item, index) => {
+                              const exceptValues = watch(`exam_sets`)
+                                .filter(
+                                  (i) =>
+                                    watch(`exam_sets.${index}.id`) !== i?.id
+                                )
+                                .map((i) => {
+                                  return {
+                                    id: i?.id,
+                                  }
+                                })
+                                .filter((i) => !!i)
+                              return (
+                                <AccordionCustom
+                                  title={
+                                    <Grid container>
+                                      <Grid item xs={12} sm={12} md={4} lg={4}>
+                                        {isView ? (
+                                          <Typography
+                                            fontWeight={'600'}
+                                            className='flex justify-start items-center'
+                                          >
+                                            Tên bộ đề: {item?.name}
+                                          </Typography>
+                                        ) : (
+                                          <CoreAutoCompleteAPI
+                                            className='w-2/3'
+                                            params={{
+                                              isParamAddProposal: true,
+                                              page: 1,
+                                              size: 20,
+                                            }}
+                                            fetchDataFn={getExamSetList}
+                                            control={control}
+                                            label=''
+                                            exceptValues={exceptValues}
+                                            name={`exam_sets.${index}`}
+                                            placeholder='Chọn tên bộ đề'
+                                            onChangeValue={(val) => {
+                                              console.log(val)
+                                              if (val) {
+                                                setValue(
+                                                  `exam_sets.${index}`,
+                                                  val
+                                                )
+                                              }
+                                              // } else {
+                                              //   setExceptValues((prev) =>
+                                              //     prev.filter(
+                                              //       (id) => id !== val.id
+                                              //     )
+                                              //   )
+                                              // }
+                                            }}
+                                          />
+                                        )}
+                                      </Grid>
 
-                                            <Grid
-                                              item
-                                              xs={12}
-                                              sm={12}
-                                              md={4}
-                                              lg={4}
-                                            >
-                                              <Typography fontWeight={'600'}>
-                                                Số đề thực hiện/số đề yêu cầu:
-                                                &nbsp;{' '}
-                                                {item?.exams?.length ?? 0}/
-                                                {item?.exam_quantity}
-                                              </Typography>
-                                            </Grid>
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={4}
+                                        lg={4}
+                                        className='flex  items-center'
+                                      >
+                                        {watch(`exam_sets.${index}.name`) && (
+                                          <Typography fontWeight={'600'}>
+                                            Số đề thực hiện/số đề yêu cầu:
+                                            &nbsp; {item?.exams?.length ?? 0}/
+                                            {item?.exam_quantity}
+                                          </Typography>
+                                        )}
+                                      </Grid>
 
-                                            <Grid
-                                              item
-                                              xs={12}
-                                              sm={12}
-                                              md={4}
-                                              lg={4}
-                                            >
-                                              <DisplayStatus
-                                                text={
-                                                  item?.status ===
-                                                  'pending_approval'
-                                                    ? 'Chờ phê duyệt'
-                                                    : item?.status ===
-                                                      'in_progress'
-                                                    ? 'Đang thực hiện'
-                                                    : item?.status ===
-                                                      'approved'
-                                                    ? 'Đã phê duyệt'
-                                                    : 'Bị từ chối'
-                                                }
-                                                color={
-                                                  item?.status ===
-                                                  'pending_approval'
-                                                    ? ORANGE
-                                                    : item?.status ===
-                                                      'in_progress'
-                                                    ? BLACK
-                                                    : item?.status ===
-                                                      'approved'
-                                                    ? GREEN
-                                                    : RED
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={4}
+                                        lg={4}
+                                        className='flex justify-between items-center'
+                                      >
+                                        <DisplayStatus
+                                          text={
+                                            item?.status === 'pending_approval'
+                                              ? 'Chờ phê duyệt'
+                                              : item?.status === 'in_progress'
+                                              ? 'Đang thực hiện'
+                                              : item?.status === 'approved'
+                                              ? 'Đã phê duyệt'
+                                              : 'Bị từ chối'
+                                          }
+                                          color={
+                                            item?.status === 'pending_approval'
+                                              ? ORANGE
+                                              : item?.status === 'in_progress'
+                                              ? BLACK
+                                              : item?.status === 'approved'
+                                              ? GREEN
+                                              : RED
+                                          }
+                                        />
+                                        {isView
+                                          ? null
+                                          : role === 'Admin'
+                                          ? null
+                                          : index > 0 && (
+                                              <TopAction
+                                                actionList={['delete']}
+                                                onDeleteAction={() =>
+                                                  remove(index)
                                                 }
                                               />
-                                            </Grid>
-                                          </Grid>
-                                        }
-                                      >
-                                        <DetailExamSet
-                                          indexExamSet={index}
-                                          item={item}
-                                        />
-                                      </AccordionCustom>
-                                    </>
-                                  )
-                                })}
-                              </FormProvider>
-                            </>
-                          )
-                        : null}
+                                            )}
+                                      </Grid>
+                                    </Grid>
+                                  }
+                                >
+                                  <DetailExamSet
+                                    indexExamSet={index}
+                                    item={item}
+                                  />
+                                </AccordionCustom>
+                              )
+                            })}
+                          </FormProvider>
+                          {isView ? null : (
+                            <IconButton
+                              onClick={() =>
+                                append({
+                                  status: 'in_progress',
+                                  name: '',
+                                } as any)
+                              }
+                            >
+                              <Typography className='flex justify-start items-center'>
+                                <TopAction actionList={['append']} />
+                                Thêm bộ đề
+                              </Typography>
+                            </IconButton>
+                          )}
+                        </>
+                      )}
 
                       <div>
                         {!isView ? (
@@ -351,23 +413,54 @@ const SaveProposals = () => {
                               {t('common:btn.cancel')}
                             </CoreButton>
 
-                            <CoreButton
-                              theme='draft'
-                              onClick={async () => {}}
-                              loading={isLoadingSubmit}
-                            >
-                              {t('common:btn.draft')}
-                            </CoreButton>
+                            {role !== 'Admin' &&
+                              watch('status') !== 'approved' && (
+                                <CoreButton
+                                  theme='draft'
+                                  onClick={async () => {
+                                    onSubmitDraft()
+                                  }}
+                                  loading={isLoadingSubmit}
+                                >
+                                  Lưu đang thực hiện
+                                </CoreButton>
+                              )}
 
-                            <CoreButton
-                              theme='submit'
-                              type='submit'
-                              loading={isLoadingSubmit}
-                            >
-                              {isUpdate
-                                ? t('common:btn.edit')
-                                : t('common:btn.add')}
-                            </CoreButton>
+                            {watch('status') !== 'approved' &&
+                              (fields ?? []).length &&
+                              role !== 'Admin' && (
+                                <CoreButton
+                                  theme='submit'
+                                  type='submit'
+                                  loading={isLoadingSubmit}
+                                >
+                                  Lưu và yêu cầu duyệt
+                                </CoreButton>
+                              )}
+
+                            {role === 'Admin' &&
+                              watch('status') === 'pending_approval' && (
+                                <>
+                                  <CoreButton
+                                    theme='cancel'
+                                    loading={isLoadingSubmit}
+                                    onClick={() => {
+                                      //  onUpdateState('rejected')
+                                    }}
+                                  >
+                                    Từ chối
+                                  </CoreButton>
+                                  <CoreButton
+                                    theme='add'
+                                    loading={isLoadingSubmit}
+                                    onClick={() => {
+                                      // onUpdateState('approved')
+                                    }}
+                                  >
+                                    Phê duyệt
+                                  </CoreButton>
+                                </>
+                              )}
                           </div>
                         ) : null}
                       </div>
@@ -376,16 +469,29 @@ const SaveProposals = () => {
                   rightAction: (
                     <TopAction
                       actionList={
-                        [
-                          ...(isUpdate ? ['delete'] : []),
-                          ...(isView ? ['delete', 'edit'] : []),
-                          ...(methodForm.watch('status') === 'approved'
+                        role === 'Admin'
+                          ? methodForm.watch('status') === 'in_progress' ||
+                            methodForm.watch('status') === 'approved'
                             ? []
-                            : []),
-                        ] as any
+                            : ['edit']
+                          : ([
+                              ...(methodForm.watch('status') === 'approved'
+                                ? []
+                                : isUpdate
+                                ? ['delete']
+                                : []),
+                              ...(isView ? ['delete', 'edit'] : []),
+                            ] as any)
                       }
                       onDeleteAction={() => {}}
-                      onEditAction={() => {}}
+                      onEditAction={() => {
+                        router.push({
+                          pathname: `${MENU_URL.PROPOSAL}/[id]`,
+                          query: {
+                            id: Number(id),
+                          },
+                        })
+                      }}
                     />
                   ),
                 },

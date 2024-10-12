@@ -1,47 +1,38 @@
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { Tooltip } from '@/components/molecules/Tooltip'
-import { getCmsToken, getRole } from '@/config/token'
+import { ColumnProps } from '@/components/organism/CoreTable'
+import { getRole } from '@/config/token'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
-import defaultValue from '@/redux/defaultValue'
 import { useAppDispatch } from '@/redux/hook'
-import { setButtonConfig } from '@/redux/reducer/buttonReducer'
-import { setCompanyConfig } from '@/redux/reducer/companyConfigReducer'
-import { setFontConfig } from '@/redux/reducer/fontReducer'
-import { setThemeColor } from '@/redux/reducer/themeColorReducer'
 import { MENU_URL } from '@/routes'
 import {
   actionProposals,
   useQueryGetDetailProposals,
 } from '@/service/proposals'
-import { Proposals, ResponseProposals } from '@/service/proposals/type'
+import { Proposals } from '@/service/proposals/type'
 import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
 import { Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
+import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
 
 export const useSaveProposals = () => {
   const role = getRole()
   const defaultValues = {
-    academic_year: new Date().getFullYear().toString(),
-    status: 'DRAFT' as any,
-    instructor:
-      role === 'Admin'
-        ? {
-            id: 1,
-          }
-        : null,
+    status: 'in_progress' as any,
+    isCreateExamSet: false,
   }
   const { t } = useTranslation('')
   const dispatch = useAppDispatch()
   const methodForm = useFormCustom<Proposals>({
     defaultValues,
   })
-  const { control, watch, getValues, reset, setError, handleSubmit } =
-    methodForm
+
+  const { control, watch, setValue, reset, setError, handleSubmit } = methodForm
   const router = useRouter()
   const isAddNew = router.asPath.includes('/addNew')
   const { actionType, id } = router.query
@@ -56,16 +47,113 @@ export const useSaveProposals = () => {
     { enabled: !!id }
   )
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'exam_sets',
+    keyName: 'key',
+  })
+
+  const columns = useMemo(
+    () =>
+      [
+        {
+          header: 'Bộ đề',
+          fieldName: 'name',
+        },
+        {
+          header: 'Ngành',
+          fieldName: 'department',
+        },
+        {
+          header: 'Chuyên ngành',
+          fieldName: 'major',
+        },
+        // {
+        //   header: 'Số đề đang thực hiện',
+        //   fieldName: 'total_exams',
+        // },
+        {
+          header: 'Số đề yêu cầu',
+          fieldName: 'exam_quantity',
+        },
+        {
+          header: 'Mô tả',
+          fieldName: 'description',
+        },
+        {
+          header: 'Giảng viên thực hiện',
+          fieldName: 'userName',
+        },
+        {
+          header: 'Học phần',
+          fieldName: 'courseName',
+        },
+        {
+          header: 'Trạng thái',
+          fieldName: 'status',
+        },
+      ] as ColumnProps[],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [t]
+  )
+  const tableData = (fields ?? []).map((item) => {
+    return {
+      ...item,
+      id: item?.id,
+      major: item?.major?.name,
+      department: item?.department?.name,
+      courseName: item?.course?.code + ' - ' + item?.course?.name,
+      userName: item?.user?.name ?? '-',
+      description: item?.description && (
+        <Stack direction='row' justifyContent='space-between'>
+          <Typography>{item?.description.slice(0, 19)}</Typography>
+          {item?.description?.length > 20 ? (
+            <div className='w-1/3'>
+              <Tooltip
+                isShowIcon
+                showText
+                tooltips={[{ title: item?.description ?? '' }]}
+              ></Tooltip>
+            </div>
+          ) : (
+            <div className='w-1/3'></div>
+          )}
+        </Stack>
+      ),
+      status: (
+        <DisplayStatus
+          text={
+            item?.status === 'pending_approval'
+              ? 'Chờ phê duyệt'
+              : item?.status === 'in_progress'
+              ? 'Đang thực hiện'
+              : item?.status === 'approved'
+              ? 'Đã phê duyệt'
+              : 'Bị từ chối'
+          }
+          color={
+            item?.status === 'pending_approval'
+              ? ORANGE
+              : item?.status === 'in_progress'
+              ? BLACK
+              : item?.status === 'approved'
+              ? GREEN
+              : RED
+          }
+        />
+      ),
+    }
+  })
   // mutate proposal
   const { mutate, isLoading: isLoadingSubmit } = useMutation(actionProposals, {
     onSuccess: (res: any) => {
       successMsg(t('common:message.success'))
 
-      if (res?.data?.data?.id) {
+      if (res?.data?.id) {
         router.push({
           pathname: `${MENU_URL.PROPOSAL}/[id]`,
           query: {
-            id: res?.data?.data?.id,
+            id: res?.data?.id,
             actionType: 'VIEW',
           },
         })
@@ -79,19 +167,33 @@ export const useSaveProposals = () => {
 
   useEffect(() => {
     if (isUpdate && data?.data) {
-      reset({ ...data?.data?.data })
+      reset({
+        ...data?.data?.data,
+        isCreateExamSet: data?.data?.data?.exam_sets?.length > 0 ? true : false,
+      })
     }
-    console.log(watch('instructor'), data?.data, isUpdate)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, isUpdate, reset])
 
-  const onSubmit = handleSubmit(async (input) => {
+  const onSubmitDraft = handleSubmit(async (input) => {
+    const { isCreateExamSet, ...rest } = input
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: {
-        ...input,
-        start_date: convertToOffsetDateTime(input.start_date),
-        end_date: convertToOffsetDateTime(input.end_date),
+        ...rest,
+        exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
+        status: 'in_progress',
+      },
+    })
+  })
+  const onSubmitPendingApprove = handleSubmit(async (input) => {
+    const { isCreateExamSet, ...rest } = input
+    mutate({
+      method: isUpdate ? 'put' : 'post',
+      data: {
+        ...rest,
+        exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
+        status: 'pending_approval',
       },
     })
   })
@@ -107,7 +209,11 @@ export const useSaveProposals = () => {
       actionType,
       isAddNew,
       role,
+      columns,
+      tableData,
+      fields,
+      id,
     },
-    { onSubmit, t },
+    { onSubmitPendingApprove, onSubmitDraft, setValue, t, append, remove },
   ] as const
 }
