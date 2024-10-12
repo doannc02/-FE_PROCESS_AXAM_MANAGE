@@ -97,12 +97,12 @@ const buttonDefaultConfig: ButtonConfig = {
     borderHoverColor: GRAY_SCALE,
   },
   rejectButton: {
-    textColor: GREY,
-    hoverTextColor: GREY,
+    textColor: RED,
+    hoverTextColor: RED,
     backgroundColor: WHITE,
     backgroundHoverColor: WHITE,
-    borderColor: GRAY_SCALE,
-    borderHoverColor: GRAY_SCALE,
+    borderColor: RED,
+    borderHoverColor: RED,
   },
   resetButton: {
     textColor: GREY,
@@ -175,7 +175,7 @@ const defaultValue = {
   tableConfig,
   branchDefault,
   ledgerRefDefault,
-  userLoginDefault
+  userLoginDefault,
 }
 
 export default defaultValue

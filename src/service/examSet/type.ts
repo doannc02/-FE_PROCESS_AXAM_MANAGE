@@ -46,12 +46,13 @@ export type Exam = {
   }
 }
 
-export type ResponseProposals = {
+export type ResponseExamSet = {
   GET: PageResponse<ExamSet[]>
   GET_DETAIL: BaseResponse<ExamSet>
+  UPDATE_STATE: BaseResponse<{ id: number }>
 }
 
-export type RequestProposals = {
+export type RequestExamSet = {
   GET: {
     page: number
     size: number
@@ -71,5 +72,9 @@ export type RequestProposals = {
     }
     data?: ExamSet
     method: 'put' | 'delete' | 'post'
+  }
+  UPDATE_STATE: {
+    examSetId: number
+    status: state
   }
 }

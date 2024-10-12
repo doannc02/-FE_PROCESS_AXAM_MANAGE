@@ -9,7 +9,7 @@ type Props = {
   textTransform?: string
   height?: number
   width?: number
-  theme?: 'submit' | 'cancel' | 'reset' | 'draft'
+  theme?: 'submit' | 'cancel' | 'reset' | 'draft' | 'add'
 } & LoadingButtonProps
 
 export const CoreButton = forwardRef<HTMLButtonElement, Props>(

@@ -19,7 +19,7 @@ export type ActionType =
   | 'view'
   | 'print'
   | 'draft'
-  | 'payment'
+  | 'approval'
 type Props = {
   actionList: ActionType[]
   isShowText?: boolean
@@ -78,7 +78,7 @@ export const TopAction = ({
           <Typography variant='body2'>{t('btn.history')}</Typography>
         </div>
       )}
-      {actionList.includes('payment') && (
+      {actionList.includes('approval') && (
         <div
           className='flex items-center cursor-pointer'
           onClick={onPaymentAction}

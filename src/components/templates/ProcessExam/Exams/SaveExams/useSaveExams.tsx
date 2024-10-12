@@ -18,6 +18,7 @@ import {
   changeStateExam,
   useQueryGetDetailExam,
 } from '@/service/exam'
+import { RequestExam } from '@/service/exam/type'
 import { Exam, state } from '@/service/examSet/type'
 import {
   convertToDate,
@@ -394,6 +395,23 @@ const useSaveExams = () => {
       data: input.exams[0],
     })
   })
+
+  const onUpdateState = async (state: state) => {
+    try {
+      const params = {
+        status: state,
+        examId: watch('exams.0.id'),
+        comment: watch('exams.0.comment'),
+      } as RequestExam['UPDATE_STATE']
+      const res = await changeStateExam(params)
+      if (res?.data?.data?.id) {
+        console.log(res?.data, 'resdata')
+      }
+    } catch {
+      errorMsg('Phê duyệt đề thi thất bại!')
+    }
+  }
+
   return [
     {
       isLoadingSubmit,
@@ -410,7 +428,7 @@ const useSaveExams = () => {
       router,
       role,
     },
-    { append, remove, onSubmit, onReRequest, changeStateExam },
+    { append, remove, onSubmit, onReRequest, changeStateExam, onUpdateState },
   ] as const
 }
 

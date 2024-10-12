@@ -15,8 +15,12 @@ import { setFontConfig } from '@/redux/reducer/fontReducer'
 import { setThemeColor } from '@/redux/reducer/themeColorReducer'
 import { MENU_URL } from '@/routes'
 import { getExamList } from '@/service/exam'
-import { actionExamSet, useQueryGetDetailExamSet } from '@/service/examSet'
-import { ExamSet } from '@/service/examSet/type'
+import {
+  actionExamSet,
+  changeStateExamSet,
+  useQueryGetDetailExamSet,
+} from '@/service/examSet'
+import { ExamSet, RequestExamSet, state } from '@/service/examSet/type'
 import {
   actionProposals,
   useQueryGetDetailProposals,
@@ -235,11 +239,13 @@ export const useSaveExamSet = () => {
     }
   }, [data?.data, isUpdate, reset])
 
-  const onSubmit = handleSubmit(async (input) => {
+  const handleFormSubmit = async (input: ExamSet, status: state) => {
     const { isCreateExam, ...rest } = input
+    console.log(input, 'input')
     let isValid = true
+
     if (input.exam_quantity) {
-      input.exams.map((item, index) => {
+      input.exams.forEach((item, index) => {
         console.log('zzzzzl')
         if (!item.code) {
           console.log('lmm')
@@ -250,34 +256,44 @@ export const useSaveExamSet = () => {
         }
       })
     }
+
     if (!isValid) {
       errorMsg('Vui lòng chọn đề chi tiết')
       return
     }
+
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: {
         ...rest,
-        status: 'pending_approval',
+        status: status,
         exams: !!getValues('isCreateExam') ? input.exams : [],
       },
     })
-    //console.log(input, "DICAILON")
+  }
+
+  const onSubmit = handleSubmit(async (input) => {
+    await handleFormSubmit(input, 'pending_approval')
   })
 
   const onSubmitInProgress = handleSubmit(async (input) => {
-    const { isCreateExam, ...rest } = input
-
-    mutate({
-      method: isUpdate ? 'put' : 'post',
-      data: {
-        ...rest,
-        status: 'in_progress',
-        exams: !!getValues('isCreateExam') ? input.exams : [],
-      },
-    })
-    //console.log(input, "DICAILON")
+    await handleFormSubmit(input, 'in_progress')
   })
+
+  const onUpdateState = async (state: state) => {
+    try {
+      const params = {
+        status: state,
+        examSetId: watch('id'),
+      } as RequestExamSet['UPDATE_STATE']
+      const res = await changeStateExamSet(params)
+      if (res?.data?.data?.id) {
+        console.log(res?.data, 'resdata')
+      }
+    } catch {
+      errorMsg('Phê duyệt bộ đề thất bại!')
+    }
+  }
 
   return [
     {
@@ -295,6 +311,6 @@ export const useSaveExamSet = () => {
       role,
       fields,
     },
-    { onSubmit, append, t, onSubmitInProgress },
+    { onSubmit, append, t, onSubmitInProgress, onUpdateState },
   ] as const
 }

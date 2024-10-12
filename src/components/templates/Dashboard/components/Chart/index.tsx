@@ -24,8 +24,9 @@ const ChartDashBoard = () => {
   }
 
   return (
-    <div>
+    <div className='h-full'>
       <Bar
+        className='h-full'
         data={{
           labels: [
             'Africa',

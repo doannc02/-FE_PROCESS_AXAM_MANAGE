@@ -51,22 +51,23 @@ export const useQueryGetDetailExam = (
   )
 }
 
-export const changeStateExam = async (
-  req: RequestExam['UPDATE_STATE']
-): Promise<ResponseExam['UPDATE_STATE']> => {
-  const { data } = await commonApi({
-    method: 'post',
-    url: URL_EXAM + '/change-state',
-    data: req,
-  })
-  return data
-}
 export const actionExams = async (req: RequestExam['ACTION']): Promise<any> => {
   const { data } = await commonApi({
     method: req.method,
     url: URL_EXAM,
     params: req.params,
     data: req.data,
+  })
+  return data
+}
+
+export const changeStateExam = async (
+  req: RequestExam['UPDATE_STATE']
+): Promise<ResponseExam['UPDATE_STATE']> => {
+  const { data } = await commonApi({
+    method: 'put',
+    url: URL_EXAM + '/update-state',
+    params: req,
   })
   return data
 }

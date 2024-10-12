@@ -44,7 +44,7 @@ const SaveExams = () => {
     role,
   } = values
 
-  const { append, remove, onSubmit, changeStateExam, onReRequest } = handles
+  const { append, remove, onSubmit, onUpdateState, onReRequest } = handles
 
   const { watch, control, setValue } = methodForm
   return (
@@ -62,8 +62,8 @@ const SaveExams = () => {
                 <Typography>
                   {isUpdate
                     ? actionType === 'VIEW'
-                      ? name
-                      : name
+                      ? `Mã đề ${watch(`exams.0.code`)}`
+                      : `Mã đề ${watch(`exams.0.code`)}`
                     : t('common:btn.add')}
                 </Typography>
               ),
@@ -86,7 +86,7 @@ const SaveExams = () => {
                         ? t('common:detail')
                         : t('common:btn.edit')
                       : t('common:btn.add')
-                  }`,
+                  } `,
                   content: (
                     <>
                       <Typography className='py-5' variant='subtitle1'>
@@ -102,7 +102,7 @@ const SaveExams = () => {
                         data={tableData}
                         isLoading={isLoading}
                         actionTable={
-                          isUpdate ? null : (
+                          isUpdate || role === 'Admin' ? null : (
                             <ActionTable
                               append={append}
                               defaultValueLine={{
@@ -145,15 +145,41 @@ const SaveExams = () => {
                                 </CoreButton>
                               )}
 
-                            <CoreButton
-                              theme='submit'
-                              type='submit'
-                              loading={isLoadingSubmit}
-                            >
-                              {isUpdate
-                                ? t('common:btn.edit')
-                                : t('common:btn.add')}
-                            </CoreButton>
+                            {role === 'Admin' &&
+                              watch('exams.0.status') ===
+                                'pending_approval' && (
+                                <>
+                                  <CoreButton
+                                    theme='cancel'
+                                    loading={isLoadingSubmit}
+                                    onClick={() => {
+                                      onUpdateState('rejected')
+                                    }}
+                                  >
+                                    Từ chối
+                                  </CoreButton>
+                                  <CoreButton
+                                    theme='add'
+                                    loading={isLoadingSubmit}
+                                    onClick={() => {
+                                      onUpdateState('approved')
+                                    }}
+                                  >
+                                    Phê duyệt
+                                  </CoreButton>
+                                </>
+                              )}
+                            {role !== 'Admin' && (
+                              <CoreButton
+                                theme='submit'
+                                type='submit'
+                                loading={isLoadingSubmit}
+                              >
+                                {isUpdate
+                                  ? t('common:btn.edit')
+                                  : t('common:btn.add')}
+                              </CoreButton>
+                            )}
                           </div>
                         ) : null}
                       </div>
@@ -162,11 +188,15 @@ const SaveExams = () => {
                   rightAction: (
                     <TopAction
                       actionList={
-                        [
-                          ...(isUpdate ? ['delete'] : []),
-                          ...(isView ? ['delete', 'edit'] : []),
-                          ...(watch('exams.0.status') === 'approved' ? [] : []),
-                        ] as any
+                        role === 'Admin'
+                          ? ['edit']
+                          : ([
+                              ...(isUpdate ? ['delete'] : []),
+                              ...(isView ? ['delete', 'edit'] : []),
+                              ...(watch('exams.0.status') === 'approved'
+                                ? []
+                                : []),
+                            ] as any)
                       }
                       onDeleteAction={() => {}}
                       onEditAction={() => {

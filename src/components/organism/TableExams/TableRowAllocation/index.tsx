@@ -135,18 +135,8 @@ export const TableRowPE = (props: Props) => {
                             item
                             xs={12}
                             sm={12}
-                            md={
-                              role === 'Admin' &&
-                              watch(`exams.${index}.comment`)
-                                ? 6
-                                : 12
-                            }
-                            lg={
-                              role === 'Admin' &&
-                              watch(`exams.${index}.comment`)
-                                ? 6
-                                : 12
-                            }
+                            md={role === 'Admin' ? 6 : 12}
+                            lg={role === 'Admin' ? 6 : 12}
                           >
                             <CoreInput
                               control={control}
@@ -162,7 +152,7 @@ export const TableRowPE = (props: Props) => {
                             />
                           </Grid>
 
-                          {watch(`exams.${index}.comment`) && (
+                          {watch(`exams.${index}.status`) !== 'in_progress' && (
                             <Grid item xs={12} sm={12} md={6} lg={6}>
                               <CoreInput
                                 control={control}
@@ -191,6 +181,7 @@ export const TableRowPE = (props: Props) => {
                             <Grid item xs={12}>
                               <FormProvider {...methodForm}>
                                 <UploadBox
+                                  isView={role === 'Admin'}
                                   name={`exams.${index}.attached_file`}
                                   url={watch(`exams.${index}.attached_file`)}
                                   setUrl={(url) => {

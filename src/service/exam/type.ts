@@ -4,7 +4,6 @@ import { BaseResponse, PageResponse } from '../type'
 export type ResponseExam = {
   UPDATE_STATE: BaseResponse<{
     id: number
-    state: state
   }>
   DETAIL: BaseResponse<Exam>
   LIST: PageResponse<Exam[]>
@@ -12,8 +11,8 @@ export type ResponseExam = {
 
 export type RequestExam = {
   UPDATE_STATE: {
-    id: number
-    state: state
+    examId: number
+    status: state
     comment?: string
   }
   DETAIL: { id: number }

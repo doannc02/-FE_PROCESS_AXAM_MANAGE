@@ -48,6 +48,7 @@ const SaveExamSet = () => {
     fields,
   } = values
 
+  const { onUpdateState } = handles
   const { onSubmit, t, append, onSubmitInProgress } = handles
 
   const { control, watch, getValues, setValue } = methodForm
@@ -248,7 +249,7 @@ const SaveExamSet = () => {
                         </>
                       )}
                       <div>
-                        {!isView && role !== 'Admin' ? (
+                        {!isView ? (
                           <div className='space-x-12 text-center my-10'>
                             <CoreButton
                               theme='cancel'
@@ -259,19 +260,22 @@ const SaveExamSet = () => {
                               {t('common:btn.cancel')}
                             </CoreButton>
 
-                            <CoreButton
-                              theme='draft'
-                              onClick={async () => {
-                                onSubmitInProgress()
-                              }}
-                              loading={isLoadingSubmit}
-                            >
-                              Lưu đang thực hiện
-                            </CoreButton>
+                            {role !== 'Admin' && (
+                              <CoreButton
+                                theme='draft'
+                                onClick={async () => {
+                                  onSubmitInProgress()
+                                }}
+                                loading={isLoadingSubmit}
+                              >
+                                Lưu đang thực hiện
+                              </CoreButton>
+                            )}
 
                             {watch('status') !== 'approved' &&
                               watch('exam_quantity') ===
-                                (fields ?? []).length && (
+                                (fields ?? []).length &&
+                              role !== 'Admin' && (
                                 <CoreButton
                                   theme='submit'
                                   type='submit'
@@ -279,6 +283,30 @@ const SaveExamSet = () => {
                                 >
                                   Lưu và yêu cầu duyệt
                                 </CoreButton>
+                              )}
+
+                            {role === 'Admin' &&
+                              watch('status') === 'pending_approval' && (
+                                <>
+                                  <CoreButton
+                                    theme='cancel'
+                                    loading={isLoadingSubmit}
+                                    onClick={() => {
+                                      onUpdateState('rejected')
+                                    }}
+                                  >
+                                    Từ chối
+                                  </CoreButton>
+                                  <CoreButton
+                                    theme='add'
+                                    loading={isLoadingSubmit}
+                                    onClick={() => {
+                                      onUpdateState('approved')
+                                    }}
+                                  >
+                                    Phê duyệt
+                                  </CoreButton>
+                                </>
                               )}
                           </div>
                         ) : null}

@@ -5,6 +5,7 @@ import ViewIcon from '@/assets/svg/Eye.svg'
 import { commonApi } from '@/config/axios'
 import { errorMsg } from '@/helper/message'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import Link from 'next/link'
 import {
   Box,
   Checkbox,
@@ -22,6 +23,8 @@ import { CheckBox } from '@mui/icons-material'
 import { useDialog } from '@/components/hooks/dialog/useDialog'
 import DialogViewFile from './components/DialogViewFile'
 import { Controller, useFormContext } from 'react-hook-form'
+import { useRouter } from 'next/router'
+import { BLUE } from '@/helper/colors'
 
 const downloadFile = async (fileName: string) => {
   if (!fileName) {
@@ -66,6 +69,9 @@ const UploadBox = (props: Props) => {
   const { hideDialog, showDialog } = useDialog()
   const methodForm = useFormContext<any>()
   const { control } = methodForm
+
+  const router = useRouter()
+
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target?.files
     console.log(selectedFiles, 'l;')
@@ -90,7 +96,7 @@ const UploadBox = (props: Props) => {
       }
     }
   }
-  console.log(url_res, 'kicm')
+
   return (
     <>
       {' '}
@@ -98,14 +104,29 @@ const UploadBox = (props: Props) => {
       {true ? (
         <Stack
           direction={'row-reverse'}
-          justifyContent={'center'}
+          justifyContent={'start'}
           alignItems={'center'}
         >
           {url_res && (
-            <div className='ml-30'>
-              Name file: ...
-              {url_res.toString().slice(68, url_res.toString().length)}
-            </div>
+            <IconButton
+              sx={{
+                marginLeft: '40px',
+              }}
+              onClick={() => {
+                // router.push(url_res)
+              }}
+            >
+              <Typography fontWeight={500} color={BLUE}>
+                <Link href={url_res} legacyBehavior>
+                  <a target='_blank' rel='noopener noreferrer'>
+                    Name file: 
+                    {url_res.toString().length > 70
+                      ? url_res.toString().slice(66, url_res.toString().length)
+                      : url_res.toString().slice(10, url_res.toString().length)}
+                  </a>
+                </Link>
+              </Typography>
+            </IconButton>
           )}
 
           <Box
