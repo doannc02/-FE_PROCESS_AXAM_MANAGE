@@ -169,6 +169,7 @@ export const useSaveExamSet = () => {
           params={{
             page: 1,
             size: 20,
+            isGetForAddExamSet: true,
           }}
           placeholder='Chọn đề cương chi tiết'
           control={control}
@@ -289,6 +290,15 @@ export const useSaveExamSet = () => {
       const res = await changeStateExamSet(params)
       if (res?.data?.data?.id) {
         console.log(res?.data, 'resdata')
+        successMsg('Phê duyệt thành công!!!')
+        router.push({
+          pathname: `${MENU_URL.EXAM_SET}/[id]`,
+          query: {
+            id: res?.data?.data?.id,
+            actionType: 'VIEW',
+          },
+        })
+        refetch()
       }
     } catch {
       errorMsg('Phê duyệt bộ đề thất bại!')

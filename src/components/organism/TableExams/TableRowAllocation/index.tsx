@@ -156,7 +156,7 @@ export const TableRowPE = (props: Props) => {
                             <Grid item xs={12} sm={12} md={6} lg={6}>
                               <CoreInput
                                 control={control}
-                                isViewProp={role !== 'Admin'}
+                                isViewProp={role !== 'Admin' || watch(`exams.${index}.status`) === 'approved'}
                                 label={
                                   watch(`exams.${index}.status`) === 'rejected'
                                     ? 'Lý do không phê duyệt'

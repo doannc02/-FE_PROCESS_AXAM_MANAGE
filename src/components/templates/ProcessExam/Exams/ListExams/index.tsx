@@ -12,6 +12,7 @@ import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import PageContainer from '@/components/organism/PageContainer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
+import { menuState } from '@/enum'
 
 const ListExams = () => {
   const { t } = useTranslation()
@@ -53,42 +54,21 @@ const ListExams = () => {
               placeholder={t('common:form.search.placeholder')}
             />
           </Grid>
-
+          <Grid item xs={12} sm={12} md={4} lg={4}>
+            <CoreAutocomplete
+              control={control}
+              name='status'
+              label='Trạng thái'
+              labelPath='name'
+              placeholder='Chọn trạng thái'
+              options={menuState}
+            />
+          </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4}>
             <CoreDatePicker
               control={control}
               name='startDate'
               title='Ngày lập chứng từ (từ)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
-              control={control}
-              name='endDate'
-              title='Ngày lập chứng từ (đến)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
-              control={control}
-              name='startDueDate'
-              title='Ngày đến hạn (từ)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
-              control={control}
-              name='endDueDate'
-              title='Ngày hết hạn'
               placeholder='Chọn ngày'
               format='YYYY-MM-DD'
             />

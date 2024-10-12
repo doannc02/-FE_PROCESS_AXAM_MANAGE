@@ -397,6 +397,20 @@ const useSaveExams = () => {
   })
 
   const onUpdateState = async (state: state) => {
+    const exams = fields || []
+    let isValid = true
+
+    if (!exams[0].comment) {
+      isValid = false
+      setError(`exams.${0}.comment`, {
+        message: 'Đây là trường bắt buộc',
+      })
+    }
+
+    if (!isValid) {
+      errorMsg('Vui lòng nhập nhận xét để phê duyệt!!')
+      return
+    }
     try {
       const params = {
         status: state,

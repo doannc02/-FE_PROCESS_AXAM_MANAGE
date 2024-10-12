@@ -260,17 +260,18 @@ const SaveExamSet = () => {
                               {t('common:btn.cancel')}
                             </CoreButton>
 
-                            {role !== 'Admin' && (
-                              <CoreButton
-                                theme='draft'
-                                onClick={async () => {
-                                  onSubmitInProgress()
-                                }}
-                                loading={isLoadingSubmit}
-                              >
-                                Lưu đang thực hiện
-                              </CoreButton>
-                            )}
+                            {role !== 'Admin' &&
+                              watch('status') !== 'approved' && (
+                                <CoreButton
+                                  theme='draft'
+                                  onClick={async () => {
+                                    onSubmitInProgress()
+                                  }}
+                                  loading={isLoadingSubmit}
+                                >
+                                  Lưu đang thực hiện
+                                </CoreButton>
+                              )}
 
                             {watch('status') !== 'approved' &&
                               watch('exam_quantity') ===
@@ -316,13 +317,18 @@ const SaveExamSet = () => {
                   rightAction: (
                     <TopAction
                       actionList={
-                        [
-                          ...(isUpdate ? ['delete'] : []),
-                          ...(isView ? ['delete', 'edit'] : []),
-                          ...(methodForm.watch('status') === 'approved'
+                        role === 'Admin'
+                          ? methodForm.watch('status') === 'in_progress'
                             ? []
-                            : []),
-                        ] as any
+                            : ['edit']
+                          : ([
+                              ...(methodForm.watch('status') === 'approved'
+                                ? []
+                                : isUpdate
+                                ? ['delete']
+                                : []),
+                              ...(isView ? ['delete', 'edit'] : []),
+                            ] as any)
                       }
                       onDeleteAction={() => {}}
                       onEditAction={() => {
