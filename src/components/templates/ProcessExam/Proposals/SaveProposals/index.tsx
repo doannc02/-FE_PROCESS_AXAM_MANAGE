@@ -49,8 +49,15 @@ const SaveProposals = () => {
     fields,
   } = values
 
-  const { onSubmitDraft, onSubmitPendingApprove, setValue, t, append, remove } =
-    handles
+  const {
+    onSubmitDraft,
+    onSubmitPendingApprove,
+    setValue,
+    t,
+    onUpdateState,
+    append,
+    remove,
+  } = handles
 
   const { watch, control, getValues } = methodForm
 
@@ -243,9 +250,6 @@ const SaveProposals = () => {
                           control={control}
                           label='Tạo kế hoạch kèm theo bộ đề'
                           name='isCreateExamSet'
-                          onChangeValue={() => {
-                            append({ name: '' } as any)
-                          }}
                         />
                       )}
 
@@ -445,7 +449,7 @@ const SaveProposals = () => {
                                     theme='cancel'
                                     loading={isLoadingSubmit}
                                     onClick={() => {
-                                      //  onUpdateState('rejected')
+                                      onUpdateState('rejected')
                                     }}
                                   >
                                     Từ chối
@@ -454,7 +458,7 @@ const SaveProposals = () => {
                                     theme='add'
                                     loading={isLoadingSubmit}
                                     onClick={() => {
-                                      // onUpdateState('approved')
+                                      onUpdateState('approved')
                                     }}
                                   >
                                     Phê duyệt

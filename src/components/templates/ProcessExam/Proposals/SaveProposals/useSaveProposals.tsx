@@ -7,11 +7,13 @@ import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
 import { useAppDispatch } from '@/redux/hook'
 import { MENU_URL } from '@/routes'
+import { state } from '@/service/examSet/type'
 import {
   actionProposals,
+  changeStateProposal,
   useQueryGetDetailProposals,
 } from '@/service/proposals'
-import { Proposals } from '@/service/proposals/type'
+import { Proposals, RequestProposals } from '@/service/proposals/type'
 import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
 import { Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
@@ -198,6 +200,29 @@ export const useSaveProposals = () => {
     })
   })
 
+  const onUpdateState = async (state: state) => {
+    try {
+      const params = {
+        status: state,
+        proposalId: watch('id'),
+      } as RequestProposals['UPDATE_STATE']
+      const res = await changeStateProposal(params)
+      if (res?.data?.data?.id) {
+        console.log(res?.data, 'resdata')
+        successMsg('Phê duyệt thành công!!!')
+        router.push({
+          pathname: `${MENU_URL.PROPOSAL}/[id]`,
+          query: {
+            id: res?.data?.data?.id,
+            actionType: 'VIEW',
+          },
+        })
+        refetch()
+      }
+    } catch {
+      errorMsg('Phê duyệt bộ đề thất bại!')
+    }
+  }
   return [
     {
       methodForm,
@@ -214,6 +239,14 @@ export const useSaveProposals = () => {
       fields,
       id,
     },
-    { onSubmitPendingApprove, onSubmitDraft, setValue, t, append, remove },
+    {
+      onSubmitPendingApprove,
+      onSubmitDraft,
+      setValue,
+      onUpdateState,
+      t,
+      append,
+      remove,
+    },
   ] as const
 }

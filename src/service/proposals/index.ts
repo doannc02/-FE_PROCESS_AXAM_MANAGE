@@ -62,3 +62,15 @@ export const actionProposals = async (
   })
   return data
 }
+
+
+export const changeStateProposal = async (
+  req: RequestProposals['UPDATE_STATE']
+): Promise<ResponseProposals['UPDATE_STATE']> => {
+  const { data } = await commonApi({
+    method: 'put',
+    url: URL_PROPOSALS + '/update-state',
+    params: req,
+  })
+  return data
+}

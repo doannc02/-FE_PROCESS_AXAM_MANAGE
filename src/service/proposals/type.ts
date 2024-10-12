@@ -1,4 +1,4 @@
-import { ExamSet } from '../examSet/type'
+import { ExamSet, state } from '../examSet/type'
 import { BaseResponse, CommonObject, PageResponse } from '../type'
 
 export type Proposals = {
@@ -32,6 +32,7 @@ export type Exam = {
 export type ResponseProposals = {
   GET: PageResponse<Proposals[]>
   GET_DETAIL: BaseResponse<Proposals>
+  UPDATE_STATE: BaseResponse<{ id: number }>
 }
 
 export type RequestProposals = {
@@ -54,5 +55,9 @@ export type RequestProposals = {
     }
     data?: Proposals
     method: 'put' | 'delete' | 'post'
+  }
+  UPDATE_STATE: {
+    proposalId: number
+    status: state
   }
 }
