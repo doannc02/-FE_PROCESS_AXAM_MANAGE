@@ -2,9 +2,9 @@ import { Exam, state } from '../examSet/type'
 import { BaseResponse, PageResponse } from '../type'
 
 export type ResponseExam = {
-  UPDATE_STATE: BaseResponse<{
-    id: number
-  }>
+  UPDATE_STATE: {
+    data: { id: number }
+  }
   DETAIL: BaseResponse<Exam>
   LIST: PageResponse<Exam[]>
 }

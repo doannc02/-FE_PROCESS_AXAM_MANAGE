@@ -25,7 +25,7 @@ export default function Sidebar({ children }: any) {
               <div
                 className='px-4'
                 onClick={() => {
-                  router.push('/')
+                  router.push('/dashboard')
                 }}
               >
                 <Image

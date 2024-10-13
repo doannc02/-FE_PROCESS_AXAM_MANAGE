@@ -122,7 +122,7 @@ const SaveExams = () => {
                             <CoreButton
                               theme='cancel'
                               onClick={() => {
-                                router.back()
+                                router.push(MENU_URL.DETAIL_EXAM)
                               }}
                             >
                               {t('common:btn.cancel')}
@@ -189,7 +189,9 @@ const SaveExams = () => {
                     <TopAction
                       actionList={
                         role === 'Admin'
-                          ? ['edit']
+                          ? watch('exams.0.status') === 'approved'
+                            ? []
+                            : ['edit']
                           : ([
                               ...(isUpdate ? ['delete'] : []),
                               ...(isView ? ['delete', 'edit'] : []),

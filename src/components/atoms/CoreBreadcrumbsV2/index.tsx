@@ -13,7 +13,7 @@ export const CoreBreadcrumbsV2 = (props: CoreBreadcrumbsPropsV2) => {
   return (
     <Breadcrumbs
       className={className}
-      separator='/'
+      separator='/dashboard'
       classes={{
         root: 'bg-[#ffffff] h-[57px] flex item-center mb-0',
       }}

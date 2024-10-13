@@ -26,7 +26,6 @@ const Header = () => {
   const openMenu = Boolean(anchorEl)
   const router = useRouter()
 
-  const { username } = useAppSelector((state) => state.companyConfigData)
   return (
     <Paper
       className='flex flex-row h-32 w-full items-center justify-between sticky top-0 rounded-none shadow-none'
@@ -87,7 +86,7 @@ const Header = () => {
         <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
           <Avatar />
         </IconButton>
-        <Typography variant='body1'>{username}</Typography>
+        <Typography variant='body1'>CNTT</Typography>
         <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
           <KeyboardArrowDownOutlinedIcon />
         </IconButton>

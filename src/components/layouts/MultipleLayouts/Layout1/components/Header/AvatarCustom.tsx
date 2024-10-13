@@ -32,25 +32,21 @@ export const AvatarCustom = ({
   username,
   lastName,
   firstName,
-  companyName,
+  email,
 }: {
   username: string
   lastName: string
   firstName: string
-  companyName: string
+  email: string
 }) => {
   const { t } = useTranslation(TRANSLATE.COMMON)
   const { firstMainColor: PRIMARY } = useAppSelector(
     (state) => state.themeColorData
   )
 
-  const { domain: currentDomain } = useAppSelector(
-    (state) => state.companyConfigData
-  )
-
   const shortName =
     firstName && lastName
-      ? (firstName.at(0) ?? '') + (lastName.at(0) ?? '')
+      ? (firstName.at(0) ?? '')
       : 'AD'
 
   const [anchorEl, setAnchorEl] = useState<any>(null)
@@ -130,7 +126,7 @@ export const AvatarCustom = ({
               </div>
               <div className='flex flex-col'>
                 <Typography variant='body1'>
-                  {firstName + ' ' + lastName}
+                  {firstName}
                 </Typography>
                 <Typography
                   variant='body2'
@@ -138,7 +134,7 @@ export const AvatarCustom = ({
                     paddingTop: '4px',
                   }}
                 >
-                  {companyName}
+                  {email}
                 </Typography>
                 <Typography
                   variant='body2'
@@ -164,7 +160,7 @@ export const AvatarCustom = ({
                   color: PRIMARY,
                 }}
               >
-                Xem tất cả workspace
+                Trở về trang chính của website
               </Typography>
             </div>
             <Menu

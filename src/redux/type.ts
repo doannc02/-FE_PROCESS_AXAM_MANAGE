@@ -78,58 +78,14 @@ export type ButtonConfig = {
   resetButton: ItemButtonConfig
 }
 
-export type CompanyConfig = {
-  id: number
-  code: string
-  name: string
-  domain: string
-  firstName: string
-  lastName: string
-  countryId: number
-  country: string
-  languageId: number
-  language: string
-  languageCode: string
-  timezone: string
-  activated: boolean
-  parentId: any
-  parent: any
-  description: string
-  currencyId: number
-  currency: string
-  symbol: string
-  position: string
-  thousandSeparator: string
-  decimalSeparator: string
-  floatRounding: number
-  logo: string
-  phone: string
-  email: string
-  taxCode: string
-  address: string
-  username: string
-}
-
 export type TableConfig = {
   tableName: string
   columns: string[]
 }[]
 
-export type CurrentBranch = {
-  id: number | null
-  name: string | null
-  type: string
-}
-
-export type CurrentLedgerRef = {
-  id: number | null
-  name: string | null
-  code: string
-}
-
 export type CurrentLogin = {
-  id: number | null
+  name: string | ""
+  fullname: string | ""
   email: string | null
-  role: string 
   avatar?: string
 }

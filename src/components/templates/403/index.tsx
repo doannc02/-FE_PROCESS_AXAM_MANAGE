@@ -33,7 +33,7 @@ const Page403 = () => {
           phận hỗ trợ nếu điều này đáng lẽ không nên xảy ra.
         </Typography>
 
-        <Link href={'/'} className='text-[#0078D4]'>
+        <Link href={'/dashboard'} className='text-[#0078D4]'>
           Quay lại trang chủ
         </Link>
       </div>

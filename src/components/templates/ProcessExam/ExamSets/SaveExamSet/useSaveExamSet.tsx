@@ -10,7 +10,6 @@ import { useFormCustom } from '@/lib/form'
 import defaultValue from '@/redux/defaultValue'
 import { useAppDispatch } from '@/redux/hook'
 import { setButtonConfig } from '@/redux/reducer/buttonReducer'
-import { setCompanyConfig } from '@/redux/reducer/companyConfigReducer'
 import { setFontConfig } from '@/redux/reducer/fontReducer'
 import { setThemeColor } from '@/redux/reducer/themeColorReducer'
 import { MENU_URL } from '@/routes'
@@ -97,6 +96,14 @@ export const useSaveExamSet = () => {
   )
 
   const tableData = (watch('exams') ?? []).map((item, index) => {
+    const exceptValues = watch(`exams`)
+      .filter((i) => watch(`exams.${index}.id`) !== i?.id)
+      .map((i) => {
+        return {
+          id: i?.id,
+        }
+      })
+      .filter((i) => !!i)
     return {
       ...item,
       upload_date: convertToDate(watch(`exams.${index}.upload_date`)),
@@ -178,6 +185,7 @@ export const useSaveExamSet = () => {
           onChangeValue={(val) => {
             setValue(`exams.${index}`, val)
           }}
+          exceptValues={exceptValues}
           required
           rules={{
             required: t('common:validation.required'),
@@ -281,6 +289,14 @@ export const useSaveExamSet = () => {
     await handleFormSubmit(input, 'in_progress')
   })
 
+  const onSubmitReject = handleSubmit(async (input) => {
+    await handleFormSubmit(input, 'rejected')
+  })
+
+  const onSubmitApprove = handleSubmit(async (input) => {
+    await handleFormSubmit(input, 'approved')
+  })
+
   const onUpdateState = async (state: state) => {
     try {
       const params = {
@@ -288,13 +304,13 @@ export const useSaveExamSet = () => {
         examSetId: watch('id'),
       } as RequestExamSet['UPDATE_STATE']
       const res = await changeStateExamSet(params)
-      if (res?.data?.data?.id) {
+      if (res?.data?.id) {
         console.log(res?.data, 'resdata')
         successMsg('Phê duyệt thành công!!!')
         router.push({
           pathname: `${MENU_URL.EXAM_SET}/[id]`,
           query: {
-            id: res?.data?.data?.id,
+            id: res?.data?.id,
             actionType: 'VIEW',
           },
         })
@@ -321,6 +337,15 @@ export const useSaveExamSet = () => {
       role,
       fields,
     },
-    { onSubmit, append, t, onSubmitInProgress, onUpdateState },
+    {
+      onSubmit,
+      append,
+      t,
+      onSubmitInProgress,
+      onUpdateState,
+      handleFormSubmit,
+      onSubmitApprove,
+      onSubmitReject,
+    },
   ] as const
 }

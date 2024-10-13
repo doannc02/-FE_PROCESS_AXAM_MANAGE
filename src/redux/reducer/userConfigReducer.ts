@@ -7,8 +7,8 @@ const userConfigSlice = createSlice({
   initialState: defaultValue.userLoginDefault,
   reducers: {
     setCurrentLogin(state, action: PayloadAction<CurrentLogin>) {
-      state.id = action.payload.id
-      state.role = action.payload.role
+      state.name = action.payload.name
+      state.fullname = action.payload.fullname
       state.email = action.payload.email
       state.avatar = action.payload.avatar
     },

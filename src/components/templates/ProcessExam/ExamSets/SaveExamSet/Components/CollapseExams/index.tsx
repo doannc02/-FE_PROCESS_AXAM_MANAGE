@@ -1,8 +1,5 @@
-import { AccordionCustom } from '@/components/atoms/AccordionCustom'
-import { Typography } from '@mui/material'
-import { useExamsTable } from './useExamsTable'
-import { CoreTable } from '@/components/organism/CoreTable'
 import { TableExams } from '@/components/organism/TableExams'
+import { useExamsTable } from './useExamsTable'
 
 const ExamsTable = () => {
   const [values, handles] = useExamsTable()

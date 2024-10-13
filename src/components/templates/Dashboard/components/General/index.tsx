@@ -2,6 +2,8 @@ import { WarningText } from '@/components/atoms/WarningText'
 import { Grid, Paper, Typography } from '@mui/material'
 import PaperCustom from '../PaperCustom'
 import ChartDashBoard from '../Chart'
+import { pink } from '@mui/material/colors'
+import { GRAY_SCALE } from '@/helper/colors'
 
 type TypeDataPaperProps = {
   title: string
@@ -40,10 +42,16 @@ const General = () => {
   return (
     <>
       <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid item xs={12} sm={12}>
+          <div className='flex gap-1 items-center mt-5'>
+            <Typography variant='h6'>Thống kê</Typography>
+          </div>
+        </Grid>
         <Grid item xs={12} sm={12} className='flex justify-between'>
           {fakeData.map((item, index) => (
-            <div key={index} className='w-1/5'>
+            <div key={index} className='w-2/5'>
               <PaperCustom
+                backgroundColor={GRAY_SCALE}
                 value={item.value}
                 contentTitle={item.contentTitle}
                 subtitle={item?.subtitle}
@@ -56,7 +64,7 @@ const General = () => {
 
         <Grid item xs={12} sm={12}>
           <div className='flex gap-1 items-center mt-5'>
-            <Typography variant='h6'>Thông tin hàng hóa/dịch vụ</Typography>
+            <Typography variant='h6'>Thống kê</Typography>
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5}>

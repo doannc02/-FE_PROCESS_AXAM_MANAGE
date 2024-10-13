@@ -14,7 +14,10 @@ import {
   useQueryGetDetailProposals,
 } from '@/service/proposals'
 import { Proposals, RequestProposals } from '@/service/proposals/type'
-import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
+import {
+  convertToDate,
+  convertToOffsetDateTime,
+} from '@/utils/date/convertToDate'
 import { Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
@@ -171,6 +174,8 @@ export const useSaveProposals = () => {
     if (isUpdate && data?.data) {
       reset({
         ...data?.data?.data,
+        end_date: convertToDate(data?.data?.data?.end_date, 'YYYY-MM-DD'),
+        start_date: convertToDate(data?.data?.data?.start_date, 'YYYY-MM-DD'),
         isCreateExamSet: data?.data?.data?.exam_sets?.length > 0 ? true : false,
       })
     }
@@ -200,6 +205,29 @@ export const useSaveProposals = () => {
     })
   })
 
+  const onSubmitReject = handleSubmit(async (input) => {
+    const { isCreateExamSet, ...rest } = input
+    mutate({
+      method: isUpdate ? 'put' : 'post',
+      data: {
+        ...rest,
+        exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
+        status: 'rejected',
+      },
+    })
+  })
+
+  const onSubmitApprove = handleSubmit(async (input) => {
+    const { isCreateExamSet, ...rest } = input
+    mutate({
+      method: isUpdate ? 'put' : 'post',
+      data: {
+        ...rest,
+        exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
+        status: 'approved',
+      },
+    })
+  })
   const onUpdateState = async (state: state) => {
     try {
       const params = {
@@ -207,13 +235,13 @@ export const useSaveProposals = () => {
         proposalId: watch('id'),
       } as RequestProposals['UPDATE_STATE']
       const res = await changeStateProposal(params)
-      if (res?.data?.data?.id) {
+      if (res?.data?.id) {
         console.log(res?.data, 'resdata')
         successMsg('Phê duyệt thành công!!!')
         router.push({
           pathname: `${MENU_URL.PROPOSAL}/[id]`,
           query: {
-            id: res?.data?.data?.id,
+            id: res?.data?.id,
             actionType: 'VIEW',
           },
         })
@@ -247,6 +275,8 @@ export const useSaveProposals = () => {
       t,
       append,
       remove,
+      onSubmitApprove,
+      onSubmitReject,
     },
   ] as const
 }

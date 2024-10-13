@@ -2,7 +2,7 @@ import { TableCell, TableRow } from '@mui/material'
 import _ from 'lodash'
 import { Draggable } from 'react-beautiful-dnd'
 import { ColumnProps } from '../../CoreTable'
-import { CurrencyFormatCustom } from '@/components/atoms/CurrencyFormatCustom'
+
 import { checkDateValid } from '@/utils/date/checkDate'
 import { convertToDate } from '@/utils/date/convertToDate'
 
@@ -38,15 +38,7 @@ export const TableRowCustom = (props: Props) => {
             return (
               <TableCell key={indexColumn} {...column.styleCell}>
                 {column?.fieldName && !column?.render && (
-                  <>
-                    {_.isNumber(val) ? (
-                      <CurrencyFormatCustom amount={val} />
-                    ) : checkDateValid(val) ? (
-                      convertToDate(val)
-                    ) : (
-                      val
-                    )}
-                  </>
+                  <>{checkDateValid(val) ? convertToDate(val) : val}</>
                 )}
                 {column?.render && column.render(row, index)}
               </TableCell>

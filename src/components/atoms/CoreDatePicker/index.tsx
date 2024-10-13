@@ -38,6 +38,7 @@ export type CoreDatePickerProps = {
   maxDate?: any
   variant?: 'outlined' | 'filled' | 'standard'
   isViewProp?: boolean
+  views?: any
   isHasMessageError?: boolean
   onChange?: (value: any) => void
 }
@@ -66,6 +67,7 @@ export const CoreDatePicker = (props: CoreDatePickerProps) => {
     isViewProp,
     isHasMessageError = true,
     onChange,
+    views,
     ...rest
   } = props
 
@@ -143,6 +145,7 @@ export const CoreDatePicker = (props: CoreDatePickerProps) => {
                   {helperText && <FormHelperText>{helperText}</FormHelperText>}
                 </>
               )}
+              views={views}
             />
           )}
           rules={!isView ? rules : {}}

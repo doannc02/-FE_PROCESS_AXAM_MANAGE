@@ -50,7 +50,10 @@ const useListExamSets = () => {
   }
 
   const onSubmit = methodForm.handleSubmit(async (input) => {
-    setQueryPage(input)
+    setQueryPage({
+      ...input,
+      courseId: queryPage?.course?.id,
+    })
   })
   const columns = useMemo(
     () =>
@@ -67,13 +70,15 @@ const useListExamSets = () => {
           header: 'Chuyên ngành',
           fieldName: 'major',
         },
-        // {
-        //   header: 'Số đề đang thực hiện',
-        //   fieldName: 'total_exams',
-        // },
+
         {
-          header: 'Số đề yêu cầu',
+          header: 'Yêu cầu',
           fieldName: 'exam_quantity',
+          styleCell: {
+            style: {
+              minWidth: '70px',
+            },
+          },
         },
         {
           header: 'Mô tả',
@@ -88,8 +93,22 @@ const useListExamSets = () => {
           fieldName: 'courseName',
         },
         {
+          header: 'Kế hoạch',
+          fieldName: 'apply',
+          styleCell: {
+            style: {
+              minWidth: '110px',
+            },
+          },
+        },
+        {
           header: 'Trạng thái',
           fieldName: 'status',
+          styleCell: {
+            style: {
+              minWidth: '120px',
+            },
+          },
         },
       ] as ColumnProps[],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,6 +160,7 @@ const useListExamSets = () => {
           }
         />
       ),
+      apply: item?.proposal?.code ? item?.proposal?.code : '',
     }
   })
 

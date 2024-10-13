@@ -16,7 +16,7 @@ import {
 } from '../CoreTable'
 import PaginationCustom from '../PaginationCustom'
 import { TRANSLATE } from '@/routes'
-import { CurrencyFormatCustom } from '@/components/atoms/CurrencyFormatCustom'
+
 import { checkDateValid } from '@/utils/date/checkDate'
 import { convertToDate } from '@/utils/date/convertToDate'
 
@@ -157,15 +157,7 @@ export const CustomTable = ({
                         }}
                       >
                         {column?.fieldName && !column?.render && (
-                          <>
-                            {_.isNumber(val) ? (
-                              <CurrencyFormatCustom amount={val} />
-                            ) : checkDateValid(val) ? (
-                              convertToDate(val)
-                            ) : (
-                              val
-                            )}
-                          </>
+                          <>{checkDateValid(val) ? convertToDate(val) : val}</>
                         )}
                         {column?.render && column.render(row, index)}
                       </TableCell>

@@ -9,6 +9,11 @@ import PageContainer from '@/components/organism/PageContainer'
 import { Grid } from '@mui/material'
 import { MENU_URL } from '@/routes'
 import useListExamSets from './useListExamSets'
+import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
+import { getAcademicYears } from '@/service/academicYear'
+import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
+import { menuState } from '@/enum'
+import { getListCourse } from '@/service/course'
 
 const ListExamSets = () => {
   const [values, handles] = useListExamSets()
@@ -54,42 +59,28 @@ const ListExamSets = () => {
           </Grid>
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
+            <CoreAutocomplete
               control={control}
-              name='startDate'
-              title='Ngày lập chứng từ (từ)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
+              name='stateExamSet'
+              label='Trạng thái'
+              labelPath='name'
+              placeholder='Chọn trạng thái'
+              options={menuState}
             />
           </Grid>
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
+            <CoreAutoCompleteAPI
+              placeholder='Tìm kiếm theo học phần'
+              labelPath2='code'
+              fetchDataFn={getListCourse}
+              params={{
+                page: 1,
+                size: 20,
+              }}
               control={control}
-              name='endDate'
-              title='Ngày lập chứng từ (đến)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
-              control={control}
-              name='startDueDate'
-              title='Ngày đến hạn (từ)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
-              control={control}
-              name='endDueDate'
-              title='Ngày hết hạn'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
+              label='Học phần'
+              name='course'
             />
           </Grid>
         </Grid>

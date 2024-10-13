@@ -3,6 +3,10 @@ export type state = 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
 export type ExamSet = {
   id: number
   name: string
+  proposal?: {
+    id: number
+    code: string
+  }
   department: {
     id: number
     code: string
@@ -33,6 +37,10 @@ export type ExamSet = {
 export type Exam = {
   id: number | null
   user: CommonObject
+  exam_set?: {
+    id: number
+    name: string
+  }
   code: string
   name: string
   attached_file: string
@@ -49,7 +57,9 @@ export type Exam = {
 export type ResponseExamSet = {
   GET: PageResponse<ExamSet[]>
   GET_DETAIL: BaseResponse<ExamSet>
-  UPDATE_STATE: BaseResponse<{ id: number }>
+  UPDATE_STATE: {
+    data: { id: number }
+  }
 }
 
 export type RequestExamSet = {

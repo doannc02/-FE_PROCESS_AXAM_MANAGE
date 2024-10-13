@@ -145,7 +145,7 @@ const MenuItemOpen = (props: Props) => {
 
         <Typography variant='body1'>{t(item.name)}</Typography>
       </div>
-      {['/', '/dashboard'].includes(item.path) && (
+      {['/dashboard', '/dashboard'].includes(item.path) && (
         <SwitchSystemIcon
           onClick={() => {
             setIsOpenLeftMenu(false)

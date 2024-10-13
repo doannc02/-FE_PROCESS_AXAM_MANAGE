@@ -400,9 +400,9 @@ const useSaveExams = () => {
     const exams = fields || []
     let isValid = true
 
-    if (!exams[0].comment) {
+    if (!getValues('exams.0.comment')) {
       isValid = false
-      setError(`exams.${0}.comment`, {
+      setError(`exams.0.comment`, {
         message: 'Đây là trường bắt buộc',
       })
     }
@@ -418,8 +418,16 @@ const useSaveExams = () => {
         comment: watch('exams.0.comment'),
       } as RequestExam['UPDATE_STATE']
       const res = await changeStateExam(params)
-      if (res?.data?.data?.id) {
-        console.log(res?.data, 'resdata')
+      if (res?.data?.id) {
+        successMsg('Phê duyệt thành công!!!')
+        router.push({
+          pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
+          query: {
+            id: res?.data?.id,
+            actionType: 'VIEW',
+          },
+        })
+        refetch()
       }
     } catch {
       errorMsg('Phê duyệt đề thi thất bại!')

@@ -19,8 +19,8 @@ export const parameters = {
     },
   },
   nextRouter: {
-    path: '/',
-    asPath: '/',
+    path: '/dashboard',
+    asPath: '/dashboard',
     query: {},
     push(path) {
      // console.log(`router push to: ${path}`)

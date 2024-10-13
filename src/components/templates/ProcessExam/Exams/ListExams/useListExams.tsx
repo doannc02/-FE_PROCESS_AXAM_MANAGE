@@ -57,6 +57,11 @@ const useListExams = () => {
         {
           header: 'Mã đề',
           fieldName: 'code',
+          styleCell: {
+            style: {
+              minWidth: '90px',
+            },
+          },
         },
         ...(role === 'Admin'
           ? [
@@ -75,16 +80,35 @@ const useListExams = () => {
           fieldName: 'comment',
         },
         {
-          header: 'Năm học áp dụng',
+          header: 'Năm học',
           fieldName: 'academic_year',
+          styleCell: {
+            style: {
+              minWidth: '100px',
+            },
+          },
+        },
+        {
+          header: 'Bộ đề',
+          fieldName: 'apply',
         },
         {
           header: 'Ngày upload',
           fieldName: 'upload_date',
+          styleCell: {
+            style: {
+              minWidth: '100px',
+            },
+          },
         },
         {
           header: 'Trạng thái',
           fieldName: 'status',
+          styleCell: {
+            style: {
+              minWidth: '115px',
+            },
+          },
         },
       ] as ColumnProps[],
     [role]
@@ -150,6 +174,7 @@ const useListExams = () => {
           }
         />
       ),
+      apply: item?.exam_set?.id ? item?.exam_set?.name : null,
     }
   })
 

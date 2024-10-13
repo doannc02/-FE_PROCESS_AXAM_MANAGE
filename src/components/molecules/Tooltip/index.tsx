@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { useTooltip } from '@/components/hooks/tooltip'
-import { Typography, Tooltip as TooltipMUI } from '@mui/material'
+import { Typography } from '@mui/material'
 import { GREY } from '@/helper/colors'
 
 interface TooltipProps {
@@ -23,39 +23,39 @@ export const Tooltip = ({ tooltips, showText, isShowIcon }: TooltipProps) => {
   }
 
   const tooltipStyles: React.CSSProperties = {
-    position: 'absolute',
+    position: 'absolute', // Sử dụng absolute để hiển thị cạnh icon
     backgroundColor: 'white',
-    padding: '5px',
+    padding: '10px',
     borderRadius: '4px',
     zIndex: 99,
-    top: `${showText ? '20%' : '500%'}`,
-    left: `${showText ? 'calc(60%)' : 'auto'}`,
-    right: `${showText ? 'auto' : 'calc(100% + 10px)'}`,
-    transform: 'translateY(-50%)',
+    top: '50%',
+    left: '100%',
+    transform: 'translateY(-50%) translateX(10px)', // Điều chỉnh vị trí của tooltip
     opacity: tooltipVisible ? 1 : 0,
     transition: 'opacity 0.2s ease-in-out',
-    whiteSpace: 'nowrap',
+    whiteSpace: 'normal',
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     gap: '10px',
-    width: `${showText ? '200px' : '600px'}`,
+    minWidth: '350px', // Đảm bảo chiều rộng tối đa là 300px
+    wordWrap: 'break-word', // Đảm bảo nội dung xuống dòng nếu vượt quá chiều rộng
   }
+
   const arrowStyles: React.CSSProperties = {
     position: 'absolute',
     content: '',
     width: 0,
     height: 0,
-    borderRight: `${showText ? '10px solid white' : ''}`,
-    borderLeft: `${showText ? '' : '10px solid white'}`,
+    borderRight: '10px solid white',
     borderTop: '10px solid transparent',
     borderBottom: '10px solid transparent',
-    top: `${showText ? '50%' : '34%'}`,
-    left: `${showText ? '-8px' : ''}`,
-    right: `${showText ? '' : '-8px'}`,
+    left: '-10px',
+    top: '50%',
     transform: 'translateY(-50%)',
   }
+
   return (
     <div
       style={styles}
@@ -80,11 +80,11 @@ export const Tooltip = ({ tooltips, showText, isShowIcon }: TooltipProps) => {
       {tooltipVisible && (
         <div style={tooltipStyles}>
           {tooltips?.map((tooltip: Tooltip, index) => (
-            <div className='flex items-center' key={index}>
+            <div className='flex items-center w-full' key={index}>
               <Typography
                 style={{
-                  width: '25%',
-                  whiteSpace: `${showText ? 'nowrap' : 'normal'}`,
+                  // Đảm bảo độ dài của dòng chữ bằng với chiều rộng của thẻ background trắng
+                  whiteSpace: 'normal',
                   padding: '5px 10px',
                 }}
                 variant='body2'
@@ -93,9 +93,9 @@ export const Tooltip = ({ tooltips, showText, isShowIcon }: TooltipProps) => {
               </Typography>
               <Typography
                 style={{
-                  width: '75%',
+                  width: '100%', // Đảm bảo độ dài của dòng chữ bằng với chiều rộng của thẻ background trắng
                   color: GREY,
-                  whiteSpace: `${showText ? 'nowrap' : 'normal'}`,
+                  whiteSpace: 'normal',
                 }}
                 variant='body2'
               >

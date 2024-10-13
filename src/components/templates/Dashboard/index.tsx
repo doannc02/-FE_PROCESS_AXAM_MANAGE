@@ -48,7 +48,7 @@ const Dashboard = () => {
                 {
                   title: 'HOME',
                   content: <General />,
-                  rightAction: <>kkk</>,
+                  rightAction: null,
                 },
               ]}
               //  tabNumber={tabNumber}

@@ -17,7 +17,7 @@ export const getMajorList = async (
   return data
 }
 
-export const useQueryGetAcademicYearList = (
+export const useQueryGetMajorList = (
   params: RequestMajor['LIST'],
   options?: any
 ) => {

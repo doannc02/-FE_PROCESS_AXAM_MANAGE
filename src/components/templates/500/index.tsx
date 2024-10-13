@@ -33,7 +33,7 @@ const Page500 = () => {
           Lỗi máy chủ. Chúng tôi đang tìm cách khắc phục mong bạn thông cảm.
         </Typography>
 
-        <Link href={'/'} className='text-[#0078D4]'>
+        <Link href={'/dashboard'} className='text-[#0078D4]'>
           Quay lại trang chủ
         </Link>
       </div>

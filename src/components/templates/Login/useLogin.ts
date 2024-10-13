@@ -32,7 +32,7 @@ export const useLogin = () => {
       if (pathParams) {
         router.push(`https://${pathParams}${SUBDOMAIN}`)
         setCmsToken(data)
-      } else router.push('/')
+      } else router.push('/dashboard')
       setLoading(false)
     } catch (err) {
       errorMsg(err, 'Có lỗi')

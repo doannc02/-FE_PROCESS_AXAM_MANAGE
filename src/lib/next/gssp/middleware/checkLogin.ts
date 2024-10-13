@@ -5,7 +5,7 @@ export const checkLogin =
   (
     redirectPropsToDashboard: RedirectProps = {
       permanent: false,
-      destination: '/',
+      destination: '/dashboard',
     }
   ): GsspMiddleware =>
   async (...args) => {

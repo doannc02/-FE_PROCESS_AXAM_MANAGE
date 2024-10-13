@@ -10,7 +10,6 @@ import {
 import _ from 'lodash'
 import { Draggable } from 'react-beautiful-dnd'
 
-import { CurrencyFormatCustom } from '@/components/atoms/CurrencyFormatCustom'
 import { ColumnProps, CoreTable } from '@/components/organism/CoreTable'
 import { checkDateValid } from '@/utils/date/checkDate'
 import { convertToDate } from '@/utils/date/convertToDate'
@@ -78,15 +77,7 @@ export const TableRowPE = (props: Props) => {
                   {...column.styleCell}
                 >
                   {column?.fieldName && !column?.render && (
-                    <>
-                      {_.isNumber(val) ? (
-                        <CurrencyFormatCustom amount={val} />
-                      ) : checkDateValid(val) ? (
-                        convertToDate(val)
-                      ) : (
-                        val
-                      )}
-                    </>
+                    <>{checkDateValid(val) ? convertToDate(val) : val}</>
                   )}
                   {column?.render && column.render(row, index)}
                 </TableCell>
@@ -145,6 +136,9 @@ export const TableRowPE = (props: Props) => {
                               placeholder='Nhập mô tả'
                               name={`exams.${index}.description`}
                               multiline
+                              inputProps={{
+                                maxLength: 250,
+                              }}
                               required
                               rules={{
                                 required: t('common:validation.required'),
@@ -152,11 +146,14 @@ export const TableRowPE = (props: Props) => {
                             />
                           </Grid>
 
-                          {watch(`exams.${index}.status`) !== 'in_progress' && (
+                          {
                             <Grid item xs={12} sm={12} md={6} lg={6}>
                               <CoreInput
                                 control={control}
-                                isViewProp={role !== 'Admin' || watch(`exams.${index}.status`) === 'approved'}
+                                isViewProp={
+                                  role !== 'Admin' ||
+                                  watch(`exams.${index}.status`) === 'approved'
+                                }
                                 label={
                                   watch(`exams.${index}.status`) === 'rejected'
                                     ? 'Lý do không phê duyệt'
@@ -175,7 +172,7 @@ export const TableRowPE = (props: Props) => {
                                 }}
                               />
                             </Grid>
-                          )}
+                          }
 
                           {
                             <Grid item xs={12}>

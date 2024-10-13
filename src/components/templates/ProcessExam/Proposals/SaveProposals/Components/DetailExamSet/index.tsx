@@ -11,6 +11,8 @@ import useDetailExamSet from './useDetailExamSet'
 import { CoreButton } from '@/components/atoms/CoreButton'
 import { ExamSet } from '@/service/examSet/type'
 import { TopAction } from '@/components/molecules/TopAction'
+import { MENU_URL } from '@/routes'
+import { useRouter } from 'next/router'
 
 const DetailExamSet = ({
   item,
@@ -24,7 +26,7 @@ const DetailExamSet = ({
   const { methodForm, isLoadingUpdateStateExam, role } = values
   const { submitChangeStateExam } = handles
   const { watch, getValues, setValue, control } = methodForm
-
+  const router = useRouter()
   const { fields, append, remove } = useFieldArray({
     control,
     name: `exam_sets.${indexExamSet}.exams`,
@@ -49,7 +51,7 @@ const DetailExamSet = ({
               //   bgColor="#DFE0EB"
               height='10px'
               title={
-                <div className='w-full flex justify-between'>
+                <div className='w-full flex justify-between items-center'>
                   <div className='w-1/3 flex justify-start'>
                     <Typography fontWeight={'600'}>
                       {ele?.name} - {ele?.code} &nbsp;
@@ -63,7 +65,13 @@ const DetailExamSet = ({
                       }}
                       onClick={(e) => {
                         e.stopPropagation()
-
+                        router.push({
+                          pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
+                          query: {
+                            id: ele?.id,
+                            actionType: 'VIEW',
+                          },
+                        })
                         //   showDialog(
                         //     <DialogViewFile
                         //       src={url_res}
@@ -80,28 +88,49 @@ const DetailExamSet = ({
                       />
                     </IconButton>
                   </div>
-                  <Typography fontWeight={'600'}>
-                    <DisplayStatus
-                      text={
-                        item?.status === 'pending_approval'
-                          ? 'Chờ phê duyệt'
-                          : item?.status === 'in_progress'
-                          ? 'Đang thực hiện'
-                          : item?.status === 'approved'
-                          ? 'Đã phê duyệt'
-                          : 'Bị từ chối'
-                      }
-                      color={
-                        item?.status === 'pending_approval'
-                          ? ORANGE
-                          : item?.status === 'in_progress'
-                          ? BLACK
-                          : item?.status === 'approved'
-                          ? GREEN
-                          : RED
-                      }
-                    />
-                  </Typography>
+
+                  <div className='w-1/3 flex justify-between items-center p-5'>
+                    <Typography fontWeight={'600'}>
+                      <DisplayStatus
+                        text={
+                          item?.status === 'pending_approval'
+                            ? 'Chờ phê duyệt'
+                            : item?.status === 'in_progress'
+                            ? 'Đang thực hiện'
+                            : item?.status === 'approved'
+                            ? 'Đã phê duyệt'
+                            : 'Bị từ chối'
+                        }
+                        color={
+                          item?.status === 'pending_approval'
+                            ? ORANGE
+                            : item?.status === 'in_progress'
+                            ? BLACK
+                            : item?.status === 'approved'
+                            ? GREEN
+                            : RED
+                        }
+                      />
+                    </Typography>
+                    <div>
+                      {/* <CoreButton
+                        sx={{ marginRight: '10px' }}
+                        theme='cancel'
+                        onClick={(e) => {
+                          e.stopPropagation()
+                        }}
+                      >
+                        Từ chối
+                      </CoreButton> */}
+                      {/* <CoreButton
+                        onClick={(e) => {
+                          e.stopPropagation()
+                        }}
+                      >
+                        Xem chi tiết
+                      </CoreButton> */}
+                    </div>
+                  </div>
                 </div>
               }
             >

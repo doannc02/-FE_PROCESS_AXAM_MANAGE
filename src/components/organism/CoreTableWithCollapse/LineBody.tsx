@@ -1,4 +1,3 @@
-import { CurrencyFormatCustom } from '@/components/atoms/CurrencyFormatCustom'
 import { TableCellWithBorderRight } from '@/components/organism/CoreTable'
 import { checkDateValid } from '@/utils/date/checkDate'
 import { convertToDate } from '@/utils/date/convertToDate'
@@ -75,15 +74,7 @@ export const LineBody = ({
             ) : (
               <TableCellWithBorderRight key={indexColumn} align='center'>
                 {column?.fieldName && !column?.render && (
-                  <>
-                    {_.isNumber(val) ? (
-                      <CurrencyFormatCustom amount={val} />
-                    ) : checkDateValid(val) ? (
-                      convertToDate(val)
-                    ) : (
-                      val
-                    )}
-                  </>
+                  <>{checkDateValid(val) ? convertToDate(val) : val}</>
                 )}
               </TableCellWithBorderRight>
             )
@@ -111,15 +102,7 @@ export const LineBody = ({
                   ) : (
                     <TableCellWithBorderRight key={indexColumn} align='center'>
                       {column?.fieldName && !column?.render && (
-                        <>
-                          {_.isNumber(val) ? (
-                            <CurrencyFormatCustom amount={val} />
-                          ) : checkDateValid(val) ? (
-                            convertToDate(val)
-                          ) : (
-                            val
-                          )}
-                        </>
+                        <>{checkDateValid(val) ? convertToDate(val) : val}</>
                       )}
                     </TableCellWithBorderRight>
                   )
@@ -143,16 +126,10 @@ export const LineBody = ({
             </Typography>
           </TableCellWithBorderRight>
           <TableCellWithBorderRight align='center'>
-            <CurrencyFormatCustom
-              variant='subtitle1'
-              amount={get(item, 'amountUntaxedTotal')}
-            />
+            {get(item, 'amountUntaxedTotal')}
           </TableCellWithBorderRight>
           <TableCellWithBorderRight align='center'>
-            <CurrencyFormatCustom
-              variant='subtitle1'
-              amount={get(item, 'amountTaxTotal')}
-            />
+            {get(item, 'amountTaxTotal')}
           </TableCellWithBorderRight>
         </TableRow>
       )}

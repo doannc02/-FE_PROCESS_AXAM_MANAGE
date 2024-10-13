@@ -67,10 +67,12 @@ const ListExams = () => {
           <Grid item xs={12} sm={12} md={4} lg={4}>
             <CoreDatePicker
               control={control}
-              name='startDate'
-              title='Ngày lập chứng từ (từ)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
+              name='month_upload'
+              views={['month']}
+              inputFormat='MM'
+              format='MM'
+              title='Tháng'
+              placeholder='Chọn tháng'
             />
           </Grid>
         </Grid>

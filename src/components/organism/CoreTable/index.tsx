@@ -1,4 +1,3 @@
-import { CurrencyFormatCustom } from '@/components/atoms/CurrencyFormatCustom'
 import { useDialog } from '@/components/hooks/dialog/useDialog'
 import EmptyIcon from '@/components/icons/EmptyIcon'
 import PlusIcon from '@/components/icons/PlusIcon'
@@ -259,15 +258,7 @@ export const CoreTable = ({
                         }}
                       >
                         {column?.fieldName && !column?.render && (
-                          <>
-                            {_.isNumber(val) ? (
-                              <CurrencyFormatCustom amount={val} />
-                            ) : checkDateValid(val) ? (
-                              convertToDate(val)
-                            ) : (
-                              val
-                            )}
-                          </>
+                          <>{checkDateValid(val) ? convertToDate(val) : val}</>
                         )}
                         {column?.render && column.render(row, index)}
                       </TableCell>

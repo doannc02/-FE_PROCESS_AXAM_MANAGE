@@ -7,12 +7,7 @@ export const Header = () => {
     (state) => state.themeColorData
   )
 
-  // const {
-  //   name: companyName,
-  //   username,
-  //   firstName,
-  //   lastName,
-  // } = useAppSelector((state) => state.companyConfigData)
+  const user = useAppSelector((state) => state.userData)
 
   return (
     <div
@@ -30,9 +25,9 @@ export const Header = () => {
       <div className='flex items-center gap-6 px-5'>
         <Notifications numberUnRead={15} />
         <AvatarCustom
-          companyName={'company'}
-          username={'username'}
-          firstName={'firstName'}
+          email={user.email ?? ""}
+          username={user.name}
+          firstName={user.fullname}
           lastName={'lastName'}
         />
       </div>

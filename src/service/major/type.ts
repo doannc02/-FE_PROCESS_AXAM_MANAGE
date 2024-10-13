@@ -1,5 +1,5 @@
 import { Exam, state } from '../examSet/type'
-import { BaseResponse, PageResponse } from '../type'
+import { BaseResponse, CommonObject, PageResponse } from '../type'
 
 export type ResponseMajor = {
   UPDATE_STATE: BaseResponse<{
@@ -26,4 +26,5 @@ export type Major = {
   id: number
   name: string
   code: string
+  department: CommonObject
 }

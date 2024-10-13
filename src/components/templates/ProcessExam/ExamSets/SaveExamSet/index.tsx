@@ -49,7 +49,14 @@ const SaveExamSet = () => {
   } = values
 
   const { onUpdateState } = handles
-  const { onSubmit, t, append, onSubmitInProgress } = handles
+  const {
+    onSubmit,
+    t,
+    append,
+    onSubmitInProgress,
+    onSubmitApprove,
+    onSubmitReject,
+  } = handles
 
   const { control, watch, getValues, setValue } = methodForm
   return (
@@ -120,22 +127,25 @@ const SaveExamSet = () => {
                             />
                           </Grid>
 
-                          <Grid item xs={12} sm={12} md={4} lg={4}>
-                            <CoreAutoCompleteAPI
-                              params={{
-                                page: 1,
-                                size: 20,
-                              }}
-                              fetchDataFn={getMajorList}
-                              control={control}
-                              label='Chuyên ngành'
-                              placeholder='Chọn chuyên ngành'
-                              name='major'
-                              onChangeValue={() => {
-                                setValue('course', null as unknown as any)
-                              }}
-                            />
-                          </Grid>
+                          {watch('department')?.id && (
+                            <Grid item xs={12} sm={12} md={4} lg={4}>
+                              <CoreAutoCompleteAPI
+                                params={{
+                                  page: 1,
+                                  size: 20,
+                                  departmentId: watch('department')?.id,
+                                }}
+                                fetchDataFn={getMajorList}
+                                control={control}
+                                label='Chuyên ngành'
+                                placeholder='Chọn chuyên ngành'
+                                name='major'
+                                onChangeValue={() => {
+                                  setValue('course', null as unknown as any)
+                                }}
+                              />
+                            </Grid>
+                          )}
 
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreInput
@@ -204,6 +214,9 @@ const SaveExamSet = () => {
                               control={control}
                               label='Nhập mô tả cho bộ đề'
                               name='description'
+                              inputProps={{
+                                maxLength: 250,
+                              }}
                               multiline
                               required
                               rules={{
@@ -254,7 +267,7 @@ const SaveExamSet = () => {
                             <CoreButton
                               theme='cancel'
                               onClick={() => {
-                                router.back()
+                                router.push(MENU_URL.EXAM_SET)
                               }}
                             >
                               {t('common:btn.cancel')}
@@ -293,7 +306,7 @@ const SaveExamSet = () => {
                                     theme='cancel'
                                     loading={isLoadingSubmit}
                                     onClick={() => {
-                                      onUpdateState('rejected')
+                                      onSubmitReject()
                                     }}
                                   >
                                     Từ chối
@@ -302,7 +315,7 @@ const SaveExamSet = () => {
                                     theme='add'
                                     loading={isLoadingSubmit}
                                     onClick={() => {
-                                      onUpdateState('approved')
+                                      onSubmitApprove()
                                     }}
                                   >
                                     Phê duyệt

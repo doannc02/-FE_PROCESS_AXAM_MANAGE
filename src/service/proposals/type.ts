@@ -5,6 +5,7 @@ export type Proposals = {
   id?: number
   code: string
   academic_year: CommonObject
+  total_exam_set: number
   user: CommonObject
   status: 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
   end_date: string
@@ -32,7 +33,9 @@ export type Exam = {
 export type ResponseProposals = {
   GET: PageResponse<Proposals[]>
   GET_DETAIL: BaseResponse<Proposals>
-  UPDATE_STATE: BaseResponse<{ id: number }>
+  UPDATE_STATE: {
+    data: { id: number }
+  }
 }
 
 export type RequestProposals = {

@@ -12,8 +12,6 @@ import React from 'react'
 export const SwitchSystem = () => {
   const [anchorEl, setAnchorEl] = React.useState<any>(null)
 
-  const { domain } = useAppSelector((state) => state.companyConfigData)
-
   return (
     <div className='h-full'>
       <div
@@ -26,7 +24,7 @@ export const SwitchSystem = () => {
           </IconButton>
 
           <Typography variant='body1' style={{ color: WHITE }}>
-            ACC
+            EPM
           </Typography>
         </div>
       </div>
@@ -79,7 +77,7 @@ export const SwitchSystem = () => {
               return (
                 <Link
                   key={index}
-                  href={`http://${domain}/${system.homepage}`}
+                  href={`http://viu/${system.homepage}`}
                   target='_blank'
                   rel='noopener'
                   style={{
@@ -123,7 +121,7 @@ export const SwitchSystem = () => {
                 variant='body2'
                 className='group-hover:text-[#0078D4]'
               >
-                Khám phá tất cả ứng dụng của bạn
+                Tất cả module
               </Typography>
 
               <ArrowBackIcon

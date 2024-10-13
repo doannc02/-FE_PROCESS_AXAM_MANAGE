@@ -11,6 +11,7 @@ import { Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import useListProposals from './useListProposals'
 import { MENU_URL } from '@/routes'
+import { menuState } from '@/enum'
 
 const ListProposals = () => {
   const [values, handles] = useListProposals()
@@ -38,7 +39,7 @@ const ListProposals = () => {
           isShowDashboard
           breadcrumbs={[
             {
-              title: 'Đề xuất phê duyệt',
+              title: isProposal ? 'Danh sách đề xuất' : 'Danh sách phê duyệt',
             },
           ]}
         />
@@ -56,42 +57,40 @@ const ListProposals = () => {
           </Grid>
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
+            <CoreAutocomplete
               control={control}
-              name='startDate'
-              title='Ngày lập chứng từ (từ)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
+              name='status'
+              label='Trạng thái'
+              labelPath='name'
+              placeholder='Chọn trạng thái'
+              options={menuState}
             />
           </Grid>
-
+          <Grid item xs={12} sm={12} md={4} lg={4}>
+            {' '}
+            <CoreAutocomplete
+              control={control}
+              className='w-full'
+              placeholder='Chọn học kỳ'
+              label='Học kỳ'
+              name='semester'
+              options={[
+                { value: '1', label: 'Học kỳ 1' },
+                { value: '2', label: 'Học kỳ 2' },
+                { value: '3', label: 'Học kỳ 3' },
+                { value: '4', label: 'Học kỳ 4' },
+              ]}
+            />
+          </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4}>
             <CoreDatePicker
               control={control}
-              name='endDate'
-              title='Ngày lập chứng từ (đến)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
-              control={control}
-              name='startDueDate'
-              title='Ngày đến hạn (từ)'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreDatePicker
-              control={control}
-              name='endDueDate'
-              title='Ngày hết hạn'
-              placeholder='Chọn ngày'
-              format='YYYY-MM-DD'
+              name='month_end'
+              views={['month']}
+              inputFormat='MM'
+              format='MM'
+              title='Tháng phải hoàn thành'
+              placeholder='Tìm kiếm kế hoạch theo tháng phải hoàn thành'
             />
           </Grid>
         </Grid>
@@ -110,25 +109,27 @@ const ListProposals = () => {
         </div>
       </form>
 
-      <div className='py-4 flex justify-end gap-4 items-center'>
-        <TopAction actionList={['import', 'export']} />
-        <DotThree className='mt-3' onClick={() => {}} />
-        <CoreButton
-          onClick={() => {
-            let pathname = ''
-            if (isProposal) {
-              pathname = MENU_URL.PROPOSAL
-            } else {
-              pathname = MENU_URL.APPROVE
-            }
-            router.push({
-              pathname: `${pathname}/addNew`,
-            })
-          }}
-        >
-          {t('common:btn.add')}
-        </CoreButton>
-      </div>
+      {isProposal ? (
+        <div className='py-4 flex justify-end gap-4 items-center'>
+          <TopAction actionList={['import', 'export']} />
+          <DotThree className='mt-3' onClick={() => {}} />
+          <CoreButton
+            onClick={() => {
+              let pathname = ''
+              if (isProposal) {
+                pathname = MENU_URL.PROPOSAL
+              } else {
+                pathname = MENU_URL.APPROVE
+              }
+              router.push({
+                pathname: `${pathname}/addNew`,
+              })
+            }}
+          >
+            {t('common:btn.add')}
+          </CoreButton>
+        </div>
+      ) : null}
 
       <CoreTable
         columns={columns}

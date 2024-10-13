@@ -13,9 +13,6 @@ const NumberFormatCustom = forwardRef<any, any>(function NumberFormatCustomBase(
     ...other
   } = props
 
-  const { thousandSeparator, decimalSeparator } = useAppSelector(
-    (state) => state.companyConfigData
-  )
 
   const handleChange = useCallback(
     (value: any) => {
@@ -34,8 +31,6 @@ const NumberFormatCustom = forwardRef<any, any>(function NumberFormatCustomBase(
   return (
     <NumericFormat
       {...other}
-      thousandSeparator={thousandSeparator === 'COMMA' ? ',' : '.'}
-      decimalSeparator={decimalSeparator === 'DOTS' ? '.' : ','}
       decimalScale={disableDecimal ? 0 : other?.decimalScale ?? undefined}
       allowNegative={!disableNegative}
       getInputRef={ref}

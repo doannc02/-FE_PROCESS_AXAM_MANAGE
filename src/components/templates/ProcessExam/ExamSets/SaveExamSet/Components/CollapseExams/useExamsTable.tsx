@@ -1,7 +1,7 @@
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { ColumnProps } from '@/components/organism/CoreTable'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
-import { ExamSet } from '@/service/examSet/type'
+import { Exam, ExamSet } from '@/service/examSet/type'
 import { CheckBox } from '@mui/icons-material'
 import { Checkbox } from '@mui/material'
 import { useMemo } from 'react'
@@ -15,20 +15,7 @@ export const useExamsTable = () => {
     control: control,
     keyName: 'key',
   })
-  const a = {
-    id: 3,
-    code: 'EXAM003',
-    name: 'Midterm Exam 2',
-    attached_file: '/files/exam3.pdf',
-    comment: 'Second midterm exam',
-    description: 'Covers chapters 4-6',
-    upload_date: '2024-03-10',
-    status: 'approved',
-    academic_year: {
-      name: '2020-2021',
-      id: 1,
-    },
-  }
+
   const columns = useMemo(
     () =>
       [
@@ -69,13 +56,12 @@ export const useExamsTable = () => {
     []
   )
 
-  const tableData = (fields ?? []).map((item, index) => {
+  const tableData = ((fields as Exam[]) ?? []).map((item, index) => {
     return {
       ...item,
       id: item?.id,
       code: item?.code,
       name: item?.code,
-      //  upload_date: <Core
       attached_file: <Checkbox checked={!!item?.attached_file} />,
       status: (
         <DisplayStatus

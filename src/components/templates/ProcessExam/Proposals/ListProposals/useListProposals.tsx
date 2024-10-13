@@ -83,10 +83,29 @@ const useListProposals = () => {
         {
           header: 'Ngày bắt đầu',
           fieldName: 'start_date',
+          styleCell: {
+            style: {
+              minWidth: '60px',
+            },
+          },
         },
         {
           header: 'Ngày kết thúc',
           fieldName: 'end_date',
+          styleCell: {
+            style: {
+              minWidth: '60px',
+            },
+          },
+        },
+        {
+          header: 'Tổng bộ đề',
+          fieldName: 'total_exam_set',
+          styleCell: {
+            style: {
+              minWidth: '60px',
+            },
+          },
         },
         {
           header: 'Trạng thái',
@@ -100,6 +119,7 @@ const useListProposals = () => {
     return {
       ...item,
       id: item?.id,
+      total_exam_set: item?.total_exam_set,
       userName: item?.user?.name ?? '-',
       end_date: convertToDate(item?.end_date),
       start_date: convertToDate(item?.start_date),

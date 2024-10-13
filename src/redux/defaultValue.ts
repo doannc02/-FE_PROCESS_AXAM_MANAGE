@@ -9,13 +9,10 @@ import {
   WHITE,
 } from '@/helper/colors'
 import {
-  CurrentBranch,
   ButtonConfig,
-  CompanyConfig,
   FontConfig,
   TableConfig,
   ThemeColorConfig,
-  CurrentLedgerRef,
   CurrentLogin,
 } from '@/redux/type'
 
@@ -114,56 +111,13 @@ const buttonDefaultConfig: ButtonConfig = {
   },
 }
 
-const companyConfig: CompanyConfig = {
-  id: 0,
-  username: '',
-  timezone: '',
-  symbol: '',
-  domain: '',
-  firstName: '',
-  lastName: '',
-  currency: 'VND',
-  position: 'RIGHT',
-  language: 'vn',
-  decimalSeparator: 'COMMA',
-  thousandSeparator: 'DOTS',
-  floatRounding: 2,
-  code: '',
-  name: '',
-  countryId: 0,
-  country: '',
-  languageId: 0,
-  languageCode: '',
-  activated: true,
-  parentId: null,
-  parent: null,
-  description: '',
-  currencyId: 0,
-  logo: '',
-  phone: '',
-  email: '',
-  taxCode: '',
-  address: '',
-}
 
 const tableConfig: TableConfig = []
 
-const branchDefault: CurrentBranch = {
-  id: null,
-  name: null,
-  type: '',
-}
-
-const ledgerRefDefault: CurrentLedgerRef = {
-  id: null,
-  name: '',
-  code: '',
-}
-
 const userLoginDefault: CurrentLogin = {
-  id: null,
+  name: '',
   email: '',
-  role: '',
+  fullname: '',
   avatar: '',
 }
 
@@ -171,10 +125,7 @@ const defaultValue = {
   themeColorDefaultConfig,
   fontDefaultConfig,
   buttonDefaultConfig,
-  companyConfig,
   tableConfig,
-  branchDefault,
-  ledgerRefDefault,
   userLoginDefault,
 }
 

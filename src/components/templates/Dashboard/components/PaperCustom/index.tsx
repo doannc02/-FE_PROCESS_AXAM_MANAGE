@@ -7,12 +7,14 @@ const PaperCustom = ({
   contentTitle,
   subtitle,
   unit,
+  backgroundColor,
 }: {
   title: string
   value: number
   subtitle: string
   contentTitle: string
   unit?: string
+  backgroundColor: string
 }) => {
   const color = () => {
     if (value > 0 && value < 2) {
@@ -25,9 +27,17 @@ const PaperCustom = ({
   }
 
   return (
-    <Paper className='flex flex-col flex-auto shadow rounded-2xl overflow-hidden'>
+    <Paper
+      className='flex flex-col flex-auto shadow rounded-2xl overflow-hidden'
+      style={{ backgroundColor: backgroundColor, margin: '10px' }}
+    >
       <div className='flex items-center justify-between px-8 pt-12'>
-        <Typography variant='h6' className='text-center' color='text.secondary'>
+        <Typography
+          variant='body1'
+          fontWeight={700}
+          className='text-center'
+          color='black'
+        >
           {title}
         </Typography>
         <IconButton aria-label='more' size='large'>
@@ -35,11 +45,11 @@ const PaperCustom = ({
         </IconButton>
       </div>
       <div className='text-center mt-20'>
-        <Typography variant='h3' color={color()}>
+        <Typography variant='h4' color={color()}>
           {value}
         </Typography>
-        {unit && (
-          <Typography variant='h6' color={color()}>
+        {true && (
+          <Typography variant='body1' color={color()}>
             {unit}
           </Typography>
         )}
