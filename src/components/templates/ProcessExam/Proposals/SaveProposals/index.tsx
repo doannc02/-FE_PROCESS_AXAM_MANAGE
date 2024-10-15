@@ -28,6 +28,7 @@ import { getExamSetList } from '@/service/examSet'
 import { useState } from 'react'
 import { getAcademicYears } from '@/service/academicYear'
 import { ExamSet } from '@/service/examSet/type'
+import DialogCfAddExamSet from '../Dialogs/DialogConfirmAddExamSet'
 
 const SaveProposals = () => {
   const [, _] = useSaveProposals()
@@ -60,10 +61,18 @@ const SaveProposals = () => {
     remove,
     onSubmitApprove,
     onSubmitReject,
+    showDialog,
   } = handles
 
   const { watch, control, getValues } = methodForm
 
+  const isDisabledControl = isView
+    ? true
+    : isAddNew
+    ? false
+    : role !== 'Admin'
+    ? true
+    : false
   return (
     <PageContainer
       title={
@@ -120,7 +129,7 @@ const SaveProposals = () => {
                               control={control}
                               name='code'
                               label='Mã kế hoạch'
-                              isViewProp={isUpdate}
+                              isViewProp={isDisabledControl}
                               required
                               rules={{
                                 required: t('common:validation.required'),
@@ -132,6 +141,7 @@ const SaveProposals = () => {
                             <CoreAutoCompleteAPI
                               placeholder='Chọn năm học'
                               fetchDataFn={getAcademicYears}
+                              isViewProp={isDisabledControl}
                               params={{
                                 page: 1,
                                 size: 20,
@@ -146,6 +156,7 @@ const SaveProposals = () => {
                               control={control}
                               className='w-full'
                               placeholder='Chọn học kỳ'
+                              isViewProp={isDisabledControl}
                               label='Học kỳ'
                               name='semester'
                               options={[
@@ -173,6 +184,13 @@ const SaveProposals = () => {
                                   page: 1,
                                   size: 20,
                                 }}
+                                isViewProp={
+                                  isView
+                                    ? true
+                                    : role !== 'Admin'
+                                    ? true
+                                    : false
+                                }
                                 label='Người thực hiện'
                                 name='user'
                                 fetchDataFn={getListUser}
@@ -213,6 +231,7 @@ const SaveProposals = () => {
                               title='Ngày bắt đầu'
                               name='start_date'
                               format='YYYY-MM-DD'
+                              isViewProp={isDisabledControl}
                               required
                               rules={{
                                 required: t('common:validation.required'),
@@ -225,6 +244,7 @@ const SaveProposals = () => {
                               control={control}
                               title='Ngày đề xuất hoàn thành'
                               name='end_date'
+                              isViewProp={isDisabledControl}
                               format='YYYY-MM-DD'
                               required
                               rules={{
@@ -239,6 +259,7 @@ const SaveProposals = () => {
                               control={control}
                               name='content'
                               label='Nội dung kế hoạch'
+                              isViewProp={isDisabledControl}
                               multiline
                               required
                               rules={{
@@ -248,10 +269,10 @@ const SaveProposals = () => {
                           </Grid>
                         </Grid>
                       </div>
-                      {!isView && (
+                      {!isView && role !== 'Admin' && (
                         <CoreCheckbox
                           control={control}
-                          label='Tạo kế hoạch kèm theo bộ đề'
+                          label='Tạo kế hoạch kèm theo bộ đề có sẵn'
                           name='isCreateExamSet'
                           isViewProp={role === 'Admin'}
                         />
@@ -310,6 +331,19 @@ const SaveProposals = () => {
                                               fetchDataFn={getExamSetList}
                                               control={control}
                                               label=''
+                                              isViewProp={
+                                                isView
+                                                  ? true
+                                                  : isAddNew
+                                                  ? role !== 'Admin'
+                                                    ? false
+                                                    : true
+                                                  : isUpdate
+                                                  ? role !== 'Admin'
+                                                    ? false
+                                                    : true
+                                                  : true
+                                              }
                                               exceptValues={exceptValues}
                                               name={`exam_sets.${index}`}
                                               placeholder='Chọn tên bộ đề'
@@ -461,6 +495,24 @@ const SaveProposals = () => {
                             </CoreButton>
 
                             {role !== 'Admin' &&
+                              watch('id') &&
+                              (watch('exam_sets') ?? []).length === 0 && (
+                                <CoreButton
+                                  theme='add'
+                                  onClick={() => {
+                                    showDialog(
+                                      <DialogCfAddExamSet
+                                        codePlan={watch('code')}
+                                        id={Number(watch('id'))}
+                                      />
+                                    )
+                                  }}
+                                >
+                                  Tạo bộ đề cho kế hoạch
+                                </CoreButton>
+                              )}
+
+                            {role !== 'Admin' &&
                               watch('status') !== 'approved' && (
                                 <CoreButton
                                   theme='draft'
@@ -518,8 +570,7 @@ const SaveProposals = () => {
                     <TopAction
                       actionList={
                         role === 'Admin'
-                          ? methodForm.watch('status') === 'in_progress' ||
-                            methodForm.watch('status') === 'approved'
+                          ? methodForm.watch('status') === 'approved'
                             ? []
                             : ['edit']
                           : ([

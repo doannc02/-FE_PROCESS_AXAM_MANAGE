@@ -238,7 +238,8 @@ const CoreAutoCompleteAPI: <
 
   return (
     <div
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation()
         if (!readOnly && !disabled && !isView && !isClick) setIsClick(true)
       }}
     >
@@ -261,6 +262,7 @@ const CoreAutoCompleteAPI: <
               noOptionsText={t('form.autocomplete.no_options')}
               onBlur={onBlur}
               onChange={(e, value: any) => {
+                e.stopPropagation()
                 onChange(value)
                 if (onChangeValue) onChangeValue(value)
                 if (onAfterChangeValue) onAfterChangeValue()

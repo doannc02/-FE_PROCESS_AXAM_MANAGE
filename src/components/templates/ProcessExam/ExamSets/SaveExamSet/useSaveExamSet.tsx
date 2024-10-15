@@ -7,11 +7,7 @@ import { getRole } from '@/config/token'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
-import defaultValue from '@/redux/defaultValue'
 import { useAppDispatch } from '@/redux/hook'
-import { setButtonConfig } from '@/redux/reducer/buttonReducer'
-import { setFontConfig } from '@/redux/reducer/fontReducer'
-import { setThemeColor } from '@/redux/reducer/themeColorReducer'
 import { MENU_URL } from '@/routes'
 import { getExamList } from '@/service/exam'
 import {
@@ -21,18 +17,11 @@ import {
 } from '@/service/examSet'
 import { ExamSet, RequestExamSet, state } from '@/service/examSet/type'
 import {
-  actionProposals,
-  useQueryGetDetailProposals,
-} from '@/service/proposals'
-import { Proposals, ResponseProposals } from '@/service/proposals/type'
-import { CommonObject } from '@/service/type'
-import {
-  convertToDate,
-  convertToOffsetDateTime,
+  convertToDate
 } from '@/utils/date/convertToDate'
 import { Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
@@ -51,7 +40,7 @@ export const useSaveExamSet = () => {
     methodForm
   const router = useRouter()
   const isAddNew = router.asPath.includes('/addNew')
-  const { actionType, id } = router.query
+  const { actionType, id, idProposal } = router.query
   const isUpdate = !!id && !isAddNew
   const isView = actionType === 'VIEW'
 
@@ -277,6 +266,12 @@ export const useSaveExamSet = () => {
         ...rest,
         status: status,
         exams: !!getValues('isCreateExam') ? input.exams : [],
+        proposal: !!idProposal
+          ? {
+              id: Number(idProposal),
+              code: '',
+            }
+          : undefined,
       },
     })
   }

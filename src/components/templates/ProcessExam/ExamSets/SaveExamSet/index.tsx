@@ -229,7 +229,7 @@ const SaveExamSet = () => {
                       {!isView && (
                         <CoreCheckbox
                           control={control}
-                          label='Tạo bộ đề kèm theo đề chi tiết'
+                          label='Tạo bộ đề kèm theo đề chi tiết có sẵn'
                           name='isCreateExam'
                         />
                       )}

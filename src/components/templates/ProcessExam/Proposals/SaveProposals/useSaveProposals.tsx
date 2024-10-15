@@ -1,3 +1,4 @@
+import { useDialog } from '@/components/hooks/dialog/useDialog'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { Tooltip } from '@/components/molecules/Tooltip'
 import { ColumnProps } from '@/components/organism/CoreTable'
@@ -14,10 +15,7 @@ import {
   useQueryGetDetailProposals,
 } from '@/service/proposals'
 import { Proposals, RequestProposals } from '@/service/proposals/type'
-import {
-  convertToDate,
-  convertToOffsetDateTime,
-} from '@/utils/date/convertToDate'
+import { convertToDate } from '@/utils/date/convertToDate'
 import { Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
@@ -44,6 +42,7 @@ export const useSaveProposals = () => {
   const isUpdate = !!id && !isAddNew
   const isView = actionType === 'VIEW'
 
+  const { hideDialog, showDialog } = useDialog()
   // get data detail step proposal
   const { data, isLoading, refetch } = useQueryGetDetailProposals(
     {
@@ -277,6 +276,7 @@ export const useSaveProposals = () => {
       remove,
       onSubmitApprove,
       onSubmitReject,
+      showDialog,
     },
   ] as const
 }
