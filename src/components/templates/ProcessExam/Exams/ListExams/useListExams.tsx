@@ -94,7 +94,7 @@ const useListExams = () => {
         },
         {
           header: 'Ngày upload',
-          fieldName: 'upload_date',
+          fieldName: 'create_at',
           styleCell: {
             style: {
               minWidth: '100px',
@@ -118,7 +118,7 @@ const useListExams = () => {
     return {
       ...item,
       academic_year: item?.academic_year?.name,
-      upload_date: convertToDate(item?.upload_date),
+      create_at: convertToDate(item?.create_at),
       description: item?.description && (
         <Stack direction='row' justifyContent='space-between'>
           <Typography>{item?.description.slice(0, 19)}</Typography>

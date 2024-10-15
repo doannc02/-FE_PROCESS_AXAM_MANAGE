@@ -1,8 +1,0 @@
-{
-    "title" : "Sổ cái",
-    "table" : {
-        "code" : "Mã sổ cái",
-        "name" : "Tên sổ cái",
-        "description" : "Mô tả"
-    }
-}

@@ -37,7 +37,7 @@ const defaultValues = {
     {
       id: null,
       status: 'in_progress',
-      upload_date: convertToOffsetDateTime(new Date()),
+      create_at: convertToOffsetDateTime(new Date()),
     },
   ] as Exam[],
 }
@@ -63,7 +63,7 @@ const useSaveExams = () => {
     useState<boolean>()
 
   const router = useRouter()
-  const { id, actionType, name } = router.query
+  const { id, actionType, name, idExamSet, nameExamSet } = router.query
   const isUpdate = !!id
   const isView = !!id && actionType === 'VIEW'
   const { fields, append, remove } = useFieldArray({
@@ -110,7 +110,7 @@ const useSaveExams = () => {
           ? [
               {
                 header: 'Ngày upload',
-                fieldName: 'upload_date',
+                fieldName: 'create_at',
               },
             ]
           : []),
@@ -140,7 +140,7 @@ const useSaveExams = () => {
     if (isView) {
       return {
         ...item,
-        upload_date: convertToDate(item?.upload_date),
+        create_at: convertToDate(item?.create_at),
         description: item?.description && (
           <Stack direction='row' justifyContent='space-between'>
             <Typography>{item?.description.slice(0, 19)}</Typography>
@@ -343,8 +343,8 @@ const useSaveExams = () => {
       console.log(data?.data?.data, 'lozd')
       const format = {
         ...data?.data?.data,
-        upload_date: convertToOffsetDateTime(
-          convertToDate(data?.data?.data?.upload_date)
+        create_at: convertToOffsetDateTime(
+          convertToDate(data?.data?.data?.create_at)
         ),
       }
       reset({ exams: [format] })
@@ -357,7 +357,6 @@ const useSaveExams = () => {
     let isValid = true
 
     for (let i = 0; i < exams.length; i++) {
-      console.log(input, 'aaaa')
       if (!exams[i].description || !exams[i].attached_file) {
         isValid = false
         setError(`exams.${i}.description`, {
@@ -441,7 +440,6 @@ const useSaveExams = () => {
       columns,
       tableData,
       actionType,
-      name,
       id,
       isLoading,
       isLoadingUpdateStateExam,
@@ -449,6 +447,8 @@ const useSaveExams = () => {
       isView,
       router,
       role,
+      idExamSet,
+      nameExamSet,
     },
     { append, remove, onSubmit, onReRequest, changeStateExam, onUpdateState },
   ] as const

@@ -22,7 +22,7 @@ export type Exam = {
   attached_file: string
   comment: string
   description: string
-  upload_date: string
+  create_at: string
   status: 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
   academic_year: {
     name: string

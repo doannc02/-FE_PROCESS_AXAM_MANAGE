@@ -26,6 +26,8 @@ import { ActionTable } from '@/components/organism/TableCustomDnd/ActionTable'
 import { TableExams } from '@/components/organism/TableExams'
 import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
 import { getDepartment } from '@/service/department'
+import DialogCfAddExams from '../Dialogs/DialogConfirmAddExams'
+import { WarningText } from '@/components/atoms/WarningText'
 
 const steps = ['Phân công thực hiện đề cương', 'Đề xuất phê duyệt']
 
@@ -46,6 +48,7 @@ const SaveExamSet = () => {
     columns,
     role,
     fields,
+    codePlan,
   } = values
 
   const { onUpdateState } = handles
@@ -56,6 +59,7 @@ const SaveExamSet = () => {
     onSubmitInProgress,
     onSubmitApprove,
     onSubmitReject,
+    showDialog,
   } = handles
 
   const { control, watch, getValues, setValue } = methodForm
@@ -74,9 +78,9 @@ const SaveExamSet = () => {
                 <Typography>
                   {isUpdate
                     ? actionType === 'VIEW'
-                      ? nameExamSet
-                      : nameExamSet
-                    : t('common:btn.add')}
+                      ? 'Chi tiết bộ đề ' + nameExamSet
+                      : 'Chỉnh sửa bộ đề ' + nameExamSet
+                    : t('common:btn.add') + ' bộ đề'}
                 </Typography>
               ),
             },
@@ -101,6 +105,15 @@ const SaveExamSet = () => {
                   }`,
                   content: (
                     <>
+                      <WarningText bgColor='#abdbe3'>
+                        {codePlan
+                          ? `Bạn đang tạo bộ đề cho kế hoạch "${codePlan}"`
+                          : watch('proposal')?.code || watch('proposal')?.id
+                          ? `Bộ đề này đã được gán với Mã kế hoạch "${
+                              watch('proposal')?.name ?? ''
+                            }"`
+                          : 'Bộ đề chưa được gán với kế hoạch nào!!'}
+                      </WarningText>
                       <StateOfAssignment state={getValues('status')} />
                       <div className='mt-20'>
                         <Grid
@@ -272,11 +285,29 @@ const SaveExamSet = () => {
                             >
                               {t('common:btn.cancel')}
                             </CoreButton>
+                            {role !== 'Admin' &&
+                              watch('id') &&
+                              (fields ?? []).length < watch('exam_quantity') &&
+                              watch('status') !== 'approved' && (
+                                <CoreButton
+                                  theme='add'
+                                  onClick={() => {
+                                    showDialog(
+                                      <DialogCfAddExams
+                                        nameExamSet={watch('name')}
+                                        idExamSet={Number(watch('id'))}
+                                      />
+                                    )
+                                  }}
+                                >
+                                  Tạo đề cương cho bộ đề
+                                </CoreButton>
+                              )}
 
                             {role !== 'Admin' &&
                               watch('status') !== 'approved' && (
                                 <CoreButton
-                                  theme='draft'
+                                  theme='add'
                                   onClick={async () => {
                                     onSubmitInProgress()
                                   }}

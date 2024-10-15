@@ -1,4 +1,5 @@
 import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
+import { useDialog } from '@/components/hooks/dialog/useDialog'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { Tooltip } from '@/components/molecules/Tooltip'
 import { TopAction } from '@/components/molecules/TopAction'
@@ -16,9 +17,7 @@ import {
   useQueryGetDetailExamSet,
 } from '@/service/examSet'
 import { ExamSet, RequestExamSet, state } from '@/service/examSet/type'
-import {
-  convertToDate
-} from '@/utils/date/convertToDate'
+import { convertToDate } from '@/utils/date/convertToDate'
 import { Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
@@ -28,6 +27,7 @@ import { useMutation } from 'react-query'
 
 const defaultValues = {
   status: 'in_progress' as any,
+  isCreateExam: false,
 }
 export const useSaveExamSet = () => {
   const { t } = useTranslation('')
@@ -40,7 +40,7 @@ export const useSaveExamSet = () => {
     methodForm
   const router = useRouter()
   const isAddNew = router.asPath.includes('/addNew')
-  const { actionType, id, idProposal } = router.query
+  const { actionType, id, idProposal, codePlan } = router.query
   const isUpdate = !!id && !isAddNew
   const isView = actionType === 'VIEW'
 
@@ -50,6 +50,7 @@ export const useSaveExamSet = () => {
     keyName: 'key',
   })
 
+  const { showDialog } = useDialog()
   const columns = useMemo(
     () =>
       [
@@ -69,7 +70,7 @@ export const useSaveExamSet = () => {
 
         {
           header: 'Ngày upload',
-          fieldName: 'upload_date',
+          fieldName: 'create_at',
         },
 
         {
@@ -95,7 +96,7 @@ export const useSaveExamSet = () => {
       .filter((i) => !!i)
     return {
       ...item,
-      upload_date: convertToDate(watch(`exams.${index}.upload_date`)),
+      create_at: convertToDate(watch(`exams.${index}.create_at`)),
       description: watch(`exams.${index}.description`) && (
         <Stack direction='row' justifyContent='space-between'>
           <Typography>
@@ -242,15 +243,20 @@ export const useSaveExamSet = () => {
     console.log(input, 'input')
     let isValid = true
 
-    if (input.exam_quantity) {
+    if (input.exam_quantity && !!watch('isCreateExam')) {
       input.exams.forEach((item, index) => {
-        console.log('zzzzzl')
-        if (!item.code) {
-          console.log('lmm')
+        if (!item?.code) {
           setError(`exams.${index}`, {
             message: 'Trường này là bắt buộc',
           })
           isValid = false
+        }
+        if (status === 'approved' || status === 'rejected') {
+          if (item?.status === 'in_progress') {
+            errorMsg(
+              `Không thể phê duyệt bộ đề do vẫn còn đề chi tiết ở trạng thái "Đang thực hiện"`
+            )
+          }
         }
       })
     }
@@ -270,6 +276,7 @@ export const useSaveExamSet = () => {
           ? {
               id: Number(idProposal),
               code: '',
+              name: '',
             }
           : undefined,
       },
@@ -331,6 +338,7 @@ export const useSaveExamSet = () => {
       tableData,
       role,
       fields,
+      codePlan,
     },
     {
       onSubmit,
@@ -341,6 +349,7 @@ export const useSaveExamSet = () => {
       handleFormSubmit,
       onSubmitApprove,
       onSubmitReject,
+      showDialog,
     },
   ] as const
 }

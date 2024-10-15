@@ -6,6 +6,7 @@ export type ExamSet = {
   proposal?: {
     id: number
     code: string
+    name: string
   }
   department: {
     id: number
@@ -30,8 +31,11 @@ export type ExamSet = {
     name: string
     id: number
   }
-  exams: CommonObject[] | Exam[]
+  exams: Exam2[] | Exam[]
   isCreateExam?: boolean
+}
+export interface Exam2 extends CommonObject {
+  status: state
 }
 
 export type Exam = {
@@ -46,7 +50,7 @@ export type Exam = {
   attached_file: string
   comment: string
   description: string
-  upload_date: string
+  create_at: string
   status: 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
   academic_year: {
     name: string

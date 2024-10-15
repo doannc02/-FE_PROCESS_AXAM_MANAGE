@@ -3,18 +3,22 @@ import { useDialog } from '@/components/hooks/dialog/useDialog'
 import { DialogCustom } from '@/components/organism/DialogCustom'
 import { Box, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import useDialogCfAddExamSet from './useDialogConfirmAddExamSet'
+import useDialogCfAddExamSet from './useDialogConfirmAddExams'
 
 export type Props = {
-  id: number
-  codePlan: string
+  idExamSet: number
+  nameExamSet: string
   refetch?: any
 }
 
-const DialogCfAddExamSet = ({ id, codePlan, refetch }: Props) => {
+const DialogCfAddExams = ({ idExamSet, nameExamSet, refetch }: Props) => {
   const { t } = useTranslation()
   const { hideDialog } = useDialog()
-  const [values, handles] = useDialogCfAddExamSet({ id, codePlan, refetch })
+  const [values, handles] = useDialogCfAddExamSet({
+    idExamSet,
+    nameExamSet,
+    refetch,
+  })
   const { isLoading } = values
   const { onSubmit } = handles
 
@@ -27,7 +31,7 @@ const DialogCfAddExamSet = ({ id, codePlan, refetch }: Props) => {
             lineHeight: 1.5,
           }}
         >
-          {`Bạn có muốn khởi tạo bộ đề cho kế hoạch "${codePlan}" này không?`}
+          {`Bạn có muốn tạo đề cương chi tiết cho bộ đề "${nameExamSet}" này không?`}
         </Typography>
       </Box>
 
@@ -48,4 +52,4 @@ const DialogCfAddExamSet = ({ id, codePlan, refetch }: Props) => {
   )
 }
 
-export default DialogCfAddExamSet
+export default DialogCfAddExams

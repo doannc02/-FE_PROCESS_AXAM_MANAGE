@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { TableExams } from '@/components/organism/TableExams'
 import { ActionTable } from '@/components/organism/TableCustomDnd/ActionTable'
 import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
+import { WarningText } from '@/components/atoms/WarningText'
 
 const SaveExams = () => {
   const { t } = useTranslation()
@@ -36,17 +37,18 @@ const SaveExams = () => {
     isUpdate,
     tableData,
     actionType,
-    name,
     isView,
     isLoading,
     isLoadingSubmit,
     isLoadingUpdateStateExam,
+    nameExamSet,
+    idExamSet,
     role,
   } = values
 
-  const { append, remove, onSubmit, onUpdateState, onReRequest } = handles
+  const { append, onSubmit, onUpdateState, onReRequest } = handles
 
-  const { watch, control, setValue } = methodForm
+  const { watch, setValue } = methodForm
   return (
     <PageContainer
       title={
@@ -62,8 +64,8 @@ const SaveExams = () => {
                 <Typography>
                   {isUpdate
                     ? actionType === 'VIEW'
-                      ? `Mã đề ${watch(`exams.0.code`)}`
-                      : `Mã đề ${watch(`exams.0.code`)}`
+                      ? `Chi tiết Mã đề ${watch(`exams.0.code`)}`
+                      : `Chỉnh sửa Mã đề ${watch(`exams.0.code`)}`
                     : t('common:btn.add')}
                 </Typography>
               ),
@@ -89,6 +91,16 @@ const SaveExams = () => {
                   } `,
                   content: (
                     <>
+                      <WarningText bgColor='#abdbe3'>
+                        {nameExamSet
+                          ? `Bạn đang tạo đề cương chi tiết cho bộ đề "${nameExamSet}"`
+                          : watch('exams.0.exam_set')?.name ||
+                            watch('exams.0.exam_set')?.id
+                          ? `Đề cương chi tiết này đã được gán với bộ đề "${
+                              watch('exams.0.exam_set')?.name ?? ''
+                            }"`
+                          : 'Đề cương chi tiết này chưa được gán với bộ đề nào!!'}
+                      </WarningText>
                       <Typography className='py-5' variant='subtitle1'>
                         {isUpdate
                           ? 'Chi tiết đề' + ' ' + watch(`exams.0.name`)
@@ -108,9 +120,10 @@ const SaveExams = () => {
                               defaultValueLine={{
                                 id: null,
                                 status: 'in_progress',
-                                upload_date: convertToOffsetDateTime(
+                                create_at: convertToOffsetDateTime(
                                   new Date()
                                 ),
+                                exam_set: idExamSet,
                               }}
                             />
                           )

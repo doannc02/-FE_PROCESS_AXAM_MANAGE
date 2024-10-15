@@ -6,7 +6,7 @@ import { Props } from '.'
 import { useRouter } from 'next/router'
 import { MENU_URL } from '@/routes'
 
-const useDialogCfAddExamSet = ({ id, codePlan, refetch }: Props) => {
+const useDialogCfAddExamSet = ({ idExamSet, nameExamSet, refetch }: Props) => {
   const { t } = useTranslation()
   const { hideDialog } = useDialog()
   const router = useRouter()
@@ -16,19 +16,19 @@ const useDialogCfAddExamSet = ({ id, codePlan, refetch }: Props) => {
     setError,
   } = useFormCustom<any>({
     defaultValues: {
-      id,
-      codePlan,
+      idExamSet,
+      nameExamSet,
     },
   })
 
-  const onSubmit = handleSubmit(async (input) => {
+  const onSubmit = handleSubmit(async () => {
     try {
       refetch && refetch()
       router.push({
-        pathname: `${MENU_URL.EXAM_SET}/addNew`,
+        pathname: `${MENU_URL.DETAIL_EXAM}/addNew`,
         query: {
-          idProposal: id,
-          codePlan: codePlan,
+          idExamSet: idExamSet,
+          nameExamSet: nameExamSet,
         },
       })
       hideDialog()

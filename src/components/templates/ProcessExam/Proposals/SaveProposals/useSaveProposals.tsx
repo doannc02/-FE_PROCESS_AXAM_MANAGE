@@ -193,36 +193,96 @@ export const useSaveProposals = () => {
     })
   })
   const onSubmitPendingApprove = handleSubmit(async (input) => {
+    if (input.exam_sets.length === 0) {
+      errorMsg('Không thể chuyển trạng thái do kế hoạch này không có bộ đề nào')
+    }
     const { isCreateExamSet, ...rest } = input
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: {
         ...rest,
-        exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
+        exam_sets: input.exam_sets,
         status: 'pending_approval',
       },
     })
   })
 
   const onSubmitReject = handleSubmit(async (input) => {
+    let countExams
     const { isCreateExamSet, ...rest } = input
+    input.exam_sets.map((i) => {
+      if (i.status === 'in_progress') {
+        errorMsg(
+          'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
+        )
+        return
+      }
+      countExams = +i.exams.length
+      i.exams.map((ele) => {
+        if (ele.status === 'in_progress') {
+          errorMsg(
+            'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề cương đang thực hiện!!'
+          )
+          return
+        }
+      })
+    })
+    if (countExams) {
+      errorMsg(
+        'Không thể phê duyệt do kế hoạch này không có đề chi tiết nào trong bộ đề!!'
+      )
+      return
+    }
+    if (input.exam_sets.length === 0) {
+      errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
+      return
+    }
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: {
         ...rest,
-        exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
+        exam_sets: input.exam_sets,
         status: 'rejected',
       },
     })
   })
 
   const onSubmitApprove = handleSubmit(async (input) => {
+    let countExams
     const { isCreateExamSet, ...rest } = input
+    input.exam_sets.map((i) => {
+      if (i.status === 'in_progress') {
+        errorMsg(
+          'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
+        )
+        return
+      }
+      countExams = +i.exams.length
+      i.exams.map((ele) => {
+        if (ele.status === 'in_progress') {
+          errorMsg(
+            'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề cương đang thực hiện!!'
+          )
+          return
+        }
+      })
+    })
+    if (countExams) {
+      errorMsg(
+        'Không thể phê duyệt do kế hoạch này không có đề chi tiết nào trong bộ đề!!'
+      )
+      return
+    }
+    if (input.exam_sets.length === 0) {
+      errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
+      return
+    }
+
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: {
         ...rest,
-        exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
+        exam_sets: input.exam_sets,
         status: 'approved',
       },
     })

@@ -29,6 +29,7 @@ import { useState } from 'react'
 import { getAcademicYears } from '@/service/academicYear'
 import { ExamSet } from '@/service/examSet/type'
 import DialogCfAddExamSet from '../Dialogs/DialogConfirmAddExamSet'
+import { WarningText } from '@/components/atoms/WarningText'
 
 const SaveProposals = () => {
   const [, _] = useSaveProposals()
@@ -117,6 +118,11 @@ const SaveProposals = () => {
                   }`,
                   content: (
                     <>
+                      {(watch('exam_sets') ?? []).length === 0 && isUpdate ? (
+                        <WarningText>
+                          Chú ý: Kế hoạch này chưa có bộ đề nào thực hiện!!
+                        </WarningText>
+                      ) : null}
                       <StateOfAssignment state={watch('status')} />
                       <div className='mt-30'>
                         <Grid
@@ -231,6 +237,7 @@ const SaveProposals = () => {
                               title='Ngày bắt đầu'
                               name='start_date'
                               format='YYYY-MM-DD'
+                              minDate={new Date()}
                               isViewProp={isDisabledControl}
                               required
                               rules={{
@@ -244,6 +251,7 @@ const SaveProposals = () => {
                               control={control}
                               title='Ngày đề xuất hoàn thành'
                               name='end_date'
+                              minDate={watch('start_date')}
                               isViewProp={isDisabledControl}
                               format='YYYY-MM-DD'
                               required
@@ -496,7 +504,7 @@ const SaveProposals = () => {
 
                             {role !== 'Admin' &&
                               watch('id') &&
-                              (watch('exam_sets') ?? []).length === 0 && (
+                              watch('status') !== 'approved' && (
                                 <CoreButton
                                   theme='add'
                                   onClick={() => {
@@ -512,18 +520,21 @@ const SaveProposals = () => {
                                 </CoreButton>
                               )}
 
-                            {role !== 'Admin' &&
-                              watch('status') !== 'approved' && (
-                                <CoreButton
-                                  theme='draft'
-                                  onClick={async () => {
-                                    onSubmitDraft()
-                                  }}
-                                  loading={isLoadingSubmit}
-                                >
-                                  Lưu đang thực hiện
-                                </CoreButton>
-                              )}
+                            {watch('status') !== 'approved' && (
+                              <CoreButton
+                                theme='add'
+                                onClick={async () => {
+                                  onSubmitDraft()
+                                }}
+                                loading={isLoadingSubmit}
+                              >
+                                {role === 'Admin'
+                                  ? isUpdate
+                                    ? 'Lưu thay đổi'
+                                    : 'Thêm mới'
+                                  : 'Lưu đang thực hiện'}
+                              </CoreButton>
+                            )}
 
                             {watch('status') !== 'approved' &&
                               (fields ?? [])?.length > 0 &&
@@ -533,7 +544,7 @@ const SaveProposals = () => {
                                   type='submit'
                                   loading={isLoadingSubmit}
                                 >
-                                  Lưu và yêu cầu duyệt
+                                  Lưu và Yêu cầu duyệt
                                 </CoreButton>
                               )}
 

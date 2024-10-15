@@ -45,7 +45,7 @@ export const useExamsTable = () => {
         },
         {
           header: 'Ngày upload',
-          fieldName: 'upload_date',
+          fieldName: 'create_at',
         },
         {
           header: '',
