@@ -44,7 +44,6 @@ export const logoutAccount = async () => {
 export const middlewareRequest = async (config: any) => {
   try {
     const tokenAccess: any = JSON.parse(getCmsToken() ?? '{}')
-    console.log(tokenAccess, 'tkacc')
     if (
       config.url &&
       config.url.includes('/oauth') &&
@@ -55,6 +54,7 @@ export const middlewareRequest = async (config: any) => {
         ...config,
         headers: {
           ...config.headers,
+          'ngrok-skip-browser-warning': '69420',
           'Accept-Language': 'vi',
           'Current-Domain': !window.location.origin.includes('localhost')
             ? window.location.origin
@@ -64,11 +64,11 @@ export const middlewareRequest = async (config: any) => {
         },
       }
     }
-    console.log(tokenAccess, config, 'inconfig2')
     return {
       ...config,
       headers: {
         ...config.headers,
+        'ngrok-skip-browser-warning': '69420',
         'Accept-Language': 'vi',
         Authorization: `Bearer ${tokenAccess?.accessToken}`,
         'Current-Domain': !window.location.origin.includes('localhost')
@@ -93,11 +93,11 @@ export const middlewareResponseError = async (error: any) => {
   const status = response?.status
   console.log(error, response, 'res')
   if (!status || status === 503 || status === 404) {
-   // window.location.replace('/accounting/500')
+    // window.location.replace('/accounting/500')
   }
   if (!status && status === 200) {
-     window.location.replace('/accounting/403')
-   }
+    window.location.replace('/accounting/403')
+  }
   if (
     status === 401
     // &&

@@ -580,17 +580,24 @@ const SaveProposals = () => {
                   rightAction: (
                     <TopAction
                       actionList={
-                        role === 'Admin'
-                          ? methodForm.watch('status') === 'approved'
-                            ? []
-                            : ['edit']
-                          : ([
-                              ...(isView
-                                ? methodForm.watch('status') === 'approved'
-                                  ? []
-                                  : ['delete', 'edit']
-                                : []),
-                            ] as any)
+                        [
+                          ...(isUpdate
+                            ? role === 'Admin' &&
+                              methodForm.watch('status') !== 'approved'
+                              ? (watch('exam_sets') ?? []).length === 0
+                                ? ['delete']
+                                : []
+                              : []
+                            : []),
+                          ...(isView
+                            ? role === 'Admin' &&
+                              methodForm.watch('status') !== 'approved'
+                              ? (watch('exam_sets') ?? []).length === 0
+                                ? ['edit', 'delete']
+                                : ['edit']
+                              : []
+                            : []),
+                        ] as any
                       }
                       onDeleteAction={() => {}}
                       onEditAction={() => {
