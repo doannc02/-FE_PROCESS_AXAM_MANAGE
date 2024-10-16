@@ -12,7 +12,7 @@ type Props = HttpResponse<any>
 const Page: NextPageWithLayout<Props> = () => <Dashboard />
 
 Page.getLayout = BasicLayout
-Page.getMeta = Meta(() => ({ title: 'Dashboard Company Service' }))
+Page.getMeta = Meta(() => ({ title: 'Dashboard Exam Process Manage Service' }))
 
 export const getServerSideProps = combineGssp<any>(
   authGssp(),

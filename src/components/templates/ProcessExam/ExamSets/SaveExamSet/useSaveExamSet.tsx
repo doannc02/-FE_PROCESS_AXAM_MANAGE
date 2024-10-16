@@ -86,7 +86,7 @@ export const useSaveExamSet = () => {
   )
 
   const tableData = (watch('exams') ?? []).map((item, index) => {
-    const exceptValues = watch(`exams`)
+    const exceptValues = (watch(`exams`) ?? [])
       .filter((i) => watch(`exams.${index}.id`) !== i?.id)
       .map((i) => {
         return {

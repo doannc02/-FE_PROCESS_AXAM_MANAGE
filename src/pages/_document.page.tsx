@@ -20,7 +20,7 @@ export default class MyDocument extends Document {
           <link
             rel='shortcut icon'
             type='image/x-icon'
-            href='/static/apus.ico'
+            href='/assets/jpg/logoVH'
           />
           <meta name='csrfToken' />
         </Head>
