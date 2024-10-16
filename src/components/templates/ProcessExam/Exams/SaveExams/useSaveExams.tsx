@@ -32,17 +32,23 @@ import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
 
-const defaultValues = {
-  exams: [
-    {
-      id: null,
-      status: 'in_progress',
-      create_at: convertToOffsetDateTime(new Date()),
-    },
-  ] as Exam[],
-}
 const useSaveExams = () => {
   const { t } = useTranslation()
+  const router = useRouter()
+  const { id, actionType, name, idExamSet, nameExamSet } = router.query
+
+  const defaultValues = {
+    exams: [
+      {
+        id: null,
+        status: 'in_progress',
+        create_at: convertToOffsetDateTime(new Date()),
+        exam_set: {
+          id: Number(idExamSet),
+        },
+      },
+    ] as Exam[],
+  }
   const methodForm = useFormCustom<{
     exams: Exam[]
   }>({ defaultValues })
@@ -62,8 +68,6 @@ const useSaveExams = () => {
   const [isLoadingUpdateStateExam, setLoadingUpdateStateExam] =
     useState<boolean>()
 
-  const router = useRouter()
-  const { id, actionType, name, idExamSet, nameExamSet } = router.query
   const isUpdate = !!id
   const isView = !!id && actionType === 'VIEW'
   const { fields, append, remove } = useFieldArray({

@@ -590,12 +590,13 @@ const SaveProposals = () => {
                               : []
                             : []),
                           ...(isView
-                            ? role === 'Admin' &&
-                              methodForm.watch('status') !== 'approved'
-                              ? (watch('exam_sets') ?? []).length === 0
-                                ? ['edit', 'delete']
-                                : ['edit']
-                              : []
+                            ? role === 'Admin'
+                              ? methodForm.watch('status') !== 'approved'
+                                ? (watch('exam_sets') ?? []).length === 0
+                                  ? ['edit', 'delete']
+                                  : ['edit']
+                                : []
+                              : ['edit']
                             : []),
                         ] as any
                       }

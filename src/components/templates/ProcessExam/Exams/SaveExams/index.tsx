@@ -120,10 +120,10 @@ const SaveExams = () => {
                               defaultValueLine={{
                                 id: null,
                                 status: 'in_progress',
-                                create_at: convertToOffsetDateTime(
-                                  new Date()
-                                ),
-                                exam_set: idExamSet,
+                                create_at: convertToOffsetDateTime(new Date()),
+                                exam_set: {
+                                  id: Number(idExamSet),
+                                },
                               }}
                             />
                           )
