@@ -150,9 +150,10 @@ export const TableRowPE = (props: Props) => {
                             />
                           </Grid>
 
-                          {!!watch(`exams.${index}.comment`) && (
-                            <Grid item xs={12} sm={12} md={12} lg={12}>
-                              {/* <CoreInput
+                          {role !== 'Admin' &&
+                            !!watch(`exams.${index}.comment`) && (
+                              <Grid item xs={12} sm={12} md={12} lg={12}>
+                                {/* <CoreInput
                                 control={control}
                                 isViewProp={
                                   role !== 'Admin' ||
@@ -175,17 +176,17 @@ export const TableRowPE = (props: Props) => {
                                   required: t('common:validation.required'),
                                 }}
                               /> */}
-                              <CoreInputDescription
-                                title='Nhận xét của admin'
-                                maxLength={300}
-                                isView={isView || role !== 'Admin'}
-                                control={control}
-                                nameField={`exams.${index}.comment`}
-                                t={t}
-                                watch={watch}
-                              />
-                            </Grid>
-                          )}
+                                <CoreInputDescription
+                                  title='Nhận xét của admin'
+                                  maxLength={300}
+                                  isView={isView || role !== 'Admin'}
+                                  control={control}
+                                  nameField={`exams.${index}.comment`}
+                                  t={t}
+                                  watch={watch}
+                                />
+                              </Grid>
+                            )}
 
                           {
                             <Grid item xs={12}>

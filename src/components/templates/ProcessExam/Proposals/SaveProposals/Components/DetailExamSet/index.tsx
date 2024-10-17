@@ -13,6 +13,7 @@ import { ExamSet } from '@/service/examSet/type'
 import { TopAction } from '@/components/molecules/TopAction'
 import { MENU_URL } from '@/routes'
 import { useRouter } from 'next/router'
+import CoreInputDescription from '@/components/atoms/CoreInputDescrition'
 
 const DetailExamSet = ({
   isViewProp,
@@ -155,7 +156,7 @@ const DetailExamSet = ({
             >
               <Stack direction={'column'}>
                 <Box>
-                  <CoreInput
+                  {/* <CoreInput
                     multiline
                     isViewProp={role !== 'Admin'}
                     control={control}
@@ -165,7 +166,20 @@ const DetailExamSet = ({
                     rules={{
                       required: t('common:validation.required'),
                     }}
-                  />
+                  /> */}
+                  {role !== 'Admin' &&
+                    !!watch(
+                      `exam_sets.${indexExamSet}.exams.${index}.comment`
+                    ) && (
+                      <CoreInputDescription
+                        control={control}
+                        isView={isViewProp || role !== 'Admin'}
+                        nameField={`exam_sets.${indexExamSet}.exams.${index}.comment`}
+                        t={t}
+                        title='Nhận xét của admin'
+                        watch={watch}
+                      />
+                    )}
                 </Box>
               </Stack>
             </AccordionCustom>
