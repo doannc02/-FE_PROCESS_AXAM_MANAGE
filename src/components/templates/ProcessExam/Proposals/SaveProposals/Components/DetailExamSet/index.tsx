@@ -1,7 +1,7 @@
 import { AccordionCustom } from '@/components/atoms/AccordionCustom'
 import CoreInput from '@/components/atoms/CoreInput'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
-import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
+import { BLACK, BLUE, GREEN, GREY, ORANGE, RED } from '@/helper/colors'
 import { Box, Grid, IconButton, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useFieldArray, useFormContext } from 'react-hook-form'
@@ -15,11 +15,13 @@ import { MENU_URL } from '@/routes'
 import { useRouter } from 'next/router'
 
 const DetailExamSet = ({
+  isViewProp,
   item,
   indexExamSet,
 }: {
   item: ExamSet
   indexExamSet: number
+  isViewProp?: boolean
 }) => {
   const { t } = useTranslation()
   const [values, handles] = useDetailExamSet()
@@ -54,42 +56,48 @@ const DetailExamSet = ({
                 <div className='w-full flex justify-between items-center'>
                   <div className='w-1/3 flex justify-start'>
                     <Typography fontWeight={'600'}>
+                      Đề cương chi tiết: &nbsp;
+                    </Typography>
+
+                    <Typography color={BLUE} fontWeight={'600'}>
                       {ele?.name} - {ele?.code} &nbsp;
                     </Typography>
-                    {/* <Typography fontWeight={'600'}>Xem chi tiết: </Typography> */}
-                    <IconButton
-                      style={{
-                        bottom: '5px',
-                        //right: '65px',
-                        backgroundColor: '#DFE0EB',
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        router.push({
-                          pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
-                          query: {
-                            id: ele?.id,
-                            actionType: 'VIEW',
-                          },
-                        })
-                        //   showDialog(
-                        //     <DialogViewFile
-                        //       src={url_res}
-                        //       nameFile={url_res.slice(68, url_res?.length)}
-                        //     />
-                        //   )
-                      }}
-                    >
-                      <Image
-                        src={ViewIcon}
-                        alt={`icon_view_detail`}
-                        width={16}
-                        height={16}
-                      />
-                    </IconButton>
                   </div>
 
-                  <div className='w-1/3 flex justify-between items-center p-5'>
+                  <div className='w-2/3 flex justify-between items-center p-5'>
+                    <div className='flex justify-between items-center'>
+                      <Typography>Xem file upload</Typography>
+                      <IconButton
+                        style={{
+                          //bottom: '5px',
+                          //right: '65px',
+                          backgroundColor: '#DFE0EB',
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          router.push({
+                            pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
+                            query: {
+                              id: ele?.id,
+                              actionType: 'VIEW',
+                            },
+                          })
+                          //   showDialog(
+                          //     <DialogViewFile
+                          //       src={url_res}
+                          //       nameFile={url_res.slice(68, url_res?.length)}
+                          //     />
+                          //   )
+                        }}
+                      >
+                        <Image
+                          src={ViewIcon}
+                          alt={`icon_view_detail`}
+                          width={16}
+                          height={16}
+                        />
+                      </IconButton>
+                    </div>
                     <Typography fontWeight={'600'}>
                       <DisplayStatus
                         text={
@@ -113,7 +121,7 @@ const DetailExamSet = ({
                       />
                     </Typography>
                     <div>
-                      {/* <CoreButton
+                      <CoreButton
                         sx={{ marginRight: '10px' }}
                         theme='cancel'
                         onClick={(e) => {
@@ -121,14 +129,25 @@ const DetailExamSet = ({
                         }}
                       >
                         Từ chối
-                      </CoreButton> */}
-                      {/* <CoreButton
+                      </CoreButton>
+
+                      <CoreButton
+                        sx={{ marginRight: '10px' }}
+                        theme='submit'
+                        onClick={(e) => {
+                          e.stopPropagation()
+                        }}
+                      >
+                        Phê duyệt
+                      </CoreButton>
+
+                      <CoreButton
                         onClick={(e) => {
                           e.stopPropagation()
                         }}
                       >
                         Xem chi tiết
-                      </CoreButton> */}
+                      </CoreButton>
                     </div>
                   </div>
                 </div>
@@ -147,44 +166,6 @@ const DetailExamSet = ({
                       required: t('common:validation.required'),
                     }}
                   />
-                  {status === 'pending_approval' && (
-                    <div>
-                      <CoreButton
-                        loading={isLoadingUpdateStateExam}
-                        onClick={() => {
-                          submitChangeStateExam(
-                            indexExamSet,
-                            index,
-                            Number(
-                              getValues(
-                                `exam_sets.${indexExamSet}.exams.${index}.id`
-                              )
-                            ),
-                            'approved'
-                          )
-                        }}
-                      >
-                        Phê duyệt
-                      </CoreButton>
-                      <CoreButton
-                        loading={isLoadingUpdateStateExam}
-                        onClick={() => {
-                          submitChangeStateExam(
-                            indexExamSet,
-                            index,
-                            Number(
-                              getValues(
-                                `exam_sets.${indexExamSet}.exams.${index}.id`
-                              )
-                            ),
-                            'rejected'
-                          )
-                        }}
-                      >
-                        Từ chối
-                      </CoreButton>
-                    </div>
-                  )}
                 </Box>
               </Stack>
             </AccordionCustom>

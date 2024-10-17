@@ -175,6 +175,11 @@ export const useSaveExamSet = () => {
           onChangeValue={(val) => {
             setValue(`exams.${index}`, val)
           }}
+          isViewProp={
+            isView ||
+            role === 'Admin' ||
+            watch(`exams.${index}.status`) === 'approved'
+          }
           exceptValues={exceptValues}
           required
           rules={{

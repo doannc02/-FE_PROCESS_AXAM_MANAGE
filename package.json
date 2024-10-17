@@ -69,7 +69,7 @@
     "react-loading-overlay-ts": "^2.0.2",
     "react-number-format": "^5.2.2",
     "react-query": "^3.39.3",
-    "react-quill": "^0.0.2",
+    "react-quill": "^2.0.0",
     "react-redux": "^8.1.0",
     "react-smooth-collapse": "^2.1.2",
     "react-sortable-tree": "^2.8.0",

@@ -1,3 +1,11 @@
+import CoreInput from '@/components/atoms/CoreInput'
+import CoreInputDescription from '@/components/atoms/CoreInputDescrition'
+import UploadBox from '@/components/molecules/UploadBox'
+import { ColumnProps } from '@/components/organism/CoreTable'
+import { getRole } from '@/config/token'
+import { WHITE } from '@/helper/colors'
+import { checkDateValid } from '@/utils/date/checkDate'
+import { convertToDate } from '@/utils/date/convertToDate'
 import {
   Box,
   Collapse,
@@ -8,24 +16,12 @@ import {
   TableRow,
 } from '@mui/material'
 import _ from 'lodash'
-import { Draggable } from 'react-beautiful-dnd'
-
-import { ColumnProps, CoreTable } from '@/components/organism/CoreTable'
-import { checkDateValid } from '@/utils/date/checkDate'
-import { convertToDate } from '@/utils/date/convertToDate'
-import { useState } from 'react'
-import { WHITE } from '@/helper/colors'
 import { useRouter } from 'next/router'
-import { useTableRowAllocation } from './useTableRowAllocation'
-import { ActionTable } from '@/components/organism/TableCustomDnd/ActionTable'
-import { AccordionCustom } from '@/components/atoms/AccordionCustom'
-import CoreInput from '@/components/atoms/CoreInput'
-import UploadAndEditFile from '@/components/molecules/UploadAndEditFile'
-import { UploadFileCustom } from '@/components/molecules/UploadFileCustom'
-import UploadBox, { fileUpload } from '@/components/molecules/UploadBox'
-import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+import { Draggable } from 'react-beautiful-dnd'
 import { FormProvider } from 'react-hook-form'
-import { getRole } from '@/config/token'
+import { useTranslation } from 'react-i18next'
+import { useTableRowAllocation } from './useTableRowAllocation'
 
 type Props = {
   index: number
@@ -38,7 +34,8 @@ export const TableRowPE = (props: Props) => {
   const { t } = useTranslation()
   const role = getRole()
   const router = useRouter()
-  const { actionType } = router.query
+  const { actionType, id: idRouter } = router.query
+  const isView = !!idRouter && actionType === 'VIEW'
   const { index, id, row, columns } = props
   const [openChildIndex, setOpenChildIndex] = useState<number | null>(null)
   const [values, handles] = useTableRowAllocation({ index })
@@ -122,14 +119,8 @@ export const TableRowPE = (props: Props) => {
                     <div className='p-10 w-full'>
                       <Box className='flex flex-wrap'>
                         <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
-                          <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={role === 'Admin' ? 6 : 12}
-                            lg={role === 'Admin' ? 6 : 12}
-                          >
-                            <CoreInput
+                          <Grid item xs={12} sm={12} md={12} lg={12}>
+                            {/* <CoreInput
                               control={control}
                               isViewProp={role === 'Admin'}
                               label='Mô tả'
@@ -143,12 +134,25 @@ export const TableRowPE = (props: Props) => {
                               rules={{
                                 required: t('common:validation.required'),
                               }}
+                            /> */}
+                            <CoreInputDescription
+                              title='Mô tả'
+                              maxLength={300}
+                              isView={
+                                isView ||
+                                role === 'Admin' ||
+                                watch(`exams.${index}.status`) === 'approved'
+                              }
+                              control={control}
+                              nameField={`exams.${index}.description`}
+                              t={t}
+                              watch={watch}
                             />
                           </Grid>
 
-                          {
-                            <Grid item xs={12} sm={12} md={6} lg={6}>
-                              <CoreInput
+                          {!!watch(`exams.${index}.comment`) && (
+                            <Grid item xs={12} sm={12} md={12} lg={12}>
+                              {/* <CoreInput
                                 control={control}
                                 isViewProp={
                                   role !== 'Admin' ||
@@ -170,9 +174,18 @@ export const TableRowPE = (props: Props) => {
                                 rules={{
                                   required: t('common:validation.required'),
                                 }}
+                              /> */}
+                              <CoreInputDescription
+                                title='Nhận xét của admin'
+                                maxLength={300}
+                                isView={isView || role !== 'Admin'}
+                                control={control}
+                                nameField={`exams.${index}.comment`}
+                                t={t}
+                                watch={watch}
                               />
                             </Grid>
-                          }
+                          )}
 
                           {
                             <Grid item xs={12}>

@@ -1,5 +1,5 @@
 import PageContainer from '@/components/organism/PageContainer'
-import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
+import { BLACK, BLUE, GREEN, ORANGE, RED } from '@/helper/colors'
 import { Collapse, Grid, IconButton, Typography } from '@mui/material'
 import LoadingPage from '@/components/atoms/LoadingPage'
 import { Form, FormProvider } from 'react-hook-form'
@@ -320,58 +320,77 @@ const SaveProposals = () => {
                                           sm={12}
                                           md={4}
                                           lg={4}
+                                          className='flex justify-start items-center'
                                         >
+                                          <Typography
+                                            fontWeight={600}
+                                            className='mt-10'
+                                          >
+                                            Tên Bộ đề: &nbsp;
+                                          </Typography>
                                           {isView ? (
                                             <Typography
+                                              color={BLUE}
                                               fontWeight={'600'}
                                               className='flex justify-start items-center'
                                             >
-                                              Tên bộ đề: {item?.name}
+                                              {item?.name}
+                                            </Typography>
+                                          ) : watch(
+                                              `exam_sets.${index}.name`
+                                            ) ? (
+                                            <Typography
+                                              color={BLUE}
+                                              fontWeight={600}
+                                            >
+                                              {watch(`exam_sets.${index}.name`)}
                                             </Typography>
                                           ) : (
-                                            <CoreAutoCompleteAPI
-                                              className='w-2/3'
-                                              params={{
-                                                isParamAddProposal: true,
-                                                page: 1,
-                                                size: 20,
-                                              }}
-                                              fetchDataFn={getExamSetList}
-                                              control={control}
-                                              label=''
-                                              isViewProp={
-                                                isView
-                                                  ? true
-                                                  : isAddNew
-                                                  ? role !== 'Admin'
-                                                    ? false
+                                            <div className='flex-1'>
+                                              <CoreAutoCompleteAPI
+                                                color={BLUE}
+                                                params={{
+                                                  isParamAddProposal: true,
+                                                  page: 1,
+                                                  size: 20,
+                                                }}
+                                                fetchDataFn={getExamSetList}
+                                                control={control}
+                                                label=''
+                                                isViewProp={
+                                                  isView
+                                                    ? true
+                                                    : isAddNew
+                                                    ? role !== 'Admin'
+                                                      ? false
+                                                      : true
+                                                    : isUpdate
+                                                    ? role !== 'Admin'
+                                                      ? false
+                                                      : true
                                                     : true
-                                                  : isUpdate
-                                                  ? role !== 'Admin'
-                                                    ? false
-                                                    : true
-                                                  : true
-                                              }
-                                              exceptValues={exceptValues}
-                                              name={`exam_sets.${index}`}
-                                              placeholder='Chọn tên bộ đề'
-                                              onChangeValue={(val) => {
-                                                console.log(val)
-                                                if (val) {
-                                                  setValue(
-                                                    `exam_sets.${index}`,
-                                                    val
-                                                  )
                                                 }
-                                                // } else {
-                                                //   setExceptValues((prev) =>
-                                                //     prev.filter(
-                                                //       (id) => id !== val.id
-                                                //     )
-                                                //   )
-                                                // }
-                                              }}
-                                            />
+                                                exceptValues={exceptValues}
+                                                name={`exam_sets.${index}`}
+                                                placeholder='Chọn tên bộ đề'
+                                                onChangeValue={(val) => {
+                                                  console.log(val)
+                                                  if (val) {
+                                                    setValue(
+                                                      `exam_sets.${index}`,
+                                                      val
+                                                    )
+                                                  }
+                                                  // } else {
+                                                  //   setExceptValues((prev) =>
+                                                  //     prev.filter(
+                                                  //       (id) => id !== val.id
+                                                  //     )
+                                                  //   )
+                                                  // }
+                                                }}
+                                              />
+                                            </div>
                                           )}
                                         </Grid>
 
@@ -422,7 +441,7 @@ const SaveProposals = () => {
                                                 : RED
                                             }
                                           />
-                                          {isView
+                                          {/* {isView
                                             ? null
                                             : role === 'Admin'
                                             ? null
@@ -433,9 +452,9 @@ const SaveProposals = () => {
                                                     remove(index)
                                                   }
                                                 />
-                                              )}
+                                              )} */}
                                           <div>
-                                            {/* <CoreButton
+                                            <CoreButton
                                               sx={{ marginRight: '10px' }}
                                               theme='cancel'
                                               onClick={(e) => {
@@ -443,7 +462,16 @@ const SaveProposals = () => {
                                               }}
                                             >
                                               Từ chối
-                                            </CoreButton> */}
+                                            </CoreButton>
+                                            <CoreButton
+                                              sx={{ marginRight: '10px' }}
+                                              theme='submit'
+                                              onClick={(e) => {
+                                                e.stopPropagation()
+                                              }}
+                                            >
+                                              Phê duyệt
+                                            </CoreButton>
                                             <CoreButton
                                               onClick={(e) => {
                                                 router.push({
@@ -464,6 +492,7 @@ const SaveProposals = () => {
                                     }
                                   >
                                     <DetailExamSet
+                                      isViewProp={isView}
                                       indexExamSet={index}
                                       item={item}
                                     />
