@@ -12,6 +12,7 @@ interface DescriptionComponentProps {
   nameField: string
   title: string
   maxLength?: number
+  color?: string
 }
 
 const CoreInputDescription: React.FC<DescriptionComponentProps> = ({
@@ -21,13 +22,15 @@ const CoreInputDescription: React.FC<DescriptionComponentProps> = ({
   nameField,
   title,
   maxLength,
+  color,
   t,
 }) => {
+  console.log(color, 'JACK')
   return (
     <Grid item xs={12}>
       {isView ? (
         <div className='w-full'>
-          <Typography fontWeight={500} mb={2}>
+          <Typography fontWeight={500} mb={2} color={color}>
             {title}
           </Typography>
           <Typography fontWeight={500} mb={2}></Typography>

@@ -3,7 +3,7 @@ import CoreInputDescription from '@/components/atoms/CoreInputDescrition'
 import UploadBox from '@/components/molecules/UploadBox'
 import { ColumnProps } from '@/components/organism/CoreTable'
 import { getRole } from '@/config/token'
-import { WHITE } from '@/helper/colors'
+import { BLACK, GREEN, RED, WHITE } from '@/helper/colors'
 import { checkDateValid } from '@/utils/date/checkDate'
 import { convertToDate } from '@/utils/date/convertToDate'
 import {
@@ -30,6 +30,11 @@ type Props = {
   row: any
 }
 
+const hashColorApprove = {
+  approved: GREEN,
+  rejected: RED,
+} as any
+
 export const TableRowPE = (props: Props) => {
   const { t } = useTranslation()
   const role = getRole()
@@ -49,7 +54,11 @@ export const TableRowPE = (props: Props) => {
       : row.type === 'NOTE'
       ? '#F6F7F9'
       : null
-
+  console.log(
+    watch(`exams.${index}.status`),
+    hashColorApprove[watch(`exams.${index}.status`)],
+    'Phuongw tuaan'
+  )
   return (
     <Draggable index={index} draggableId={id?.toString()}>
       {(provided, snapshot) => (
@@ -150,10 +159,9 @@ export const TableRowPE = (props: Props) => {
                             />
                           </Grid>
 
-                          {role !== 'Admin' &&
-                            !!watch(`exams.${index}.comment`) && (
-                              <Grid item xs={12} sm={12} md={12} lg={12}>
-                                {/* <CoreInput
+                          {role === 'Admin' ? (
+                            <Grid item xs={12} sm={12} md={12} lg={12}>
+                              {/* <CoreInput
                                 control={control}
                                 isViewProp={
                                   role !== 'Admin' ||
@@ -176,17 +184,57 @@ export const TableRowPE = (props: Props) => {
                                   required: t('common:validation.required'),
                                 }}
                               /> */}
-                                <CoreInputDescription
-                                  title='Nhận xét của admin'
-                                  maxLength={300}
-                                  isView={isView || role !== 'Admin'}
-                                  control={control}
-                                  nameField={`exams.${index}.comment`}
-                                  t={t}
-                                  watch={watch}
-                                />
-                              </Grid>
-                            )}
+                              <CoreInputDescription
+                                title='Nhận xét của Admin'
+                                maxLength={300}
+                                color={
+                                  hashColorApprove[
+                                    watch(`exams.${index}.status`)
+                                  ]
+                                }
+                                isView={isView || role !== 'Admin'}
+                                control={control}
+                                nameField={`exams.${index}.comment`}
+                                t={t}
+                                watch={watch}
+                              />
+                            </Grid>
+                          ) : !!watch(`exams.${index}.comment`) ? (
+                            <Grid item xs={12} sm={12} md={12} lg={12}>
+                              {/* <CoreInput
+                            control={control}
+                            isViewProp={
+                              role !== 'Admin' ||
+                              watch(`exams.${index}.status`) === 'approved'
+                            }
+                            label={
+                              watch(`exams.${index}.status`) === 'rejected'
+                                ? 'Lý do không phê duyệt'
+                                : 'Nhận xét'
+                            }
+                            placeholder={
+                              watch(`exams.${index}.status`) === 'rejected'
+                                ? 'Nhập Lý do không phê duyệt'
+                                : 'Nhập Nhận xét'
+                            }
+                            name={`exams.${index}.comment`}
+                            multiline
+                            required
+                            rules={{
+                              required: t('common:validation.required'),
+                            }}
+                          /> */}
+                              <CoreInputDescription
+                                title='Nhận xét của admin'
+                                maxLength={300}
+                                isView={isView || role !== 'Admin'}
+                                control={control}
+                                nameField={`exams.${index}.comment`}
+                                t={t}
+                                watch={watch}
+                              />
+                            </Grid>
+                          ) : null}
 
                           {
                             <Grid item xs={12}>

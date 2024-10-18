@@ -28,6 +28,7 @@ import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
 import { getDepartment } from '@/service/department'
 import DialogCfAddExams from '../Dialogs/DialogConfirmAddExams'
 import { WarningText } from '@/components/atoms/WarningText'
+import DialogDeleteExamSet from '../Dialogs/DialogDeleteExamSet'
 
 const steps = ['Phân công thực hiện đề cương', 'Đề xuất phê duyệt']
 
@@ -375,7 +376,14 @@ const SaveExamSet = () => {
                               ...(isView ? ['delete', 'edit'] : []),
                             ] as any)
                       }
-                      onDeleteAction={() => {}}
+                      onDeleteAction={() => {
+                        showDialog(
+                          <DialogDeleteExamSet
+                            id={Number(watch('id'))}
+                            nameExamSet={watch('name')}
+                          />
+                        )
+                      }}
                       onEditAction={() => {
                         router.push({
                           pathname: `${MENU_URL.EXAM_SET}/[id]`,

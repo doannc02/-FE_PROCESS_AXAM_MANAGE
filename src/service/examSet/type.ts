@@ -82,7 +82,9 @@ export type RequestExamSet = {
   }
   ACTION: {
     params?: {
-      id: number
+      examSetId?: number
+      examSetOnly?: boolean
+      id?: number
     }
     data?: ExamSet
     method: 'put' | 'delete' | 'post'

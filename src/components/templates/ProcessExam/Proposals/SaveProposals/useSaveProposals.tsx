@@ -267,7 +267,7 @@ export const useSaveProposals = () => {
         }
       })
     })
-    if (countExams) {
+    if (countExams === 0) {
       errorMsg(
         'Không thể phê duyệt do kế hoạch này không có đề chi tiết nào trong bộ đề!!'
       )

@@ -24,6 +24,8 @@ import { TableExams } from '@/components/organism/TableExams'
 import { ActionTable } from '@/components/organism/TableCustomDnd/ActionTable'
 import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
 import { WarningText } from '@/components/atoms/WarningText'
+import DialogDeleteExam from '../DialogDeleteExam'
+import { useDialog } from '@/components/hooks/dialog/useDialog'
 
 const SaveExams = () => {
   const { t } = useTranslation()
@@ -47,6 +49,8 @@ const SaveExams = () => {
   } = values
 
   const { append, onSubmit, onUpdateState, onReRequest } = handles
+
+  const { showDialog } = useDialog()
 
   const { watch, setValue } = methodForm
   return (
@@ -213,7 +217,14 @@ const SaveExams = () => {
                                 : []),
                             ] as any)
                       }
-                      onDeleteAction={() => {}}
+                      onDeleteAction={() => {
+                        showDialog(
+                          <DialogDeleteExam
+                            id={Number(watch(`exams.0.id`))}
+                            nameExam={watch('exams.0.name')}
+                          />
+                        )
+                      }}
                       onEditAction={() => {
                         router.push({
                           pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,

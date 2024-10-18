@@ -92,11 +92,11 @@ export const middlewareResponseError = async (error: any) => {
 
   const status = response?.status
   console.log(error, response, 'res')
-  if (!status || status === 503 || status === 404) {
-    // window.location.replace('/accounting/500')
+  if (!status || status === 500 || status === 404) {
+    // window.location.replace('/500')
   }
   if (!status && status === 200) {
-    window.location.replace('/accounting/403')
+    // window.location.replace('/403')
   }
   if (
     status === 401

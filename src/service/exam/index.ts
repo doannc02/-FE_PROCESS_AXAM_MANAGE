@@ -54,7 +54,7 @@ export const useQueryGetDetailExam = (
 export const actionExams = async (req: RequestExam['ACTION']): Promise<any> => {
   const { data } = await commonApi({
     method: req.method,
-    url: URL_EXAM,
+    url: req.method === 'delete' ? URL_EXAM + `/${req.params?.id}` : URL_EXAM,
     params: req.params,
     data: req.data,
   })
