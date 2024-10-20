@@ -23,6 +23,7 @@ export const useDashboard = () => {
 
   useEffect(() => {
     handleSetInfoUser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return [{ methodForm }, { onSubmit: () => {} }] as const
 }

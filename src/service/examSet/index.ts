@@ -51,7 +51,7 @@ export const useQueryGetDetailExamSet = (
   )
 }
 
-export const actionExamSet = async (
+export const  actionExamSet = async (
   req: RequestExamSet['ACTION']
 ): Promise<any> => {
   const { data } = await commonApi({
