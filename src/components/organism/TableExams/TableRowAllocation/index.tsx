@@ -17,7 +17,7 @@ import {
 } from '@mui/material'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { FormProvider } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -45,7 +45,12 @@ export const TableRowPE = (props: Props) => {
   const [openChildIndex, setOpenChildIndex] = useState<number | null>(null)
   const [values, handles] = useTableRowAllocation({ index })
   const { methodForm } = values
-  const { control, watch, setValue } = methodForm
+  const {
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = methodForm
   const {} = handles
 
   const colorRowTable =
@@ -59,6 +64,9 @@ export const TableRowPE = (props: Props) => {
     hashColorApprove[watch(`exams.${index}.status`)],
     'Phuongw tuaan'
   )
+
+  console.log(errors, 'herer')
+
   return (
     <Draggable index={index} draggableId={id?.toString()}>
       {(provided, snapshot) => (
@@ -90,11 +98,11 @@ export const TableRowPE = (props: Props) => {
               )
             })}
           </TableRow>
-          {openChildIndex === index && (
+          {openChildIndex === index || !!errors ? (
             <Grow
               style={{ transformOrigin: '0 0 0' }}
               {...(openChildIndex === index ? { timeout: 400 } : {})}
-              in={openChildIndex === index}
+              in={openChildIndex === index || !!errors}
             >
               <TableRow>
                 <TableCell
@@ -106,7 +114,7 @@ export const TableRowPE = (props: Props) => {
                   }}
                   colSpan={columns.length}
                 >
-                  <Collapse in={openChildIndex === index}>
+                  <Collapse in={!!errors || openChildIndex === index}>
                     <div
                       onClick={() =>
                         setOpenChildIndex(
@@ -262,7 +270,7 @@ export const TableRowPE = (props: Props) => {
                 </TableCell>
               </TableRow>
             </Grow>
-          )}
+          ) : null}
         </>
       )}
     </Draggable>

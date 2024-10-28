@@ -213,9 +213,6 @@ export const useSaveExamSet = () => {
   // mutate proposal
   const { mutate, isLoading: isLoadingSubmit } = useMutation(actionExamSet, {
     onSuccess: (res: any) => {
-      if (res?.errs) {
-        errorMsg(res?.message ?? 'Đã tồn tại', setError)
-      }
       if (res?.data?.id) {
         successMsg(t('common:message.success'))
         router.push({
@@ -229,6 +226,7 @@ export const useSaveExamSet = () => {
       }
     },
     onError: (error: any) => {
+      console.log(error, 'logxx')
       errorMsg(error, setError)
     },
   })

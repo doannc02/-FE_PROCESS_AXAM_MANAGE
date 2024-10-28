@@ -121,35 +121,37 @@ const DetailExamSet = ({
                         }
                       />
                     </Typography>
-                    <div>
-                      <CoreButton
-                        sx={{ marginRight: '10px' }}
-                        theme='cancel'
-                        onClick={(e) => {
-                          e.stopPropagation()
-                        }}
-                      >
-                        Từ chối
-                      </CoreButton>
+                    {role === 'Admin' ? (
+                      <div>
+                        <CoreButton
+                          sx={{ marginRight: '10px' }}
+                          theme='cancel'
+                          onClick={(e) => {
+                            e.stopPropagation()
+                          }}
+                        >
+                          Từ chối
+                        </CoreButton>
 
-                      <CoreButton
-                        sx={{ marginRight: '10px' }}
-                        theme='submit'
-                        onClick={(e) => {
-                          e.stopPropagation()
-                        }}
-                      >
-                        Phê duyệt
-                      </CoreButton>
+                        <CoreButton
+                          sx={{ marginRight: '10px' }}
+                          theme='submit'
+                          onClick={(e) => {
+                            e.stopPropagation()
+                          }}
+                        >
+                          Phê duyệt
+                        </CoreButton>
 
-                      <CoreButton
-                        onClick={(e) => {
-                          e.stopPropagation()
-                        }}
-                      >
-                        Xem chi tiết
-                      </CoreButton>
-                    </div>
+                        <CoreButton
+                          onClick={(e) => {
+                            e.stopPropagation()
+                          }}
+                        >
+                          Xem chi tiết
+                        </CoreButton>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               }

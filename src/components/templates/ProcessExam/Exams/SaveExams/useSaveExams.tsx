@@ -43,9 +43,11 @@ const useSaveExams = () => {
         id: null,
         status: 'in_progress',
         create_at: convertToOffsetDateTime(new Date()),
-        exam_set: {
-          id: Number(idExamSet),
-        },
+        exam_set: idExamSet
+          ? {
+              id: Number(idExamSet),
+            }
+          : undefined,
       },
     ] as Exam[],
   }
@@ -141,6 +143,7 @@ const useSaveExams = () => {
   )
 
   const tableData = (fields ?? []).map((item, index) => {
+    console.log(item, 'log')
     if (isView) {
       return {
         ...item,
@@ -241,10 +244,10 @@ const useSaveExams = () => {
             size: 20,
           }}
           fetchDataFn={getAcademicYears}
-          required
-          rules={{
-            required: t('common:validation.required'),
-          }}
+          // required
+          // rules={{
+          //   required: t('common:validation.required'),
+          // }}
         />
       ),
       user: item?.user?.name,
@@ -344,7 +347,6 @@ const useSaveExams = () => {
 
   useEffect(() => {
     if (!!id && data?.data?.data) {
-      console.log(data?.data?.data, 'lozd')
       const format = {
         ...data?.data?.data,
         create_at: convertToOffsetDateTime(

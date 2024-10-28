@@ -128,6 +128,10 @@ const SaveExamSet = () => {
                               control={control}
                               label='Tên bộ đề'
                               name='name'
+                              required
+                              rules={{
+                                required: t('common:validation.required'),
+                              }}
                             />
                           </Grid>
 

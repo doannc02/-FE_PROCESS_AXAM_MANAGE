@@ -25,6 +25,7 @@ const ListExams = () => {
     totalPages,
     methodForm,
     tableData,
+    role,
   } = values
   const { control } = methodForm
 
@@ -94,15 +95,17 @@ const ListExams = () => {
       <div className='py-4 flex justify-end gap-4 items-center'>
         <TopAction actionList={['import', 'export']} />
         <DotThree className='mt-3' onClick={() => {}} />
-        <CoreButton
-          onClick={() => {
-            router.push({
-              pathname: `${MENU_URL.DETAIL_EXAM}/addNew`,
-            })
-          }}
-        >
-          {t('common:btn.add')}
-        </CoreButton>
+        {role === 'Admin' ? null : (
+          <CoreButton
+            onClick={() => {
+              router.push({
+                pathname: `${MENU_URL.DETAIL_EXAM}/addNew`,
+              })
+            }}
+          >
+            {t('common:btn.add')}
+          </CoreButton>
+        )}
       </div>
 
       <CoreTable

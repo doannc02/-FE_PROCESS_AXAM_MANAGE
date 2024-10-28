@@ -181,7 +181,7 @@ const SaveProposals = () => {
                             <Grid item xs={12} sm={12} md={4} lg={4}>
                               <CoreAutoCompleteAPI
                                 placeholder='Chọn người thực hiện'
-                                // labelPath2='fullname'
+                                labelPath2={isAddNew ? 'fullname' : undefined}
                                 labelPath='name'
                                 valuePath='id'
                                 control={control}

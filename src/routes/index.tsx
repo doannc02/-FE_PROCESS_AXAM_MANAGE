@@ -39,7 +39,7 @@ export const MENU_URL = {
   APPROVE: '/approve',
   EXAM_SET: '/examSet',
   MAJOR: '/major',
-  ACADEMIC: "/academicYear"
+  ACADEMIC: '/academicYear',
 }
 
 export const listMenuForAdminRoutes: MenuPathProps[] = [
@@ -94,18 +94,18 @@ export const listMenuForAdminRoutes: MenuPathProps[] = [
     ],
   },
 
-  {
-    name: 'Đề Xuất',
-    path: 'P',
-    icon: <AssignmentIcon />,
-    children: [
-      {
-        name: 'Phê Duyệt Kế Hoạch',
-        path: MENU_URL.APPROVE,
-        icon: <AssignmentIcon />,
-      },
-    ],
-  },
+  // {
+  //   name: 'Đề Xuất',
+  //   path: 'P',
+  //   icon: <AssignmentIcon />,
+  //   children: [
+  //     {
+  //       name: 'Phê Duyệt Kế Hoạch',
+  //       path: MENU_URL.APPROVE,
+  //       icon: <AssignmentIcon />,
+  //     },
+  //   ],
+  // },
 ]
 
 export const listMenuForUserRoutes: MenuPathProps[] = [

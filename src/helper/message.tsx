@@ -27,13 +27,11 @@ export const successMsg = (msg: string) => {
 export const errorMsg = (error: any, setError?: any) => {
   if (Array.isArray(error) && error.length > 0) {
     error.map((item) => {
-      if (item && Array.isArray(item.fields) && setError) {
-        item.fields.map((ele: any) => {
-          if (ele !== 'branchId')
-            setError(ele, {
-              type: 'be',
-              message: item.message,
-            })
+      if (item && setError) {
+        console.log(item.field)
+        setError(item.field, {
+          type: 'be',
+          message: item.message,
         })
       } else errorMsg(item.message)
     })

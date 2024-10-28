@@ -5,6 +5,7 @@ import PaperCustom from '../PaperCustom'
 import ChartDashBoard from '../Chart'
 import { pink } from '@mui/material/colors'
 import { GRAY_SCALE } from '@/helper/colors'
+import useGeneral from './useGeneral'
 
 type TypeDataPaperProps = {
   title: string
@@ -44,7 +45,8 @@ const fakeData = [
 const General = () => {
   const [isVideoVisible, setIsVideoVisible] = useState(true)
   const [isFadingOut, setIsFadingOut] = useState(false)
-
+  const [values, handles] = useGeneral()
+  const { email } = values
   const handleVideoClick = () => {
     setIsFadingOut(true)
     setTimeout(() => {
@@ -54,7 +56,7 @@ const General = () => {
 
   return (
     <>
-      {isVideoVisible ? (
+      {isVideoVisible && email === 'doannc@gmail.com' ? (
         <video
           src='/assets/video/ultraman/ultraman.mp4'
           autoPlay

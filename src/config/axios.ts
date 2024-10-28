@@ -153,8 +153,8 @@ requestAuth.interceptors.request.use(middlewareRequest, (error: any) =>
 requestAuth.interceptors.response.use((res) => {
   const { data } = res
 
-  if (!!data?.errorCodes)
-    return Promise.reject(data?.errorCodes ?? 'Hệ thống đang bị lỗi !!!')
+  if (!!data?.errors)
+    return Promise.reject(data?.errors ?? 'Hệ thống đang bị lỗi !!!')
 
   return res
 }, middlewareResponseError)

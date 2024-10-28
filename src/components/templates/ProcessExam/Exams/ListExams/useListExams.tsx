@@ -5,13 +5,11 @@ import { getRole } from '@/config/token'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { useFormCustom } from '@/lib/form'
 import { useQueryGetExamList } from '@/service/exam'
-import { Exam } from '@/service/examSet/type'
 import { convertToDate } from '@/utils/date/convertToDate'
 import { Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import _ from 'lodash'
 import { useMemo, useState } from 'react'
-import { useFieldArray } from 'react-hook-form'
 
 const defaultValues = {
   // status: 'pending_approval',
@@ -187,6 +185,7 @@ const useListExams = () => {
       page: data?.data?.page,
       size: data?.data?.size,
       totalPages: data?.data?.totalPages,
+      role,
     },
     { onChangePageSize, onSubmit, onReset },
   ] as const

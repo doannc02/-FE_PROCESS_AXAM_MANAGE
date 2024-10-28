@@ -52,7 +52,7 @@ export const useLogin = () => {
       localStorage.clear()
       sessionStorage.clear()
       await removeCmsToken()
-      window.location.replace('/accounting/login')
+      window.location.replace('/login')
     }
   }
 
