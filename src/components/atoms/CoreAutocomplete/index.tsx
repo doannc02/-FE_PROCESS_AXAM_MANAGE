@@ -28,6 +28,7 @@ export interface FormControlAutoCompleteProps<
   control: any
   name: string
   label?: string | null
+  placeholder?: string | any
   InputLabelProps?: any
   inputProps?: any
   InputProps?: any
