@@ -8,7 +8,7 @@ import queryString from 'query-string'
 import { getCmsToken, removeCmsToken, setCmsToken } from './token'
 
 const {
-  publicRuntimeConfig: { SUBDOMAIN, COMMON_URL },
+  publicRuntimeConfig: { COMMON_URL },
 } = getConfig()
 
 const requestAuth = axios.create({
@@ -56,11 +56,6 @@ export const middlewareRequest = async (config: any) => {
           ...config.headers,
           'ngrok-skip-browser-warning': '69420',
           'Accept-Language': 'vi',
-          'Current-Domain': !window.location.origin.includes('localhost')
-            ? window.location.origin
-                .replace('https://', '')
-                .replace('http://', '')
-            : SUBDOMAIN,
         },
       }
     }
@@ -71,11 +66,6 @@ export const middlewareRequest = async (config: any) => {
         'ngrok-skip-browser-warning': '69420',
         'Accept-Language': 'vi',
         Authorization: `Bearer ${tokenAccess?.accessToken}`,
-        'Current-Domain': !window.location.origin.includes('localhost')
-          ? window.location.origin
-              .replace('https://', '')
-              .replace('http://', '')
-          : SUBDOMAIN,
       },
     }
   } catch (error) {
