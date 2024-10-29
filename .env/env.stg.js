@@ -1,5 +1,5 @@
 module.exports = {
   serverRuntimeConfig: {},
   publicRuntimeConfig: {
-    COMMON_URL: 'http://27.72.146.128'
+    COMMON_URL: 'https://itf.viu.edu.vn'
 }}
