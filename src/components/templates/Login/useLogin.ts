@@ -27,12 +27,19 @@ export const useLogin = () => {
       }
       const data = await postLogin(requestBody)
       console.log(data, 'dataLogin')
-      
+
       setCmsToken(data)
       if (pathParams) {
         router.push(`https://${pathParams}${SUBDOMAIN}`)
         setCmsToken(data)
-      } else router.push('/dashboard')
+      } else {
+        if (data && data?.errorCodes) {
+          errorMsg(data?.errorCodes[0]?.message)
+          setLoading(false)
+          return
+        }
+        router.push('/dashboard')
+      }
       setLoading(false)
     } catch (err) {
       errorMsg(err, 'Có lỗi')

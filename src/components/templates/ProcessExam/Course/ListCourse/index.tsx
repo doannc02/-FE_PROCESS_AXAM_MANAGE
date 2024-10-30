@@ -70,7 +70,6 @@ const ListCourse = () => {
               name='major'
             />
           </Grid>
-         
         </Grid>
 
         <div className='flex justify-center mt-15'>
@@ -93,7 +92,7 @@ const ListCourse = () => {
         <CoreButton
           onClick={() => {
             router.push({
-              pathname: `${MENU_URL.DETAIL_EXAM}/addNew`,
+              pathname: `${MENU_URL.COURSE}/addNew`,
             })
           }}
         >
@@ -113,7 +112,7 @@ const ListCourse = () => {
         isShowColumnStt
         onRowClick={(id: number) => {
           router.push({
-            pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
+            pathname: `${MENU_URL.COURSE}/[id]`,
             query: {
               id,
               actionType: 'VIEW',

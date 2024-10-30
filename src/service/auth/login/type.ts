@@ -11,6 +11,11 @@ export type Token = {
   jti: string
 }
 
+export type ErrorCodes = {
+  code: string
+  message: string
+}[]
+
 export type Response = {
-  POST: BaseResponse<Token>
+  POST: BaseResponse<Token> | any
 }
