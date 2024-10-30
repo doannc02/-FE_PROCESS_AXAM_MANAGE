@@ -88,10 +88,7 @@ const SaveMajor = () => {
 
                         <Grid item xs={12} sm={12} md={4} lg={4}>
                           <CoreAutoCompleteAPI
-                            params={{
-                              page: 1,
-                              size: 20,
-                            }}
+                            params={{}}
                             control={control}
                             label='Trực thuộc khoa'
                             placeholder='Chọn khoa'

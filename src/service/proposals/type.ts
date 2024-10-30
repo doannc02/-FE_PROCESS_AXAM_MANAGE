@@ -37,7 +37,13 @@ export type ResponseProposals = {
     data: { id: number }
   }
 }
-
+// public string? startDate { get; set; }
+// public string? endDate { get; set; }
+// public int? semester { get; set; }
+// public string? status { get; set; }
+// public int? create_month { get; set; }
+// public int? month_end { get; set; }
+// public int? day_expire { get; set; }
 export type RequestProposals = {
   GET: {
     page: number
@@ -48,6 +54,9 @@ export type RequestProposals = {
     endDate?: string
     semester?: string
     status?: string
+    day_expire?: number
+    month_end?: number
+    create_month?: number
   }
   GET_DETAIL: {
     id: number

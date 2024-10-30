@@ -142,10 +142,7 @@ const SaveProposals = () => {
                               placeholder='Chọn năm học'
                               fetchDataFn={getAcademicYears}
                               isViewProp={isDisabledControl}
-                              params={{
-                                page: 1,
-                                size: 20,
-                              }}
+                              params={{}}
                               control={control}
                               label='Năm học'
                               name='academic_year'
@@ -181,8 +178,6 @@ const SaveProposals = () => {
                                 control={control}
                                 params={{
                                   exceptId: 1,
-                                  page: 1,
-                                  size: 20,
                                 }}
                                 isViewProp={
                                   isView
@@ -345,8 +340,6 @@ const SaveProposals = () => {
                                                 color={BLUE}
                                                 params={{
                                                   isParamAddProposal: true,
-                                                  page: 1,
-                                                  size: 20,
                                                 }}
                                                 fetchDataFn={getExamSetList}
                                                 control={control}

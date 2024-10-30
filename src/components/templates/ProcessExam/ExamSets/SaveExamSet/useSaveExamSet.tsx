@@ -164,8 +164,6 @@ export const useSaveExamSet = () => {
           label=''
           labelPath2='code'
           params={{
-            page: 1,
-            size: 20,
             isGetForAddExamSet: true,
           }}
           placeholder='Chọn đề cương chi tiết'

@@ -59,10 +59,7 @@ const ListCourse = () => {
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4}>
             <CoreAutoCompleteAPI
-              params={{
-                page: 1,
-                size: 20,
-              }}
+              params={{}}
               fetchDataFn={getMajorList}
               control={control}
               label='Chuyên ngành'

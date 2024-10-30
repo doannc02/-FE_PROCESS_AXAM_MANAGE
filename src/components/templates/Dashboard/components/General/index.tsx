@@ -46,7 +46,7 @@ const General = () => {
   const [isVideoVisible, setIsVideoVisible] = useState(true)
   const [isFadingOut, setIsFadingOut] = useState(false)
   const [values, handles] = useGeneral()
-  const { email } = values
+  const { email, isLoadingProposal, dataProp } = values
   const handleVideoClick = () => {
     setIsFadingOut(true)
     setTimeout(() => {

@@ -123,10 +123,7 @@ const useSaveCourse = () => {
       ),
       majorName: (
         <CoreAutoCompleteAPI
-          params={{
-            page: 1,
-            size: 20,
-          }}
+          params={{}}
           fetchDataFn={getMajorList}
           control={control}
           label='Chuyên ngành'

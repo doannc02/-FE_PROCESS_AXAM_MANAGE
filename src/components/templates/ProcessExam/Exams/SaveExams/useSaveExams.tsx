@@ -239,10 +239,7 @@ const useSaveExams = () => {
           name={`exams.${index}.academic_year`}
           placeholder='Chọn năm học'
           label=''
-          params={{
-            page: 1,
-            size: 20,
-          }}
+          params={{}}
           fetchDataFn={getAcademicYears}
           // required
           // rules={{

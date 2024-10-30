@@ -74,10 +74,7 @@ const ListExamSets = () => {
               placeholder='Tìm kiếm theo học phần'
               labelPath2='code'
               fetchDataFn={getListCourse}
-              params={{
-                page: 1,
-                size: 20,
-              }}
+              params={{}}
               control={control}
               label='Học phần'
               name='course'

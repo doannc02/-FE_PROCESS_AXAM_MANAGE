@@ -139,8 +139,6 @@ const SaveExamSet = () => {
                             <Grid item xs={12} sm={12} md={4} lg={4}>
                               <CoreAutoCompleteAPI
                                 params={{
-                                  page: 1,
-                                  size: 20,
                                   departmentId: watch('department')?.id,
                                 }}
                                 fetchDataFn={getMajorList}
@@ -179,8 +177,6 @@ const SaveExamSet = () => {
                                 control={control}
                                 params={{
                                   exceptId: 1,
-                                  page: 1,
-                                  size: 20,
                                 }}
                                 label='Người thực hiện'
                                 name='user'
@@ -204,8 +200,6 @@ const SaveExamSet = () => {
                                 params={{
                                   majorId: watch('major')?.id,
                                   userId: watch('user')?.id,
-                                  page: 1,
-                                  size: 20,
                                 }}
                                 fetchDataFn={getListCourse}
                                 required
