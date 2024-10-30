@@ -17,7 +17,7 @@ export const getDepartment = async (
   return data
 }
 
-export const useQueryGetAcademicYearList = (
+export const useQueryGetDepartmentList = (
   params: RequestDepartment['LIST'],
   options?: any
 ) => {

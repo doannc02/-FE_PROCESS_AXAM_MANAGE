@@ -1,6 +1,6 @@
 import { BasicLayout } from '@/components/layouts/WrapLayout/BasicLayout'
 import { Meta } from '@/components/meta'
-import SaveMajor from '@/components/templates/ProcessExam/Major/SaveMajor'
+import ListDepartment from '@/components/templates/ProcessExam/Department/ListDepartment'
 import { HttpResponse } from '@/lib/api'
 import { combineGssp } from '@/lib/next/gssp/combineGssp'
 import { authGssp } from '@/lib/next/gssp/middleware/authGssp'
@@ -9,10 +9,10 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 type Props = HttpResponse<any>
 
-const Page: NextPageWithLayout<Props> = () => <SaveMajor />
+const Page: NextPageWithLayout<Props> = () => <ListDepartment />
 
 Page.getLayout = BasicLayout
-Page.getMeta = Meta(() => ({ title: 'Chi tiết học phần' }))
+Page.getMeta = Meta(() => ({ title: 'Manage Department List' }))
 
 export const getServerSideProps = combineGssp<any>(
   authGssp(),

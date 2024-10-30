@@ -1,11 +1,7 @@
-import { Exam, state } from '../examSet/type'
+import { Exam } from '../examSet/type'
 import { BaseResponse, CommonObject, PageResponse } from '../type'
 
 export type ResponseMajor = {
-  UPDATE_STATE: BaseResponse<{
-    id: number
-    state: state
-  }>
   DETAIL: BaseResponse<Major>
   LIST: PageResponse<Major[]>
 }
@@ -17,7 +13,7 @@ export type RequestMajor = {
     params?: {
       id: number
     }
-    data?: Exam
+    data?: Major
     method: 'put' | 'delete' | 'post'
   }
 }

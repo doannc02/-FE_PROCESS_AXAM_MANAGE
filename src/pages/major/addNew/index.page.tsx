@@ -1,6 +1,6 @@
 import { BasicLayout } from '@/components/layouts/WrapLayout/BasicLayout'
 import { Meta } from '@/components/meta'
-import Dashboard from '@/components/templates/Dashboard'
+import SaveMajor from '@/components/templates/ProcessExam/Major/SaveMajor'
 import { HttpResponse } from '@/lib/api'
 import { combineGssp } from '@/lib/next/gssp/combineGssp'
 import { authGssp } from '@/lib/next/gssp/middleware/authGssp'
@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 type Props = HttpResponse<any>
 
-const Page: NextPageWithLayout<Props> = () => <Dashboard />
+const Page: NextPageWithLayout<Props> = () => <SaveMajor />
 
 Page.getLayout = BasicLayout
 Page.getMeta = Meta(() => ({ title: 'Thêm mới học phần' }))

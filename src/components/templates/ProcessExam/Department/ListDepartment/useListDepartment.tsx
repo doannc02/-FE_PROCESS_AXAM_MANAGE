@@ -1,22 +1,24 @@
 import { ColumnProps } from '@/components/organism/CoreTable'
 import { getRole } from '@/config/token'
 import { useFormCustom } from '@/lib/form'
-import { useQueryGetMajorList } from '@/service/major'
+import { useQueryGetListCourse } from '@/service/course'
+import { useQueryGetDepartmentList } from '@/service/department'
 import _ from 'lodash'
 import { useMemo, useState } from 'react'
 
 const defaultValues = {
+  search: '',
   page: 1,
   size: 20,
 } as any
-const useListMajor = () => {
+const useListDepartment = () => {
   const methodForm = useFormCustom<any>({ defaultValues })
   const role = getRole()
   const [queryPage, setQueryPage] = useState<any>(
     _.omitBy(defaultValues, _.isNil)
   )
 
-  const { data, isLoading } = useQueryGetMajorList({
+  const { data, isLoading } = useQueryGetDepartmentList({
     ...queryPage,
   })
 
@@ -34,19 +36,16 @@ const useListMajor = () => {
   }
 
   const onSubmit = methodForm.handleSubmit(async (input) => {
-    setQueryPage({ ...input, departmentId: input?.department?.id })
+    setQueryPage({ ...input, majorId: input?.major?.id })
   })
+  const { getValues, control, setValue } = methodForm
 
   const columns = useMemo(
     () =>
       [
         {
-          header: 'Tên chuyên ngành',
+          header: 'Tên khoa',
           fieldName: 'name',
-        },
-        {
-          header: 'Trực thuộc khoa',
-          fieldName: 'departmentName',
         },
       ] as ColumnProps[],
     []
@@ -55,7 +54,6 @@ const useListMajor = () => {
   const tableData = (data?.data?.content ?? []).map((item) => {
     return {
       ...item,
-      departmentName: item?.department?.name,
     }
   })
 
@@ -73,4 +71,4 @@ const useListMajor = () => {
   ] as const
 }
 
-export default useListMajor
+export default useListDepartment

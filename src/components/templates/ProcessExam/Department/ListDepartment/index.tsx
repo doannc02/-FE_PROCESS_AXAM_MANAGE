@@ -1,25 +1,22 @@
 import { CoreTable } from '@/components/organism/CoreTable'
 
+import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
+import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import { CoreButton } from '@/components/atoms/CoreButton'
+import CoreInput from '@/components/atoms/CoreInput'
 import DotThree from '@/components/icons/DotThree'
 import { TopAction } from '@/components/molecules/TopAction'
-import { MENU_URL } from '@/routes'
-import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
-import { Grid } from '@mui/material'
-import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
-import CoreInput from '@/components/atoms/CoreInput'
-import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import PageContainer from '@/components/organism/PageContainer'
+import { MENU_URL } from '@/routes'
+import { getMajorList } from '@/service/major'
+import { Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { menuState } from '@/enum'
-import useListMajor from './useListMajor'
-import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
-import { getDepartment } from '@/service/department'
+import useListDepartment from './useListDepartment'
 
-const ListMajor = () => {
+const ListDepartment = () => {
   const { t } = useTranslation()
-  const [values, handles] = useListMajor()
+  const [values, handles] = useListDepartment()
   const {
     columns,
     isLoadingTable,
@@ -41,7 +38,7 @@ const ListMajor = () => {
           isShowDashboard
           breadcrumbs={[
             {
-              title: 'Danh sách chuyên ngành',
+              title: 'Danh sách khoa',
             },
           ]}
         />
@@ -55,15 +52,6 @@ const ListMajor = () => {
               name='search'
               label={t('common:form.search.label')}
               placeholder={t('common:form.search.placeholder')}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreAutoCompleteAPI
-              control={control}
-              label='Khoa'
-              name='department'
-              placeholder='Tìm kiếm chuyên ngành theo khoa'
-              fetchDataFn={getDepartment}
             />
           </Grid>
         </Grid>
@@ -85,15 +73,15 @@ const ListMajor = () => {
       <div className='py-4 flex justify-end gap-4 items-center'>
         <TopAction actionList={['import', 'export']} />
         <DotThree className='mt-3' onClick={() => {}} />
-        <CoreButton
+        {/* <CoreButton
           onClick={() => {
             router.push({
-              pathname: `${MENU_URL.MAJOR}/addNew`,
+              pathname: `${MENU_URL.DEPARTMENT}/addNew`,
             })
           }}
         >
           {t('common:btn.add')}
-        </CoreButton>
+        </CoreButton> */}
       </div>
 
       <CoreTable
@@ -108,7 +96,7 @@ const ListMajor = () => {
         isShowColumnStt
         onRowClick={(id: number) => {
           router.push({
-            pathname: `${MENU_URL.MAJOR}/[id]`,
+            pathname: `${MENU_URL.DEPARTMENT}/[id]`,
             query: {
               id,
               actionType: 'VIEW',
@@ -119,4 +107,4 @@ const ListMajor = () => {
     </PageContainer>
   )
 }
-export default ListMajor
+export default ListDepartment

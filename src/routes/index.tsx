@@ -1,20 +1,15 @@
-import Debt from '@/assets/svg/debt.svg'
-import Pen from '@/assets/svg/pen.svg'
+import { Dashboard } from '@mui/icons-material'
+import AutoStoriesIcon from '@mui/icons-material/AutoStories'
+import BorderColorIcon from '@mui/icons-material/BorderColor'
+import FilePresentIcon from '@mui/icons-material/FilePresent'
+import HandymanIcon from '@mui/icons-material/Handyman'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
+import NoteAltIcon from '@mui/icons-material/NoteAlt'
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
 import SchoolIcon from '@mui/icons-material/School'
-import AutoStoriesIcon from '@mui/icons-material/AutoStories'
-import AssignmentIcon from '@mui/icons-material/Assignment'
 import SubjectIcon from '@mui/icons-material/Subject'
-import BorderColorIcon from '@mui/icons-material/BorderColor'
-import EditNoteIcon from '@mui/icons-material/EditNote'
-import HandymanIcon from '@mui/icons-material/Handyman'
-import { Dashboard } from '@mui/icons-material'
-import NoteAltIcon from '@mui/icons-material/NoteAlt'
-import { IconButton } from '@mui/material'
-import Image from 'next/image'
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import { ReactNode } from 'react'
-import FilePresentIcon from '@mui/icons-material/FilePresent'
 export interface MenuPathProps {
   name: string
   path: string
@@ -34,6 +29,7 @@ export const MENU_URL = {
   CONFIG: '/config',
   MANAGER: '/manager',
   COURSE: '/course',
+  DEPARTMENT: '/department',
   DETAIL_EXAM: '/detailExam',
   PROPOSAL: '/proposal',
   APPROVE: '/approve',
@@ -54,15 +50,21 @@ export const listMenuForAdminRoutes: MenuPathProps[] = [
     icon: <ManageAccountsIcon />,
     children: [
       {
-        name: 'QL Học Phần',
-        path: MENU_URL.COURSE,
-        icon: <BorderColorIcon />,
+        name: 'QL Khoa',
+        path: MENU_URL.DEPARTMENT,
+        icon: <SupervisedUserCircleIcon />,
       },
       {
         name: 'QL Chuyên Ngành',
         path: MENU_URL.MAJOR,
         icon: <SchoolIcon />,
       },
+      {
+        name: 'QL Học Phần',
+        path: MENU_URL.COURSE,
+        icon: <BorderColorIcon />,
+      },
+
       {
         name: 'QL Năm Học',
         path: MENU_URL.ACADEMIC,

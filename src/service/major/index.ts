@@ -2,15 +2,16 @@ import { commonApi } from '@/config/axios'
 import { RequestMajor, ResponseMajor } from './type'
 import { useQuery } from 'react-query'
 import { defaultOption } from '@/config/reactQuery'
+import { BaseResponse } from '../type'
 
-const URL_EXAM = '/api/v1/major'
+const URL_MAJOR = '/api/v1/major'
 
 export const getMajorList = async (
   params: RequestMajor['LIST']
 ): Promise<ResponseMajor['LIST']> => {
   const { data } = await commonApi({
     method: 'get',
-    url: URL_EXAM + '/list',
+    url: URL_MAJOR + '/list',
     params,
   })
 
@@ -28,35 +29,35 @@ export const useQueryGetMajorList = (
   )
 }
 
-export const getDetailExam = async (params: {
+export const getDetailMajor = async (params: {
   id: number
-}): Promise<ResponseMajor['DETAIL']> => {
+}): Promise<BaseResponse<any>> => {
   const { data } = await commonApi({
     method: 'get',
-    url: URL_EXAM + '/detail',
+    url: URL_MAJOR + '/detail',
     params,
   })
 
   return data
 }
 
-export const useQueryGetDetailExam = (
+export const useQueryGetDetailMajor = (
   params: { id: number },
   options?: any
 ) => {
-  return useQuery<ResponseMajor['DETAIL']>(
+  return useQuery<BaseResponse<any>>(
     ['api/v1/major/detail', params],
-    () => getDetailExam(params),
+    () => getDetailMajor(params),
     { ...defaultOption, ...options }
   )
 }
 
-export const actionExamSet = async (
+export const actionMajor = async (
   req: RequestMajor['ACTION']
 ): Promise<any> => {
   const { data } = await commonApi({
     method: req.method,
-    url: URL_EXAM,
+    url: URL_MAJOR,
     params: req.params,
     data: req.data,
   })
