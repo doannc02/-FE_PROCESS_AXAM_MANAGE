@@ -8,7 +8,7 @@ const {
 const { i18n } = require('./next-i18next.config.js')
 
 const nextConfig = {
- // basePath: '/accounting',
+ basePath: '/qldethi',
   i18n,
   reactStrictMode: false,
   pageExtensions: ['page.tsx', 'api.ts'],

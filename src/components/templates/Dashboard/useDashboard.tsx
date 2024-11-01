@@ -1,3 +1,4 @@
+import { logoutAccount } from '@/config/axios'
 import { errorMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
 import { useAppDispatch } from '@/redux/hook'
@@ -11,12 +12,12 @@ export const useDashboard = () => {
   const handleSetInfoUser = async () => {
     try {
       const res = await getDetailUser()
-      console.log(res.data.data.name)
       if (res.data.data) {
         dispatch(setCurrentLogin(res.data.data))
       }
     } catch {
       errorMsg('Cấu hình thông tin user storage thất bại!!!')
+      logoutAccount()
     }
   }
 
