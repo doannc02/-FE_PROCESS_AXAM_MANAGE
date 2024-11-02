@@ -1,7 +1,10 @@
-import { IconButton, Paper, Typography } from '@mui/material'
+import { IconButton, Link, Paper, Typography } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import { MENU_URL } from '@/routes'
+import { useRouter } from 'next/router'
 
 const PaperCustom = ({
+  index,
   title,
   value,
   contentTitle,
@@ -9,6 +12,7 @@ const PaperCustom = ({
   unit,
   backgroundColor,
 }: {
+  index: number
   title: string
   value: number
   subtitle: string
@@ -24,6 +28,17 @@ const PaperCustom = ({
       return 'green'
     }
     return 'blue'
+  }
+
+  const hashEnumRouter: { [key: number]: string } = {
+    1: MENU_URL.PROPOSAL,
+    2: MENU_URL.EXAM_SET,
+    3: MENU_URL.DETAIL_EXAM,
+  }
+
+  const router = useRouter()
+  const onClick = (index: number) => {
+    router.push(hashEnumRouter[index])
   }
 
   return (
@@ -55,10 +70,17 @@ const PaperCustom = ({
         )}
       </div>
 
-      <Typography className='p-20 text-center' variant='h5'>
-        <span className='truncate'>{subtitle}</span>
-        <b className='px-8'>{contentTitle}</b>
-      </Typography>
+      <Link
+        onClick={() => {
+          if (index > 0) onClick(index)
+        }}
+        className='cursor-pointer'
+      >
+        <Typography className='p-20 text-center' variant='h5'>
+          {index > 0 && <span className='truncate'>{subtitle + ':'}</span>}
+          <b className='px-2'>{contentTitle}</b>
+        </Typography>
+      </Link>
     </Paper>
   )
 }

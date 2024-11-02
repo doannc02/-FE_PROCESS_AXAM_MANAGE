@@ -37,7 +37,7 @@ export const logoutAccount = async () => {
     localStorage.clear()
     sessionStorage.clear()
     await removeCmsToken()
-    window.location.replace('/login')
+    window.location.replace('/qldethi/login')
   }
 }
 

@@ -12,7 +12,12 @@ import {
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const ChartDashBoard = () => {
+type Props = {
+  content: any[]
+  totalElements: number
+}[]
+
+const ChartDashBoard = ({ arrDataRender }: { arrDataRender: Props }) => {
   const [awaitRender, setAwaitRender] = useState(true)
 
   useEffect(() => {
@@ -28,12 +33,22 @@ const ChartDashBoard = () => {
       <Bar
         className='h-full'
         data={{
-          labels: ['Africa', 'Asia', 'Europe', 'Latin America'],
+          labels: [
+            'Bộ đề đến hạn',
+            'Tổng kế hoạch',
+            'Tổng bộ đề',
+            'Tổng đề chi tiết',
+          ],
           datasets: [
             {
               backgroundColor: ['#3e95cd', '#8e5ea2', '#3cba9f', '#e8c3b9'],
-              data: [2478, 5267, 734, 784],
-              barThickness: 40, // Độ rộng của cột
+              data: [
+                arrDataRender[0],
+                arrDataRender[1],
+                arrDataRender[2],
+                arrDataRender[3],
+              ],
+              barThickness: 70, // Độ rộng của cột
             },
           ],
         }}
@@ -52,7 +67,7 @@ const ChartDashBoard = () => {
             },
             title: {
               display: true,
-              text: 'Predicted world population (millions) in 2050',
+              text: 'Biểu đồ quản lý các tài liệu đã tạo',
             },
           },
         }}

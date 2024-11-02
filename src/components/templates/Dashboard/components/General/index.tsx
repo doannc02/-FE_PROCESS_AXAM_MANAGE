@@ -1,52 +1,30 @@
-import React, { useState } from 'react'
-import { WarningText } from '@/components/atoms/WarningText'
-import { Grid, Paper, Typography } from '@mui/material'
-import PaperCustom from '../PaperCustom'
-import ChartDashBoard from '../Chart'
-import { pink } from '@mui/material/colors'
 import { GRAY_SCALE } from '@/helper/colors'
+import { Grid, Paper, Typography } from '@mui/material'
+import { useState } from 'react'
+import ChartDashBoard from '../Chart'
+import PaperCustom from '../PaperCustom'
+import { TableProExpires } from '../TableProExpires'
 import useGeneral from './useGeneral'
 
-type TypeDataPaperProps = {
-  title: string
-  value: number
-  subtitle: string
-  contentTitle: string
-  unit?: string
+const hashEnumTitle: { [key: number]: string } = {
+  0: 'Kế hoạch Sắp đến hạn (10 ngày)',
+  1: 'Tổng kế hoạch',
+  2: 'Tổng số bộ đề',
+  3: 'Tổng số đề chi tiết',
 }
 
-const fakeData = [
-  {
-    title: 'Số kế hoạch',
-    value: 7,
-    subtitle: '',
-    unit: '',
-  },
-  {
-    title: 'Số kế hoạch được phê duyệt',
-    value: 0,
-    subtitle: '',
-    unit: '',
-  },
-  {
-    title: 'Số đề chi tiết',
-    value: 3,
-    subtitle: '',
-    unit: '',
-  },
-  {
-    title: 'Số bộ đề',
-    value: 4,
-    subtitle: '',
-    unit: '',
-  },
-] as TypeDataPaperProps[]
+const hashEnumSubtitle: { [key: number]: string } = {
+  0: '',
+  1: 'kế hoạch',
+  2: 'bộ đề',
+  3: 'đề chi tiết',
+}
 
 const General = () => {
   const [isVideoVisible, setIsVideoVisible] = useState(true)
   const [isFadingOut, setIsFadingOut] = useState(false)
   const [values, handles] = useGeneral()
-  const { email, isLoadingProposal, dataProp } = values
+  const { email, arrDataRender } = values
   const handleVideoClick = () => {
     setIsFadingOut(true)
     setTimeout(() => {
@@ -79,31 +57,52 @@ const General = () => {
         <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={12} sm={12}>
             <div className='flex gap-1 items-center mt-5'>
-              <Typography variant='h6'>Thống kê</Typography>
+              <Typography variant='h6'>Tổng hợp</Typography>
             </div>
           </Grid>
           <Grid item xs={12} sm={12} className='flex justify-between'>
-            {fakeData.map((item, index) => (
-              <div key={index} className='w-2/5'>
-                <PaperCustom
-                  backgroundColor={GRAY_SCALE}
-                  value={item.value}
-                  contentTitle={item.contentTitle}
-                  subtitle={item?.subtitle}
-                  title={item.title}
-                  unit={item.unit}
-                />
-              </div>
-            ))}
+            {arrDataRender.map((item, index) => {
+              return (
+                <div key={index} className='w-2/5'>
+                  <PaperCustom
+                    key={index}
+                    index={index}
+                    backgroundColor={GRAY_SCALE}
+                    value={item?.totalElements ?? 0}
+                    contentTitle={hashEnumSubtitle[index]}
+                    subtitle={index > 0 ? 'Xem danh sách' : ''}
+                    title={hashEnumTitle[index]}
+                  />
+                </div>
+              )
+            })}
           </Grid>
+          {arrDataRender[0].content?.length !== 0 && (
+            <>
+              <Grid item xs={12} sm={12}>
+                <div className='flex gap-1 items-center mt-5'>
+                  <Typography variant='h6'>
+                    Danh sách các đề xuất sắp đến hạn
+                  </Typography>
+                </div>
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <Paper className='flex flex-col flex-auto shadow rounded-2xl mx-30 overflow-hidden'>
+                  <TableProExpires data={arrDataRender[0].content} />
+                </Paper>
+              </Grid>
+            </>
+          )}
+
           <Grid item xs={12} sm={12}>
             <div className='flex gap-1 items-center mt-5'>
               <Typography variant='h6'>Thống kê</Typography>
             </div>
           </Grid>
-          <Grid item xs={12} sm={12} md={5} lg={5}>
-            <Paper className='flex flex-col flex-auto shadow rounded-2xl my-10 overflow-hidden'>
-              <ChartDashBoard />
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Paper className='flex flex-col flex-auto shadow rounded-2xl mx-30 overflow-hidden'>
+              <ChartDashBoard arrDataRender={arrDataRender} />
             </Paper>
           </Grid>
         </Grid>
