@@ -1,21 +1,17 @@
 import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import { CoreButton } from '@/components/atoms/CoreButton'
-import LoadingPage from '@/components/atoms/LoadingPage'
+import CoreInput from '@/components/atoms/CoreInput'
+import CoreLoading from '@/components/molecules/CoreLoading'
 import { TopAction } from '@/components/molecules/TopAction'
 import CoreNavbar from '@/components/organism/CoreNavbar'
 import PageContainer from '@/components/organism/PageContainer'
 import { MENU_URL } from '@/routes'
 import { Grid, Typography } from '@mui/material'
-import { FormProvider } from 'react-hook-form'
-import useSaveMajor from './useSaveMajor'
-import DialogDeleteMajor from '../DialogDeletemMajor'
-import CoreInput from '@/components/atoms/CoreInput'
-import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
-import { getDepartment } from '@/service/department'
-import CoreLoading from '@/components/molecules/CoreLoading'
+import useSaveAcademicYear from './useSaveAcademicYear'
+import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
 
-const SaveMajor = () => {
-  const [values, handles] = useSaveMajor()
+const SaveAcademicYear = () => {
+  const [values, handles] = useSaveAcademicYear()
   const {
     isLoading,
     isLoadingSubmit,
@@ -24,8 +20,9 @@ const SaveMajor = () => {
     isView,
     id,
     router,
+    name,
   } = values
-  const { onSubmit, t, showDialog } = handles
+  const { onSubmit, t } = handles
 
   const { control } = methodForm
   return (
@@ -35,8 +32,8 @@ const SaveMajor = () => {
           isShowDashboard
           breadcrumbs={[
             {
-              title: 'Danh sách chuyên ngành',
-              pathname: MENU_URL.MAJOR,
+              title: 'Danh sách năm học',
+              pathname: MENU_URL.ACADEMIC,
             },
             {
               title: (
@@ -75,11 +72,21 @@ const SaveMajor = () => {
                         className=''
                         spacing={{ xs: 1, sm: 2, md: 3 }}
                       >
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
-                          <CoreInput
+                        <Grid
+                          item
+                          xs={12}
+                          sm={12}
+                          md={4}
+                          lg={4}
+                          className='mt-70'
+                        >
+                          <CoreDatePicker
                             control={control}
-                            label='Tên chuyên ngành'
-                            name='name'
+                            title='Năm học bắt đầu'
+                            name='start_year'
+                            views={['year']}
+                            inputFormat='YYYY'
+                            format='YYYY'
                             required
                             rules={{
                               required: t('common:validation.required'),
@@ -87,18 +94,40 @@ const SaveMajor = () => {
                           />
                         </Grid>
 
-                        <Grid item xs={12} sm={12} md={4} lg={4}>
-                          <CoreAutoCompleteAPI
-                            params={{}}
+                        <Grid
+                          item
+                          xs={12}
+                          sm={12}
+                          md={4}
+                          lg={4}
+                          className='mt-70'
+                        >
+                          <CoreDatePicker
                             control={control}
-                            label='Trực thuộc khoa'
-                            placeholder='Chọn khoa'
-                            name='department'
-                            fetchDataFn={getDepartment}
+                            title='Năm học kết thúc'
+                            name='end_year'
+                            views={['year']}
+                            inputFormat='YYYY'
+                            format='YYYY'
                             required
                             rules={{
                               required: t('common:validation.required'),
                             }}
+                          />
+                        </Grid>
+
+                        <Grid
+                          item
+                          xs={12}
+                          sm={12}
+                          md={4}
+                          lg={4}
+                          className='mt-70'
+                        >
+                          <CoreInput
+                            control={control}
+                            label='Tên năm học'
+                            name='name'
                           />
                         </Grid>
                       </Grid>
@@ -109,11 +138,12 @@ const SaveMajor = () => {
                           <CoreButton
                             theme='cancel'
                             onClick={() => {
-                              router.push(MENU_URL.MAJOR)
+                              router.push(MENU_URL.DEPARTMENT)
                             }}
                           >
                             {t('common:btn.cancel')}
                           </CoreButton>
+
                           <CoreButton
                             theme='submit'
                             type='submit'
@@ -130,23 +160,10 @@ const SaveMajor = () => {
                 ),
                 rightAction: (
                   <TopAction
-                    actionList={
-                      [
-                        ...(isUpdate ? ['delete'] : []),
-                        ...(isView ? ['delete', 'edit'] : []),
-                      ] as any
-                    }
-                    onDeleteAction={() => {
-                      showDialog(
-                        <DialogDeleteMajor
-                          nameMajor={methodForm.watch('name')}
-                          id={Number(id)}
-                        />
-                      )
-                    }}
+                    actionList={[...(isView ? ['edit'] : [])] as any}
                     onEditAction={() => {
                       router.push({
-                        pathname: `${MENU_URL.MAJOR}/[id]`,
+                        pathname: `${MENU_URL.DEPARTMENT}/[id]`,
                         query: {
                           id: Number(id),
                         },
@@ -156,7 +173,6 @@ const SaveMajor = () => {
                 ),
               },
             ]}
-            //  tabNumber={tabNumber}
           />
         </form>
       )}
@@ -164,4 +180,4 @@ const SaveMajor = () => {
   )
 }
 
-export default SaveMajor
+export default SaveAcademicYear

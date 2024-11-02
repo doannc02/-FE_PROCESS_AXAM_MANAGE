@@ -31,10 +31,10 @@ const SaveExams = () => {
     isView,
     isLoading,
     isLoadingSubmit,
-    isLoadingUpdateStateExam,
     nameExamSet,
     idExamSet,
     role,
+    isDirty,
   } = values
 
   const { append, onSubmit, onUpdateState, onReRequest } = handles

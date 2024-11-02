@@ -2,12 +2,20 @@ import DefaultImageApp from '@/assets/png/customer.png'
 import IconApplication from '@/assets/svg/layout1/application.svg'
 import SquaresFour from '@/components/icons/SquaresFour'
 import { WHITE } from '@/helper/colors'
-import { useAppSelector } from '@/redux/hook'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { IconButton, Menu, Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+
+const listWebApps = [
+  {
+    homepage: 'http://itf.viu.edu.vn/',
+    imageUrl: '',
+    name: 'Homepage',
+    code: 'Homepage',
+  },
+]
 
 export const SwitchSystem = () => {
   const [anchorEl, setAnchorEl] = React.useState<any>(null)
@@ -24,7 +32,7 @@ export const SwitchSystem = () => {
           </IconButton>
 
           <Typography variant='body1' style={{ color: WHITE }}>
-            EPM
+            Module QL Đề Thi
           </Typography>
         </div>
       </div>
@@ -63,21 +71,21 @@ export const SwitchSystem = () => {
         <div className='h-full w-full'>
           <div className='flex items-center gap-2'>
             <SquaresFour onClick={() => setAnchorEl(null)} />
-            <Typography variant='subtitle1'>Đối tác</Typography>
+            <Typography variant='subtitle1'>Khoa CNTT</Typography>
           </div>
 
           <div className='flex items-center mt-10 ml-4'>
             <Typography variant='body1' style={{ fontWeight: 600 }}>
-              Apps
+              WebApps
             </Typography>
           </div>
 
           <div className='grid grid-cols-2 px-4 mt-10'>
-            {[].map((system: any, index) => {
+            {listWebApps.map((system: any, index) => {
               return (
                 <Link
                   key={index}
-                  href={`http://viu/${system.homepage}`}
+                  href={`${system.homepage}`}
                   target='_blank'
                   rel='noopener'
                   style={{
@@ -107,7 +115,7 @@ export const SwitchSystem = () => {
                         ? `${system.name.split(' ')[0][0]}${
                             system.name.split(' ')[1][0]
                           }`
-                        : system.name.slice(0, 3)}
+                        : system.name.slice(0, 4)}
                     </Typography>
                   </div>
                 </Link>

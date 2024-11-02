@@ -2,33 +2,33 @@ import { useDialog } from '@/components/hooks/dialog/useDialog'
 import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
 import { MENU_URL } from '@/routes'
-import { actionMajor, useQueryGetDetailMajor } from '@/service/major'
-import { Major } from '@/service/major/type'
+import {
+  actionAcademic,
+  useQueryGetDetailAcademic,
+} from '@/service/academicYear'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
 
-const useSaveMajor = () => {
+const useSaveAcademicYear = () => {
   const { t } = useTranslation()
-
   const router = useRouter()
-
-  const { id, actionType, idDepartment, nameDepartment } = router.query
+  const { id, actionType } = router.query
 
   const { showDialog } = useDialog()
 
   const defaultValues = {
     id: null,
   } as any
-  const methodForm = useFormCustom<Major>({ defaultValues })
+  const methodForm = useFormCustom<any>({ defaultValues })
 
-  const { handleSubmit, setError, reset, setValue } = methodForm
+  const { control, handleSubmit, setError, reset } = methodForm
 
   const isUpdate = !!id
   const isView = !!id && actionType === 'VIEW'
 
-  const { data, isLoading, refetch } = useQueryGetDetailMajor(
+  const { data, isLoading, refetch } = useQueryGetDetailAcademic(
     {
       id: Number(id),
     },
@@ -37,52 +37,28 @@ const useSaveMajor = () => {
     }
   )
 
-  const { mutate, isLoading: isLoadingSubmit } = useMutation(actionMajor, {
+  const { mutate, isLoading: isLoadingSubmit } = useMutation(actionAcademic, {
     onSuccess: (res: any) => {
-      if (res?.data?.errs) {
-        errorMsg(res?.data?.message ?? 'Đã tồn tại')
-        ;(res?.data?.errs ?? []).map((item: any) => {
-          setError(item.field, item.message)
-        })
-        return
-      }
       if (res?.data && res?.data?.name) {
         successMsg(t('common:message.success'))
         router.push({
-          pathname: `${MENU_URL.COURSE}`,
+          pathname: `${MENU_URL.DEPARTMENT}`,
         })
         refetch()
         return
       }
-      if (Array.isArray(res?.data) && res?.data?.length > 0) {
-        successMsg(t('common:message.success'))
-        router.push({
-          pathname: `${MENU_URL.COURSE}`,
-        })
-        refetch()
-      }
     },
     onError: (error: any) => {
-      errorMsg(error, setError)
+      errorMsg(error?.response?.data?.title, setError)
     },
   })
 
   useEffect(() => {
     if (!!id && data?.data) {
-      reset(data?.data as any)
+      reset(data?.data)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data])
-
-  useEffect(() => {
-    if (idDepartment && nameDepartment) {
-      setValue('department', {
-        id: Number(idDepartment),
-        code: '',
-        name: nameDepartment?.toString() ?? '',
-      })
-    }
-  }, [idDepartment, nameDepartment])
 
   const onSubmit = handleSubmit(async (input) => {
     mutate({
@@ -100,9 +76,10 @@ const useSaveMajor = () => {
       isView,
       id,
       router,
+      name: methodForm.watch('name'),
     },
     { onSubmit, t, showDialog },
   ] as const
 }
 
-export default useSaveMajor
+export default useSaveAcademicYear

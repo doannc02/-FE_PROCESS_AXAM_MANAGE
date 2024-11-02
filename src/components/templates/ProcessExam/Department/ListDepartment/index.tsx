@@ -1,14 +1,11 @@
-import { CoreTable } from '@/components/organism/CoreTable'
-
-import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
 import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import { CoreButton } from '@/components/atoms/CoreButton'
 import CoreInput from '@/components/atoms/CoreInput'
 import DotThree from '@/components/icons/DotThree'
 import { TopAction } from '@/components/molecules/TopAction'
+import { CoreTable } from '@/components/organism/CoreTable'
 import PageContainer from '@/components/organism/PageContainer'
 import { MENU_URL } from '@/routes'
-import { getMajorList } from '@/service/major'
 import { Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
@@ -73,7 +70,7 @@ const ListDepartment = () => {
       <div className='py-4 flex justify-end gap-4 items-center'>
         <TopAction actionList={['import', 'export']} />
         <DotThree className='mt-3' onClick={() => {}} />
-        {/* <CoreButton
+        <CoreButton
           onClick={() => {
             router.push({
               pathname: `${MENU_URL.DEPARTMENT}/addNew`,
@@ -81,7 +78,7 @@ const ListDepartment = () => {
           }}
         >
           {t('common:btn.add')}
-        </CoreButton> */}
+        </CoreButton>
       </div>
 
       <CoreTable

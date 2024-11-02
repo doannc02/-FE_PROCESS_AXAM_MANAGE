@@ -79,7 +79,7 @@ const ListAcademicYear = () => {
         <CoreButton
           onClick={() => {
             router.push({
-              pathname: `${MENU_URL.DETAIL_EXAM}/addNew`,
+              pathname: `${MENU_URL.ACADEMIC}/addNew`,
             })
           }}
         >
@@ -99,7 +99,7 @@ const ListAcademicYear = () => {
         isShowColumnStt
         onRowClick={(id: number) => {
           router.push({
-            pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
+            pathname: `${MENU_URL.ACADEMIC}/[id]`,
             query: {
               id,
               actionType: 'VIEW',

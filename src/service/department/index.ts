@@ -40,7 +40,7 @@ export const getDetailExam = async (params: {
   return data
 }
 
-export const useQueryGetDetailExam = (
+export const useQueryDetailDepartment = (
   params: { id: number },
   options?: any
 ) => {
@@ -51,7 +51,7 @@ export const useQueryGetDetailExam = (
   )
 }
 
-export const actionExamSet = async (
+export const actionDepartment = async (
   req: RequestDepartment['ACTION']
 ): Promise<any> => {
   const { data } = await commonApi({

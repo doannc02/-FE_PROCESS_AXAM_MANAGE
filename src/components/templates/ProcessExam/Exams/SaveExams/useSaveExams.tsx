@@ -58,7 +58,7 @@ const useSaveExams = () => {
   const {
     getValues,
     control,
-    trigger,
+    formState: { isDirty },
     setValue,
     handleSubmit,
     watch,
@@ -343,17 +343,14 @@ const useSaveExams = () => {
   })
 
   useEffect(() => {
-    if (!!id && data?.data?.data) {
+    if (!!id && data?.data) {
       const format = {
-        ...data?.data?.data,
-        create_at: convertToOffsetDateTime(
-          convertToDate(data?.data?.data?.create_at)
-        ),
-      }
+        ...data?.data,
+      } as any
       reset({ exams: [format] })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.data?.data])
+  }, [data?.data])
 
   const onSubmit = handleSubmit(async (input) => {
     const exams = input.exams || []
@@ -452,6 +449,7 @@ const useSaveExams = () => {
       role,
       idExamSet,
       nameExamSet,
+      isDirty,
     },
     { append, remove, onSubmit, onReRequest, changeStateExam, onUpdateState },
   ] as const

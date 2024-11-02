@@ -1,22 +1,12 @@
-import DisplayStatus from '@/components/molecules/DisplayStatus'
-import { Tooltip } from '@/components/molecules/Tooltip'
 import { ColumnProps } from '@/components/organism/CoreTable'
 import { getRole } from '@/config/token'
-import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { useFormCustom } from '@/lib/form'
 import { useQueryGetAcademicYearList } from '@/service/academicYear'
-import { useQueryGetExamList } from '@/service/exam'
-import { Exam } from '@/service/examSet/type'
-import { useQueryGetMajorList } from '@/service/major'
-import { convertToDate } from '@/utils/date/convertToDate'
 import { Typography } from '@mui/material'
-import { Stack } from '@mui/system'
 import _ from 'lodash'
 import { useMemo, useState } from 'react'
-import { useFieldArray } from 'react-hook-form'
 
 const defaultValues = {
-  // status: 'pending_approval',
   page: 1,
   size: 20,
 } as any
