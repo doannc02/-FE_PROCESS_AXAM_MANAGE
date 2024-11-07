@@ -36,7 +36,7 @@ const General = () => {
     <>
       {isVideoVisible && email === 'doannc@gmail.com' ? (
         <video
-          src='/assets/video/ultraman/ultraman.mp4'
+          src='/qldethi/assets/video/ultraman/ultraman.mp4'
           autoPlay
           loop
           muted
