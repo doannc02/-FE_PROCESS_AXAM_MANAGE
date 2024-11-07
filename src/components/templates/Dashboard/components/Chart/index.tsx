@@ -18,6 +18,7 @@ type Props = {
 }[]
 
 const ChartDashBoard = ({ arrDataRender }: { arrDataRender: Props }) => {
+  console.log(arrDataRender, 'log')
   const [awaitRender, setAwaitRender] = useState(true)
 
   useEffect(() => {
@@ -43,12 +44,12 @@ const ChartDashBoard = ({ arrDataRender }: { arrDataRender: Props }) => {
             {
               backgroundColor: ['#3e95cd', '#8e5ea2', '#3cba9f', '#e8c3b9'],
               data: [
-                arrDataRender[0],
-                arrDataRender[1],
-                arrDataRender[2],
-                arrDataRender[3],
+                arrDataRender[0].totalElements,
+                arrDataRender[1].totalElements,
+                arrDataRender[2].totalElements,
+                arrDataRender[3].totalElements,
               ],
-              barThickness: 70, // Độ rộng của cột
+              barThickness: 120, // Độ rộng của cột
             },
           ],
         }}

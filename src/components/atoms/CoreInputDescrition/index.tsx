@@ -28,22 +28,7 @@ const CoreInputDescription: React.FC<DescriptionComponentProps> = ({
   console.log(color, 'JACK')
   return (
     <Grid item xs={12}>
-      {isView ? (
-        <div className='w-full'>
-          <Typography fontWeight={500} mb={2} color={color}>
-            {title}
-          </Typography>
-          <Typography fontWeight={500} mb={2}></Typography>
-          <div
-            className='mr-3'
-            style={{ wordBreak: 'break-word' }}
-            dangerouslySetInnerHTML={{
-              __html: watch(`${nameField}`) ?? '',
-            }}
-          ></div>
-          <Box sx={{ borderBottom: '1px solid #DFE0EB' }} />
-        </div>
-      ) : (
+      {
         <div>
           <Typography fontWeight={500} mb={2}>
             {title}
@@ -74,7 +59,7 @@ const CoreInputDescription: React.FC<DescriptionComponentProps> = ({
             )}
           />
         </div>
-      )}
+      }
     </Grid>
   )
 }
