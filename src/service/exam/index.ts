@@ -6,7 +6,7 @@ import { defaultOption } from '@/config/reactQuery'
 const URL_EXAM = '/api/v1/exam'
 
 export const getExamList = async (
-  params: RequestExam['LIST']
+  params: RequestExam['LIST'],
 ): Promise<ResponseExam['LIST']> => {
   const { data } = await commonApi({
     method: 'get',
@@ -19,12 +19,12 @@ export const getExamList = async (
 
 export const useQueryGetExamList = (
   params: RequestExam['LIST'],
-  options?: any
+  options?: any,
 ) => {
   return useQuery<ResponseExam['LIST']>(
     ['api/v1/exam/list', params],
     () => getExamList(params),
-    { ...defaultOption, ...options }
+    { ...defaultOption, ...options },
   )
 }
 
@@ -42,19 +42,19 @@ export const getDetailExam = async (params: {
 
 export const useQueryGetDetailExam = (
   params: { examId: number },
-  options?: any
+  options?: any,
 ) => {
   return useQuery<ResponseExam['DETAIL']>(
     ['api/v1/exam/detail', params],
     () => getDetailExam(params),
-    { ...defaultOption, ...options }
+    { ...defaultOption, ...options },
   )
 }
 
 export const actionExams = async (req: RequestExam['ACTION']): Promise<any> => {
   const { data } = await commonApi({
     method: req.method,
-    url: req.method === 'delete' ? URL_EXAM + `/${req.params?.id}` : URL_EXAM,
+    url: URL_EXAM,
     params: req.params,
     data: req.data,
   })
@@ -62,7 +62,7 @@ export const actionExams = async (req: RequestExam['ACTION']): Promise<any> => {
 }
 
 export const changeStateExam = async (
-  req: RequestExam['UPDATE_STATE']
+  req: RequestExam['UPDATE_STATE'],
 ): Promise<ResponseExam['UPDATE_STATE']> => {
   const { data } = await commonApi({
     method: 'put',

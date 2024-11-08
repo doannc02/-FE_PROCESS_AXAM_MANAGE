@@ -20,7 +20,6 @@ const SaveAcademicYear = () => {
     isView,
     id,
     router,
-    name,
   } = values
   const { onSubmit, t } = handles
 
@@ -163,7 +162,7 @@ const SaveAcademicYear = () => {
                     actionList={[...(isView ? ['edit'] : [])] as any}
                     onEditAction={() => {
                       router.push({
-                        pathname: `${MENU_URL.DEPARTMENT}/[id]`,
+                        pathname: `${MENU_URL.ACADEMIC}/[id]`,
                         query: {
                           id: Number(id),
                         },

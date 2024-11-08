@@ -34,7 +34,7 @@ const useSaveMajor = () => {
     },
     {
       enabled: !!id,
-    }
+    },
   )
 
   const { mutate, isLoading: isLoadingSubmit } = useMutation(actionMajor, {
@@ -46,20 +46,16 @@ const useSaveMajor = () => {
         })
         return
       }
-      if (res?.data && res?.data?.name) {
+      if (res?.data && res?.data?.id) {
         successMsg(t('common:message.success'))
         router.push({
-          pathname: `${MENU_URL.COURSE}`,
+          pathname: `${MENU_URL.MAJOR}`,
+          query: {
+            actionType: 'VIEW',
+          },
         })
         refetch()
         return
-      }
-      if (Array.isArray(res?.data) && res?.data?.length > 0) {
-        successMsg(t('common:message.success'))
-        router.push({
-          pathname: `${MENU_URL.COURSE}`,
-        })
-        refetch()
       }
     },
     onError: (error: any) => {
@@ -82,6 +78,7 @@ const useSaveMajor = () => {
         name: nameDepartment?.toString() ?? '',
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idDepartment, nameDepartment])
 
   const onSubmit = handleSubmit(async (input) => {

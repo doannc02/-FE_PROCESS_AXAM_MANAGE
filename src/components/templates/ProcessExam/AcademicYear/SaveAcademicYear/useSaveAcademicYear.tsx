@@ -23,7 +23,7 @@ const useSaveAcademicYear = () => {
   } as any
   const methodForm = useFormCustom<any>({ defaultValues })
 
-  const { control, handleSubmit, setError, reset } = methodForm
+  const { handleSubmit, reset } = methodForm
 
   const isUpdate = !!id
   const isView = !!id && actionType === 'VIEW'
@@ -39,17 +39,17 @@ const useSaveAcademicYear = () => {
 
   const { mutate, isLoading: isLoadingSubmit } = useMutation(actionAcademic, {
     onSuccess: (res: any) => {
-      if (res?.data && res?.data?.name) {
+      if (res?.data && res?.data?.id) {
         successMsg(t('common:message.success'))
         router.push({
-          pathname: `${MENU_URL.DEPARTMENT}`,
+          pathname: `${MENU_URL.ACADEMIC}`,
         })
         refetch()
         return
       }
     },
     onError: (error: any) => {
-      errorMsg(error?.response?.data?.title, setError)
+      errorMsg(error)
     },
   })
 
