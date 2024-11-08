@@ -200,7 +200,7 @@ export const useSaveProposals = () => {
     input.exam_sets.map((i) => {
       if (i.status === 'in_progress') {
         errorMsg(
-          'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
+          'Không thể chuyển trạng thái do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
         )
         valid = false
       }

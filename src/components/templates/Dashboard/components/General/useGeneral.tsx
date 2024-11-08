@@ -67,7 +67,7 @@ const useGeneral = () => {
   }, [dataExamSet?.data?.content])
 
   const objectExam = useMemo(() => {
-    return dataExamSet?.data ?? { content: [], totalElements: 0 }
+    return dataExam?.data ?? { content: [], totalElements: 0 }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataExamSet?.data?.content])
 
