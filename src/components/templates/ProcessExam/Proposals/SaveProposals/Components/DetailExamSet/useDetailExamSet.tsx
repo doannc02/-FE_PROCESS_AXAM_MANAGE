@@ -1,11 +1,10 @@
 import { getRole } from '@/config/token'
 import { errorMsg, successMsg } from '@/helper/message'
-import { actionExams, changeStateExam, getDetailExam } from '@/service/exam'
-import { Exam, state } from '@/service/examSet/type'
+import { actionExams, getDetailExam } from '@/service/exam'
+import { Exam } from '@/service/examSet/type'
 import { Proposals } from '@/service/proposals/type'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { useMutation } from 'react-query'
 
 const useDetailExamSet = ({ indexExamSet }: { indexExamSet: number }) => {
   const role = getRole()
@@ -17,6 +16,10 @@ const useDetailExamSet = ({ indexExamSet }: { indexExamSet: number }) => {
 
   const submitChangeStateExam = async (input: Exam, index: number) => {
     if (role !== 'Admin') return
+    if (!input?.comment) {
+      errorMsg(`Hãy nhập nhận xét cho đề ${input.name}`)
+      return
+    }
     try {
       setLoadingUpdateStateExam(true)
       const res = await actionExams({
@@ -28,6 +31,7 @@ const useDetailExamSet = ({ indexExamSet }: { indexExamSet: number }) => {
           examId: res?.data?.id,
         })
         if (detail.data) {
+          console.log(detail.data, 'log')
           setValue(
             `exam_sets.${indexExamSet}.exams.${index}`,
             detail.data as any

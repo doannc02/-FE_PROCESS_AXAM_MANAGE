@@ -182,35 +182,8 @@ export const useSaveProposals = () => {
   }, [data?.data, isUpdate, reset])
 
   const onSubmitDraft = handleSubmit(async (input) => {
-    let countExams
     const { isCreateExamSet, ...rest } = input
-    input.exam_sets.map((i) => {
-      if (i.status === 'in_progress') {
-        errorMsg(
-          'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
-        )
-        return
-      }
-      countExams = +i.exams.length
-      i.exams.map((ele) => {
-        if (ele.status === 'in_progress') {
-          errorMsg(
-            'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề đang thực hiện!!'
-          )
-          return
-        }
-      })
-    })
-    if (countExams === 0) {
-      errorMsg(
-        'Không thể phê duyệt do kế hoạch này không có đề chi tiết trong bộ đề!!'
-      )
-      return
-    }
-    if (input.exam_sets.length === 0) {
-      errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
-      return
-    }
+
     mutate({
       method: isUpdate ? 'put' : 'post',
       data: {
@@ -221,6 +194,7 @@ export const useSaveProposals = () => {
     })
   })
   const onSubmitPendingApprove = handleSubmit(async (input) => {
+    let valid = true
     let countExams
     const { isCreateExamSet, ...rest } = input
     input.exam_sets.map((i) => {
@@ -228,15 +202,15 @@ export const useSaveProposals = () => {
         errorMsg(
           'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
         )
-        return
+        valid = false
       }
       countExams = +i.exams.length
       i.exams.map((ele) => {
-        if (ele.status === 'in_progress') {
+        if (ele.status === 'in_progress' || ele.status === 'rejected') {
           errorMsg(
             'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề đang thực hiện!!'
           )
-          return
+          valid = false
         }
       })
     })
@@ -244,24 +218,27 @@ export const useSaveProposals = () => {
       errorMsg(
         'Không thể phê duyệt do kế hoạch này không có đề chi tiết trong bộ đề!!'
       )
-      return
+      valid = false
     }
     if (input.exam_sets.length === 0) {
       errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
-      return
+      valid = false
     }
 
-    mutate({
-      method: isUpdate ? 'put' : 'post',
-      data: {
-        ...rest,
-        exam_sets: input.exam_sets,
-        status: 'pending_approval',
-      },
-    })
+    if (valid) {
+      mutate({
+        method: isUpdate ? 'put' : 'post',
+        data: {
+          ...rest,
+          exam_sets: input.exam_sets,
+          status: 'pending_approval',
+        },
+      })
+    }
   })
 
   const onSubmitReject = handleSubmit(async (input) => {
+    let valid = true
     let countExams
     const { isCreateExamSet, ...rest } = input
     input.exam_sets.map((i) => {
@@ -269,7 +246,7 @@ export const useSaveProposals = () => {
         errorMsg(
           'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
         )
-        return
+        valid = false
       }
       countExams = +i.exams.length
       i.exams.map((ele) => {
@@ -277,7 +254,7 @@ export const useSaveProposals = () => {
           errorMsg(
             'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề đang thực hiện!!'
           )
-          return
+          valid = false
         }
       })
     })
@@ -285,23 +262,26 @@ export const useSaveProposals = () => {
       errorMsg(
         'Không thể phê duyệt do kế hoạch này không có đề chi tiết nào trong bộ đề!!'
       )
-      return
+      valid = false
     }
     if (input.exam_sets.length === 0) {
       errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
-      return
+      valid = false
     }
-    mutate({
-      method: isUpdate ? 'put' : 'post',
-      data: {
-        ...rest,
-        exam_sets: input.exam_sets,
-        status: 'rejected',
-      },
-    })
+    if (valid) {
+      mutate({
+        method: isUpdate ? 'put' : 'post',
+        data: {
+          ...rest,
+          exam_sets: input.exam_sets,
+          status: 'rejected',
+        },
+      })
+    }
   })
 
   const onSubmitApprove = handleSubmit(async (input) => {
+    let valid = true
     let countExams
     const { isCreateExamSet, ...rest } = input
     input.exam_sets.map((i) => {
@@ -309,15 +289,15 @@ export const useSaveProposals = () => {
         errorMsg(
           'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
         )
-        return
+        valid = false
       }
       countExams = +i.exams.length
       i.exams.map((ele) => {
-        if (ele.status === 'in_progress') {
+        if (ele.status === 'in_progress' || ele.status === 'rejected') {
           errorMsg(
             'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề đang thực hiện!!'
           )
-          return
+          valid = false
         }
       })
     })
@@ -325,11 +305,11 @@ export const useSaveProposals = () => {
       errorMsg(
         'Không thể phê duyệt do kế hoạch này không có đề chi tiết trong bộ đề!!'
       )
-      return
+      valid = false
     }
     if (input.exam_sets.length === 0) {
       errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
-      return
+      valid = false
     }
 
     mutate({

@@ -1,7 +1,10 @@
 import { RED } from '@/helper/colors'
 import { errorMsg } from '@/helper/message'
+import { Typography } from '@mui/material'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css'
+import { useCallback, useRef } from 'react'
+import debounce from 'lodash/debounce'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
@@ -14,10 +17,12 @@ type EditTextProps = {
   onBlur?: () => void
   height?: number
   maxLength?: number
+  title: string
 }
 
 export const EditText = (props: EditTextProps) => {
   const {
+    title,
     error,
     editorText,
     setEditorText,
@@ -27,18 +32,32 @@ export const EditText = (props: EditTextProps) => {
     height,
     maxLength,
   } = props
-  console.log(disabled, 'dis')
+
+  // Ref để giữ giá trị hiện tại của editorText
+  const editorTextRef = useRef(editorText)
+
+  // Sử dụng debounce cho hàm handleEditorChange
+  const debouncedSetEditorText = useCallback(
+    debounce((text: string) => {
+      setEditorText(text)
+    }, 300),
+    [setEditorText]
+  )
+
   const handleEditorChange = (editorTextParams: string) => {
     const textContent = editorTextParams.replace(/<(.|\n)*?>/g, '').trim()
+    editorTextRef.current = editorTextParams
+
     if (textContent.length === 0) {
-      setEditorText('')
+      debouncedSetEditorText('')
     } else {
-      setEditorText(editorTextParams)
+      debouncedSetEditorText(editorTextParams)
     }
   }
 
   return (
     <div className='flex flex-col w-full gap-2 border-red-600'>
+      <Typography fontWeight={700}>{title}</Typography>
       <ReactQuill
         className='shadow-sm'
         theme='snow'
@@ -52,7 +71,7 @@ export const EditText = (props: EditTextProps) => {
         onBlur={onBlur}
         placeholder={placeholder ?? 'Type your text here …'}
         readOnly={disabled}
-        value={editorText}
+        value={editorTextRef.current} // Giữ giá trị hiện tại của editorText từ ref
         modules={{
           toolbar: [
             [{ size: [] }],
@@ -65,7 +84,6 @@ export const EditText = (props: EditTextProps) => {
               { indent: '-1' },
               { indent: '+1' },
             ],
-            // ['link', 'video', 'image', 'code-block'],
             ['link', 'code-block'],
             ['clean'],
           ],
@@ -83,22 +101,10 @@ export const EditText = (props: EditTextProps) => {
           'list',
           'bullet',
           'indent',
-          // 'link',
-          // 'video',
-          // 'image',
           'code-block',
           'align',
         ]}
         onChange={handleEditorChange}
-        // onKeyDown={(e) => {
-        //   if (
-        //     maxLength &&
-        //     textContent.length > maxLength &&
-        //     e.key !== 'Backspace'
-        //   ) {
-        //     e.preventDefault()
-        //   }
-        // }}
       />
       {error && (
         <p className='p-0 m-0 text-sm text' style={{ color: RED }}>

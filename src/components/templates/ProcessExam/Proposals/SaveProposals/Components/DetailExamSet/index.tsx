@@ -1,22 +1,17 @@
-import { AccordionCustom } from '@/components/atoms/AccordionCustom'
-import CoreInput from '@/components/atoms/CoreInput'
-import DisplayStatus from '@/components/molecules/DisplayStatus'
-import { BLACK, BLUE, GREEN, GREY, ORANGE, RED } from '@/helper/colors'
-import { Box, Grid, IconButton, Stack, Typography } from '@mui/material'
-import Image from 'next/image'
-import { useFieldArray, useFormContext } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import ViewIcon from '@/assets/svg/Eye.svg'
-import useDetailExamSet from './useDetailExamSet'
+import { AccordionCustom } from '@/components/atoms/AccordionCustom'
 import { CoreButton } from '@/components/atoms/CoreButton'
-import { Exam, ExamSet } from '@/service/examSet/type'
-import { TopAction } from '@/components/molecules/TopAction'
+import DisplayStatus from '@/components/molecules/DisplayStatus'
+import EditText from '@/components/molecules/EditText'
+import { BLACK, BLUE, GREEN, ORANGE, RED } from '@/helper/colors'
 import { MENU_URL } from '@/routes'
+import { Exam, ExamSet } from '@/service/examSet/type'
+import { Grid, IconButton, Stack, Typography } from '@mui/material'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
-import CoreInputDescription from '@/components/atoms/CoreInputDescrition'
-import { actionExamSet } from '@/service/examSet'
-import { actionExams, getDetailExam } from '@/service/exam'
-import { errorMsg, successMsg } from '@/helper/message'
+import { useFieldArray } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import useDetailExamSet from './useDetailExamSet'
 
 const DetailExamSet = ({
   isViewProp,
@@ -33,6 +28,7 @@ const DetailExamSet = ({
   const { submitChangeStateExam } = handles
   const { watch, getValues, setValue, control } = methodForm
   const router = useRouter()
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: `exam_sets.${indexExamSet}.exams`,
@@ -41,13 +37,15 @@ const DetailExamSet = ({
   return (
     <Grid container>
       <Grid item xs={12} sm={12} md={12} lg={12}>
-        <CoreInputDescription
-          control={control}
-          isView={!!isViewProp}
-          nameField={`exam_sets.${indexExamSet}.description`}
-          t={t}
+        <EditText
           title='Mô tả bộ đề'
-          watch={watch}
+          error=''
+          disabled={!!isViewProp}
+          editorText={getValues(`exam_sets.${indexExamSet}.description`)}
+          placeholder='Nhập mô tả bộ đề'
+          setEditorText={(text) =>
+            setValue(`exam_sets.${indexExamSet}.description`, text)
+          }
         />
       </Grid>
       {(item?.exams ?? []).map((ele, index) => {
@@ -172,33 +170,36 @@ const DetailExamSet = ({
               }
             >
               <Stack direction={'column'}>
-                <Box>
-                  {role !== 'Admin' &&
-                  !!watch(
-                    `exam_sets.${indexExamSet}.exams.${index}.comment`
-                  ) ? (
-                    <CoreInput
-                      multiline
-                      isViewProp={role !== 'Admin'}
-                      control={control}
-                      label='Nhận xét chi tiết đề'
-                      name={`exam_sets.${indexExamSet}.exams.${index}.comment`}
-                      required
-                      rules={{
-                        required: t('common:validation.required'),
-                      }}
-                    />
-                  ) : (
-                    <CoreInputDescription
-                      control={control}
-                      isView={isViewProp || role !== 'Admin'}
-                      nameField={`exam_sets.${indexExamSet}.exams.${index}.comment`}
-                      t={t}
-                      title='Nhận xét của admin'
-                      watch={watch}
-                    />
+                <EditText
+                  title='Mô tả đề'
+                  error=''
+                  disabled={!!isViewProp}
+                  editorText={getValues(
+                    `exam_sets.${indexExamSet}.exams.${index}.description`
                   )}
-                </Box>
+                  placeholder='Nhập mô tả đề'
+                  setEditorText={(text) =>
+                    setValue(
+                      `exam_sets.${indexExamSet}.exams.${index}.description`,
+                      text
+                    )
+                  }
+                />
+                <EditText
+                  title='Nhận xét đề'
+                  error=''
+                  disabled={!!isViewProp}
+                  editorText={getValues(
+                    `exam_sets.${indexExamSet}.exams.${index}.comment`
+                  )}
+                  placeholder='Nhận xét của Admin'
+                  setEditorText={(text) =>
+                    setValue(
+                      `exam_sets.${indexExamSet}.exams.${index}.comment`,
+                      text
+                    )
+                  }
+                />
               </Stack>
             </AccordionCustom>
           </Grid>

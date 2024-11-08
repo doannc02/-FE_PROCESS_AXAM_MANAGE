@@ -24,6 +24,7 @@ import { FormProvider } from 'react-hook-form'
 import DialogCfAddExamSet from '../Dialogs/DialogConfirmAddExamSet'
 import DetailExamSet from './Components/DetailExamSet'
 import { useSaveProposals } from './useSaveProposals'
+import DialogConfirmAssign from '../Dialogs/DialogConfirmAssign'
 
 const SaveProposals = () => {
   const [, _] = useSaveProposals()
@@ -450,7 +451,7 @@ const SaveProposals = () => {
                                               Xem chi tiết
                                             </CoreButton>
 
-                                            {!isView && (
+                                            {!isView && role !== 'Admin' && (
                                               <CoreButton
                                                 theme='cancel'
                                                 sx={{ marginLeft: '10px' }}
@@ -507,7 +508,7 @@ const SaveProposals = () => {
                         {!isView ? (
                           <div className='space-x-12 text-center my-10'>
                             <CoreButton
-                              theme='cancel'
+                              theme='draft'
                               onClick={() => {
                                 router.push(MENU_URL.PROPOSAL)
                               }}
@@ -569,7 +570,13 @@ const SaveProposals = () => {
                                     theme='cancel'
                                     loading={isLoadingSubmit}
                                     onClick={() => {
-                                      onSubmitReject()
+                                      showDialog(
+                                        <DialogConfirmAssign
+                                          codePlan={watch('code')}
+                                          nameAction='từ chối '
+                                          refetch={() => onSubmitReject()}
+                                        />
+                                      )
                                     }}
                                   >
                                     Từ chối
@@ -578,7 +585,13 @@ const SaveProposals = () => {
                                     theme='add'
                                     loading={isLoadingSubmit}
                                     onClick={() => {
-                                      onSubmitApprove()
+                                      showDialog(
+                                        <DialogConfirmAssign
+                                          codePlan={watch('code')}
+                                          nameAction='phê duyệt '
+                                          refetch={() => onSubmitApprove()}
+                                        />
+                                      )
                                     }}
                                   >
                                     Phê duyệt
