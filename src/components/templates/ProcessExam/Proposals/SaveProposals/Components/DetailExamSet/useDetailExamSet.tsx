@@ -1,43 +1,44 @@
 import { getRole } from '@/config/token'
 import { errorMsg, successMsg } from '@/helper/message'
-import { changeStateExam } from '@/service/exam'
-import { state } from '@/service/examSet/type'
+import { actionExams, changeStateExam, getDetailExam } from '@/service/exam'
+import { Exam, state } from '@/service/examSet/type'
 import { Proposals } from '@/service/proposals/type'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 
-const useDetailExamSet = () => {
+const useDetailExamSet = ({ indexExamSet }: { indexExamSet: number }) => {
   const role = getRole()
   const [isLoadingUpdateStateExam, setLoadingUpdateStateExam] =
     useState<boolean>()
   const methodForm = useFormContext<Proposals>()
   const { setValue, getValues } = methodForm
   //  const { mutate } = useMutation(, {})
-  const submitChangeStateExam = async (
-    indexExamSet: number,
-    indexExam: number,
-    idExam: number,
-    state: state
-  ) => {
-    successMsg('Vào')
+
+  const submitChangeStateExam = async (input: Exam, index: number) => {
     if (role !== 'Admin') return
     try {
       setLoadingUpdateStateExam(true)
-      const res = await changeStateExam({
-        examId: idExam,
-        status: state,
-        comment:
-          getValues(`exam_sets.${indexExamSet}.exams.${indexExam}.comment`) ??
-          '',
+      const res = await actionExams({
+        method: 'put',
+        data: input,
       })
-      if (res.data) {
-        successMsg('Update trạng thái thành công!!')
+      if (res.data?.id) {
+        const detail = await getDetailExam({
+          examId: res?.data?.id,
+        })
+        if (detail.data) {
+          setValue(
+            `exam_sets.${indexExamSet}.exams.${index}`,
+            detail.data as any
+          )
+        }
+        successMsg(`Phê duyệt đề ${input.name} thành công!!`)
         setLoadingUpdateStateExam(false)
       }
     } catch (ex: any) {
       setLoadingUpdateStateExam(false)
-      errorMsg('Update trạng thái đề thất bại!', ex?.message)
+      errorMsg(`Phê duyệt đề ${input.name} thất bại!!`, ex?.message)
     }
   }
   return [

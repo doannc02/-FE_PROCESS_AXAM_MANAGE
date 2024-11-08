@@ -31,7 +31,7 @@ const DialogCfAddExams = ({ idExamSet, nameExamSet, refetch }: Props) => {
             lineHeight: 1.5,
           }}
         >
-          {`Bạn có muốn tạo đề cương chi tiết cho bộ đề "${nameExamSet}" này không?`}
+          {`Bạn có muốn tạo đề chi tiết cho bộ đề "${nameExamSet}" này không?`}
         </Typography>
       </Box>
 

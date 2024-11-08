@@ -15,21 +15,6 @@ export type Proposals = {
   isCreateExamSet?: boolean
 }
 
-export type Exam = {
-  id: number
-  code: string
-  name: string
-  attached_file: string
-  comment: string
-  description: string
-  create_at: string
-  status: 'approved' | 'in_progress' | 'pending_approval' | 'rejected'
-  academic_year: {
-    name: string
-    id: number
-  }
-}
-
 export type ResponseProposals = {
   GET: PageResponse<Proposals[]>
   GET_DETAIL: BaseResponse<Proposals>

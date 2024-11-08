@@ -15,6 +15,8 @@ import { FormProvider } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import DialogDeleteExam from '../DialogDeleteExam'
 import useSaveExams from './useSaveExams'
+import { actionExams } from '@/service/exam'
+import { errorMsg, successMsg } from '@/helper/message'
 
 const SaveExams = () => {
   const { t } = useTranslation()
@@ -37,7 +39,7 @@ const SaveExams = () => {
     isDirty,
   } = values
 
-  const { append, onSubmit, onUpdateState, onReRequest } = handles
+  const { append, onSubmit, onReRequest, refetch } = handles
 
   const { showDialog } = useDialog()
 
@@ -86,13 +88,13 @@ const SaveExams = () => {
                     <>
                       <WarningText bgColor='#abdbe3'>
                         {nameExamSet
-                          ? `Bạn đang tạo đề cương chi tiết cho bộ đề "${nameExamSet}"`
+                          ? `Bạn đang tạo đề chi tiết cho bộ đề "${nameExamSet}"`
                           : watch('exams.0.exam_set')?.name ||
                             watch('exams.0.exam_set')?.id
-                          ? `Đề cương chi tiết này đã được gán với bộ đề "${
+                          ? `Đề chi tiết này đã được gán với bộ đề "${
                               watch('exams.0.exam_set')?.name ?? ''
                             }"`
-                          : 'Đề cương chi tiết này chưa được gán với bộ đề nào!!'}
+                          : 'Đề chi tiết này chưa được gán với bộ đề nào!!'}
                       </WarningText>
                       <Typography className='py-5' variant='subtitle1'>
                         {isUpdate
@@ -158,8 +160,29 @@ const SaveExams = () => {
                                   <CoreButton
                                     theme='cancel'
                                     loading={isLoadingSubmit}
-                                    onClick={() => {
-                                      onUpdateState('rejected')
+                                    onClick={async () => {
+                                      try {
+                                        const res = await actionExams({
+                                          method: 'put',
+                                          data: {
+                                            ...watch(`exams.${0}`),
+                                            status: 'rejected',
+                                          },
+                                        })
+                                        if (res?.data?.id) {
+                                          successMsg('Phê duyệt thành công!!!')
+                                          router.push({
+                                            pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
+                                            query: {
+                                              id: res?.data?.id,
+                                              actionType: 'VIEW',
+                                            },
+                                          })
+                                          refetch()
+                                        }
+                                      } catch {
+                                        errorMsg('Phê duyệt thất bại')
+                                      }
                                     }}
                                   >
                                     Từ chối
@@ -167,8 +190,29 @@ const SaveExams = () => {
                                   <CoreButton
                                     theme='add'
                                     loading={isLoadingSubmit}
-                                    onClick={() => {
-                                      onUpdateState('approved')
+                                    onClick={async () => {
+                                      try {
+                                        const res = await actionExams({
+                                          method: 'put',
+                                          data: {
+                                            ...watch(`exams.${0}`),
+                                            status: 'approved',
+                                          },
+                                        })
+                                        if (res?.data?.id) {
+                                          successMsg('Phê duyệt thành công!!!')
+                                          router.push({
+                                            pathname: `${MENU_URL.DETAIL_EXAM}/[id]`,
+                                            query: {
+                                              id: res?.data?.id,
+                                              actionType: 'VIEW',
+                                            },
+                                          })
+                                          refetch()
+                                        }
+                                      } catch {
+                                        errorMsg('Phê duyệt thất bại')
+                                      }
                                     }}
                                   >
                                     Phê duyệt
@@ -226,7 +270,6 @@ const SaveExams = () => {
                   ),
                 },
               ]}
-              //  tabNumber={tabNumber}
             />
           </form>
         </FormProvider>

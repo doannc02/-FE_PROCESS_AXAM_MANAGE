@@ -9,11 +9,14 @@ import { useTranslation } from 'react-i18next'
 import ViewIcon from '@/assets/svg/Eye.svg'
 import useDetailExamSet from './useDetailExamSet'
 import { CoreButton } from '@/components/atoms/CoreButton'
-import { ExamSet } from '@/service/examSet/type'
+import { Exam, ExamSet } from '@/service/examSet/type'
 import { TopAction } from '@/components/molecules/TopAction'
 import { MENU_URL } from '@/routes'
 import { useRouter } from 'next/router'
 import CoreInputDescription from '@/components/atoms/CoreInputDescrition'
+import { actionExamSet } from '@/service/examSet'
+import { actionExams, getDetailExam } from '@/service/exam'
+import { errorMsg, successMsg } from '@/helper/message'
 
 const DetailExamSet = ({
   isViewProp,
@@ -25,7 +28,7 @@ const DetailExamSet = ({
   isViewProp?: boolean
 }) => {
   const { t } = useTranslation()
-  const [values, handles] = useDetailExamSet()
+  const [values, handles] = useDetailExamSet({ indexExamSet })
   const { methodForm, isLoadingUpdateStateExam, role } = values
   const { submitChangeStateExam } = handles
   const { watch, getValues, setValue, control } = methodForm
@@ -37,13 +40,14 @@ const DetailExamSet = ({
   })
   return (
     <Grid container>
-      <Grid item xs={12} sm={12} md={4} lg={4}>
-        <CoreInput
-          isViewProp
-          multiline
+      <Grid item xs={12} sm={12} md={12} lg={12}>
+        <CoreInputDescription
           control={control}
-          label='Mô tả bộ đề'
-          name={`exam_sets.${indexExamSet}.description`}
+          isView={!!isViewProp}
+          nameField={`exam_sets.${indexExamSet}.description`}
+          t={t}
+          title='Mô tả bộ đề'
+          watch={watch}
         />
       </Grid>
       {(item?.exams ?? []).map((ele, index) => {
@@ -57,7 +61,7 @@ const DetailExamSet = ({
                 <div className='w-full flex justify-between items-center'>
                   <div className='w-1/3 flex justify-start'>
                     <Typography fontWeight={'600'}>
-                      Đề cương chi tiết: &nbsp;
+                      Đề chi tiết: &nbsp;
                     </Typography>
 
                     <Typography color={BLUE} fontWeight={'600'}>
@@ -67,7 +71,7 @@ const DetailExamSet = ({
 
                   <div className='w-2/3 flex justify-between items-center p-5'>
                     <div className='flex justify-between items-center'>
-                      <Typography>Xem file upload</Typography>
+                      <Typography>Xem chi tiết</Typography>
                       <IconButton
                         style={{
                           //bottom: '5px',
@@ -121,27 +125,38 @@ const DetailExamSet = ({
                         }
                       />
                     </Typography>
-                    {role === 'Admin' ? (
+                    {role === 'Admin' && item?.status === 'pending_approval' ? (
                       <div>
                         <CoreButton
                           sx={{ marginRight: '10px' }}
                           theme='cancel'
                           onClick={(e) => {
                             e.stopPropagation()
+                            console.log(ele, 'ele')
+                            submitChangeStateExam(
+                              { ...ele, status: 'rejected' } as Exam,
+                              index
+                            )
                           }}
                         >
                           Từ chối
                         </CoreButton>
 
-                        <CoreButton
-                          sx={{ marginRight: '10px' }}
-                          theme='submit'
-                          onClick={(e) => {
-                            e.stopPropagation()
-                          }}
-                        >
-                          Phê duyệt
-                        </CoreButton>
+                        {role === 'Admin' && (
+                          <CoreButton
+                            sx={{ marginRight: '10px' }}
+                            theme='submit'
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              submitChangeStateExam(
+                                { ...ele, status: 'approved' } as Exam,
+                                index
+                              )
+                            }}
+                          >
+                            Phê duyệt
+                          </CoreButton>
+                        )}
 
                         <CoreButton
                           onClick={(e) => {
@@ -158,30 +173,31 @@ const DetailExamSet = ({
             >
               <Stack direction={'column'}>
                 <Box>
-                  {/* <CoreInput
-                    multiline
-                    isViewProp={role !== 'Admin'}
-                    control={control}
-                    label='Nhận xét chi tiết đề'
-                    name={`exam_sets.${indexExamSet}.exams.${index}.comment`}
-                    required
-                    rules={{
-                      required: t('common:validation.required'),
-                    }}
-                  /> */}
                   {role !== 'Admin' &&
-                    !!watch(
-                      `exam_sets.${indexExamSet}.exams.${index}.comment`
-                    ) && (
-                      <CoreInputDescription
-                        control={control}
-                        isView={isViewProp || role !== 'Admin'}
-                        nameField={`exam_sets.${indexExamSet}.exams.${index}.comment`}
-                        t={t}
-                        title='Nhận xét của admin'
-                        watch={watch}
-                      />
-                    )}
+                  !!watch(
+                    `exam_sets.${indexExamSet}.exams.${index}.comment`
+                  ) ? (
+                    <CoreInput
+                      multiline
+                      isViewProp={role !== 'Admin'}
+                      control={control}
+                      label='Nhận xét chi tiết đề'
+                      name={`exam_sets.${indexExamSet}.exams.${index}.comment`}
+                      required
+                      rules={{
+                        required: t('common:validation.required'),
+                      }}
+                    />
+                  ) : (
+                    <CoreInputDescription
+                      control={control}
+                      isView={isViewProp || role !== 'Admin'}
+                      nameField={`exam_sets.${indexExamSet}.exams.${index}.comment`}
+                      t={t}
+                      title='Nhận xét của admin'
+                      watch={watch}
+                    />
+                  )}
                 </Box>
               </Stack>
             </AccordionCustom>

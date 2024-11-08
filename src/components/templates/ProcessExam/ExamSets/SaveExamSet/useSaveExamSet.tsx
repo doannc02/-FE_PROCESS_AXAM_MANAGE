@@ -166,7 +166,7 @@ export const useSaveExamSet = () => {
           params={{
             isGetForAddExamSet: true,
           }}
-          placeholder='Chọn đề cương chi tiết'
+          placeholder='Chọn đề chi tiết'
           control={control}
           fetchDataFn={getExamList}
           name={`exams.${index}`}

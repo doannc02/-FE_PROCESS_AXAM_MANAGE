@@ -51,7 +51,6 @@ const SaveProposals = () => {
     onSubmitPendingApprove,
     setValue,
     t,
-    onUpdateState,
     append,
     remove,
     onSubmitApprove,
@@ -196,29 +195,6 @@ const SaveProposals = () => {
                               />
                             </Grid>
                           )}
-
-                          {/* {role !== 'Admin' && (
-                            <Grid item xs={12} sm={12} md={4} lg={4}>
-                              <CoreAutoCompleteAPI
-                                placeholder='Chọn người phê duyệt'
-                                control={control}
-                                labelPath='name'
-                                valuePath='id'
-                                label='Người phê duyệt'
-                                name='instructor'
-                                params={{
-                                  roleId: 1,
-                                  page: 1,
-                                  size: 20,
-                                }}
-                                fetchDataFn={getListUser}
-                                required
-                                rules={{
-                                  required: t('common:validation.required'),
-                                }}
-                              />
-                            </Grid>
-                          )} */}
 
                           <Grid item xs={12} sm={12} md={4} lg={4}>
                             <CoreDatePicker
@@ -406,59 +382,59 @@ const SaveProposals = () => {
                                           lg={4}
                                           className='flex justify-between items-center'
                                         >
-                                          <DisplayStatus
-                                            text={
-                                              item?.status ===
-                                              'pending_approval'
-                                                ? 'Chờ phê duyệt'
-                                                : item?.status === 'in_progress'
-                                                ? 'Đang thực hiện'
-                                                : item?.status === 'approved'
-                                                ? 'Đã phê duyệt'
-                                                : 'Bị từ chối'
-                                            }
-                                            color={
-                                              item?.status ===
-                                              'pending_approval'
-                                                ? ORANGE
-                                                : item?.status === 'in_progress'
-                                                ? BLACK
-                                                : item?.status === 'approved'
-                                                ? GREEN
-                                                : RED
-                                            }
-                                          />
-                                          {/* {isView
-                                            ? null
-                                            : role === 'Admin'
-                                            ? null
-                                            : index > 0 && (
-                                                <TopAction
-                                                  actionList={['delete']}
-                                                  onDeleteAction={() =>
-                                                    remove(index)
-                                                  }
-                                                />
-                                              )} */}
+                                          {item?.status ? (
+                                            <DisplayStatus
+                                              text={
+                                                item?.status ===
+                                                'pending_approval'
+                                                  ? 'Chờ phê duyệt'
+                                                  : item?.status ===
+                                                    'in_progress'
+                                                  ? 'Đang thực hiện'
+                                                  : item?.status === 'approved'
+                                                  ? 'Đã phê duyệt'
+                                                  : 'Bị từ chối'
+                                              }
+                                              color={
+                                                item?.status ===
+                                                'pending_approval'
+                                                  ? ORANGE
+                                                  : item?.status ===
+                                                    'in_progress'
+                                                  ? BLACK
+                                                  : item?.status === 'approved'
+                                                  ? GREEN
+                                                  : RED
+                                              }
+                                            />
+                                          ) : (
+                                            <Typography></Typography>
+                                          )}
                                           <div>
-                                            <CoreButton
-                                              sx={{ marginRight: '10px' }}
-                                              theme='cancel'
-                                              onClick={(e) => {
-                                                e.stopPropagation()
-                                              }}
-                                            >
-                                              Từ chối
-                                            </CoreButton>
-                                            <CoreButton
-                                              sx={{ marginRight: '10px' }}
-                                              theme='submit'
-                                              onClick={(e) => {
-                                                e.stopPropagation()
-                                              }}
-                                            >
-                                              Phê duyệt
-                                            </CoreButton>
+                                            {role === 'Admin' &&
+                                              item?.status ===
+                                                'pending_approval' && (
+                                                <>
+                                                  <CoreButton
+                                                    sx={{ marginRight: '10px' }}
+                                                    theme='cancel'
+                                                    onClick={(e) => {
+                                                      e.stopPropagation()
+                                                    }}
+                                                  >
+                                                    Từ chối
+                                                  </CoreButton>
+                                                  <CoreButton
+                                                    sx={{ marginRight: '10px' }}
+                                                    theme='submit'
+                                                    onClick={(e) => {
+                                                      e.stopPropagation()
+                                                    }}
+                                                  >
+                                                    Phê duyệt
+                                                  </CoreButton>
+                                                </>
+                                              )}
                                             <CoreButton
                                               onClick={(e) => {
                                                 router.push({
@@ -473,6 +449,26 @@ const SaveProposals = () => {
                                             >
                                               Xem chi tiết
                                             </CoreButton>
+
+                                            {!isView && (
+                                              <CoreButton
+                                                theme='cancel'
+                                                sx={{ marginLeft: '10px' }}
+                                                width={10}
+                                                onClick={(e) => {
+                                                  e.stopPropagation()
+                                                  remove(index)
+                                                }}
+                                              >
+                                                {role !== 'Admin' &&
+                                                  item?.status !==
+                                                    'approved' && (
+                                                    <TopAction
+                                                      actionList={['remove']}
+                                                    />
+                                                  )}
+                                              </CoreButton>
+                                            )}
                                           </div>
                                         </Grid>
                                       </Grid>
@@ -488,11 +484,12 @@ const SaveProposals = () => {
                               }
                             )}
                           </FormProvider>
-                          {isView ? null : role === 'Admin' ? null : (
+                          {isView ||
+                          watch('status') === 'approved' ? null : role ===
+                            'Admin' ? null : (
                             <IconButton
                               onClick={() =>
                                 append({
-                                  status: 'in_progress',
                                   name: '',
                                 } as any)
                               }
@@ -629,7 +626,6 @@ const SaveProposals = () => {
                   ),
                 },
               ]}
-              //  tabNumber={tabNumber}
             />
           </form>
         </FormProvider>

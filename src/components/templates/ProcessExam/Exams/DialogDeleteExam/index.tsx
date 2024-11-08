@@ -27,7 +27,7 @@ const DialogDeleteExam = ({ id, nameExam, refetch }: Props) => {
             lineHeight: 1.5,
           }}
         >
-          {`Bạn có chắc chắn muốn xóa đề cương "${nameExam}" này không?`}
+          {`Bạn có chắc chắn muốn xóa đề "${nameExam}" này không?`}
         </Typography>
       </Box>
 

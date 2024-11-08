@@ -289,7 +289,7 @@ const SaveExamSet = () => {
                                     )
                                   }}
                                 >
-                                  Tạo đề cương cho bộ đề
+                                  Tạo đề cho bộ đề
                                 </CoreButton>
                               )}
 

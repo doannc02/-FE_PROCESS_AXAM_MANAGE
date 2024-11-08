@@ -30,7 +30,7 @@ const CoreInputDescription: React.FC<DescriptionComponentProps> = ({
     <Grid item xs={12}>
       {
         <div>
-          <Typography fontWeight={500} mb={2}>
+          <Typography fontWeight={700} mb={2}>
             {title}
           </Typography>
           <Controller

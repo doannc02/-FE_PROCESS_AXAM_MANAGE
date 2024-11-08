@@ -451,7 +451,15 @@ const useSaveExams = () => {
       nameExamSet,
       isDirty,
     },
-    { append, remove, onSubmit, onReRequest, changeStateExam, onUpdateState },
+    {
+      append,
+      remove,
+      onSubmit,
+      onReRequest,
+      changeStateExam,
+      refetch,
+      onUpdateState,
+    },
   ] as const
 }
 

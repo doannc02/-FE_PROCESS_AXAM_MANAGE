@@ -12,7 +12,7 @@ type Props = HttpResponse<any>
 const Page: NextPageWithLayout<Props> = () => <SaveExams />
 
 Page.getLayout = BasicLayout
-Page.getMeta = Meta(() => ({ title: 'Chi tiết đề cương' }))
+Page.getMeta = Meta(() => ({ title: 'Chi tiết đề' }))
 
 export const getServerSideProps = combineGssp<any>(
   authGssp(),
