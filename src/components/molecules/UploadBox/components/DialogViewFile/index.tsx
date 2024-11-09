@@ -22,7 +22,7 @@ const DialogViewFile = ({
       title={`Chi tiết file ${nameFile}`}
     >
       <div className=''>
-        <CoreViewFile src={`https://itf.viu.edu.vn:880/qldethi/${src}`} />
+        <CoreViewFile src={`https://itf.viu.edu.vn:880/qldethi${src}`} />
       </div>
     </DialogCustom>
   )
