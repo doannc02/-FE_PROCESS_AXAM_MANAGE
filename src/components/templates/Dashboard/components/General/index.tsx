@@ -67,9 +67,8 @@ const General = () => {
 
           {arrDataRender.map((item, index) => {
             return (
-              <Grid item xs={12} sm={12} md={3} lg={3}>
+              <Grid key={index} item xs={12} sm={12} md={3} lg={3}>
                 <PaperCustom
-                  key={index}
                   index={index}
                   backgroundColor={WHITE}
                   value={item?.totalElements ?? 0}

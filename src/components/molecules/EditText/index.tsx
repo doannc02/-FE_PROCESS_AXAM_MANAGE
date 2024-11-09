@@ -40,7 +40,8 @@ export const EditText = (props: EditTextProps) => {
   const debouncedSetEditorText = useCallback(
     debounce((text: string) => {
       setEditorText(text)
-    }, 300),
+    }, 200),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setEditorText]
   )
 
