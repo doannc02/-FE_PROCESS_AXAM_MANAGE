@@ -1,6 +1,7 @@
 import { useDialog } from '@/components/hooks/dialog/useDialog'
 import CoreViewFile from '@/components/molecules/CoreViewFile'
 import { DialogCustom } from '@/components/organism/DialogCustom'
+import getConfig from 'next/config'
 
 const DialogViewFile = ({
   nameFile,
@@ -9,7 +10,9 @@ const DialogViewFile = ({
   nameFile: string
   src: string
 }) => {
-  const new_url = src?.replace('/pdf-files/', '/qldethi/pdf-files/')
+  const {
+    publicRuntimeConfig: { COMMON_URL },
+  } = getConfig()
   const { hideDialog } = useDialog()
   return (
     <DialogCustom
@@ -18,7 +21,7 @@ const DialogViewFile = ({
       title={`Chi tiết file ${nameFile}`}
     >
       <div className=''>
-        <CoreViewFile src={new_url} />
+        <CoreViewFile src={`${COMMON_URL}/qldethi/${src}`} />
       </div>
     </DialogCustom>
   )

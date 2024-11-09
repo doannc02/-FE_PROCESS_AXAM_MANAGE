@@ -194,7 +194,7 @@ const UploadBox = (props: Props) => {
                               showDialog(
                                 <DialogViewFile
                                   src={url_res}
-                                  nameFile={url_res.slice(68, url_res?.length)}
+                                  nameFile={url_res.slice(48, url_res?.length)}
                                 />
                               )
                             }}
