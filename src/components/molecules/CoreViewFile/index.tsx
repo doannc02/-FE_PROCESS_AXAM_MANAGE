@@ -28,11 +28,13 @@ const getType = (src: string) => {
 }
 
 export default function CoreViewFile({ src }: { src: string }) {
+  console.log(src, 'path url')
   return (
     <div className='relative w-full h-[100vh] flex justify-center'>
       {src && (
         <PdfWrapper>
-          {getType(src) === 'pdf' || getType(src) === 'docx' && <CorePdfViewer pdfFilePath={src} />}
+          {getType(src) === 'pdf' ||
+            (getType(src) === 'docx' && <CorePdfViewer pdfFilePath={src} />)}
         </PdfWrapper>
       )}
     </div>

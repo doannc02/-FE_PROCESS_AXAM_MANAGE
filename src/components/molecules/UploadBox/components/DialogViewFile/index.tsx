@@ -14,7 +14,7 @@ const DialogViewFile = ({
     publicRuntimeConfig: { COMMON_URL },
   } = getConfig()
   const { hideDialog } = useDialog()
-
+  console.log(COMMON_URL, src, 'dialog')
   return (
     <DialogCustom
       width={1100}
