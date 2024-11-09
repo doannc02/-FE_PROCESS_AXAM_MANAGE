@@ -10,7 +10,6 @@ import { Grid, Typography } from '@mui/material'
 import useSaveAcademicYear from './useSaveAcademicYear'
 import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
 import DialogDeleteAcademic from '../DialogDeleteAcademic'
-import { watch } from 'fs'
 
 const SaveAcademicYear = () => {
   const [values, handles] = useSaveAcademicYear()
@@ -139,7 +138,7 @@ const SaveAcademicYear = () => {
                           <CoreButton
                             theme='cancel'
                             onClick={() => {
-                              router.push(MENU_URL.DEPARTMENT)
+                              router.push(MENU_URL.ACADEMIC)
                             }}
                           >
                             {t('common:btn.cancel')}
