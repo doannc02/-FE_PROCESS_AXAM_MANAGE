@@ -2,6 +2,8 @@ import { useAppSelector } from '@/redux/hook'
 import { useQueryGetExamList } from '@/service/exam'
 import { useQueryGetExamSetList } from '@/service/examSet'
 import { useQueryGetProposalsList } from '@/service/proposals'
+import { convertToDate } from '@/utils/date/convertToDate'
+import moment from 'moment'
 import { useMemo } from 'react'
 
 const useGeneral = () => {
@@ -23,7 +25,9 @@ const useGeneral = () => {
     useQueryGetProposalsList(
       {
         page: 1,
-        size: 10,
+        size: 100,
+        startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
+        endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
       },
       {
         enabled: !!email,
@@ -34,7 +38,9 @@ const useGeneral = () => {
     useQueryGetExamSetList(
       {
         page: 1,
-        size: 10,
+        size: 100,
+        startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
+        endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
       },
       {
         enabled: !!email,
@@ -44,7 +50,9 @@ const useGeneral = () => {
   const { data: dataExam, isLoading: isLoadingExam } = useQueryGetExamList(
     {
       page: 1,
-      size: 10,
+      size: 100,
+      startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
+      endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
     },
     {
       enabled: !!email,
@@ -78,7 +86,7 @@ const useGeneral = () => {
     }[]
   }, [objectExpire, objectProposal, objectExamSet, objectExam])
   console.log(arrDataRender, 'arrDataRender')
-  return [{ email, arrDataRender }, {}] as const
+  return [{ email, arrDataRender }, { moment}] as const
 }
 
 export default useGeneral

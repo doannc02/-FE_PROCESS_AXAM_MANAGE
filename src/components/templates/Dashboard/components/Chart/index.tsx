@@ -30,9 +30,9 @@ const ChartDashBoard = ({ arrDataRender }: { arrDataRender: Props }) => {
   }
 
   return (
-    <div className='h-full'>
+    <div>
       <Bar
-        className='h-full'
+        className='h-min-[150px]'
         data={{
           labels: [
             'Bộ đề đến hạn',
@@ -49,7 +49,7 @@ const ChartDashBoard = ({ arrDataRender }: { arrDataRender: Props }) => {
                 arrDataRender[2].totalElements,
                 arrDataRender[3].totalElements,
               ],
-              barThickness: 120, // Độ rộng của cột
+              barThickness: 80, // Độ rộng của cột
             },
           ],
         }}
@@ -68,7 +68,7 @@ const ChartDashBoard = ({ arrDataRender }: { arrDataRender: Props }) => {
             },
             title: {
               display: true,
-              text: 'Biểu đồ quản lý các tài liệu đã tạo',
+              text: 'Biểu đồ quản lý tất cả tài liệu đã tạo',
             },
           },
         }}
