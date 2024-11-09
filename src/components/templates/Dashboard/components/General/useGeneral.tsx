@@ -12,12 +12,9 @@ const useGeneral = () => {
   const { data: dataPropExpire, isLoading: isLoadingPropExpire } =
     useQueryGetProposalsList(
       {
-        day_expire: 10,
+        day_expire: 20,
         page: 1,
-        size: 10,
-      },
-      {
-        enabled: !!email,
+        size: 20,
       }
     )
 
@@ -28,9 +25,6 @@ const useGeneral = () => {
         size: 100,
         startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
         endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
-      },
-      {
-        enabled: !!email,
       }
     )
 
@@ -41,9 +35,6 @@ const useGeneral = () => {
         size: 100,
         startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
         endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
-      },
-      {
-        enabled: !!email,
       }
     )
 

@@ -568,6 +568,7 @@ const SaveProposals = () => {
                             )}
 
                             {watch('status') !== 'approved' &&
+                              watch('status') !== 'pending_approval' &&
                               (fields ?? [])?.length > 0 &&
                               role !== 'Admin' && (
                                 <CoreButton

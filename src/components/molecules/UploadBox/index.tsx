@@ -66,11 +66,10 @@ const UploadBox = (props: Props) => {
   const [loading, setLoading] = useState(false)
   const [url_res, setUrlRes] = useState(url)
   const refElement = useRef<HTMLInputElement>(null)
-  const { hideDialog, showDialog } = useDialog()
+  const { showDialog } = useDialog()
   const methodForm = useFormContext<any>()
   const { control } = methodForm
 
-  const router = useRouter()
 
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target?.files
@@ -99,7 +98,7 @@ const UploadBox = (props: Props) => {
 
   return (
     <>
-      {' '}
+   
       {/* ['docx', 'pdf'].some((find) => (url_res ?? '').includes(find)) */}
       {true ? (
         <Stack
@@ -152,42 +151,6 @@ const UploadBox = (props: Props) => {
                   <Typography variant='body1'>{textUpload}</Typography>
                 </Box>
 
-                {/* <input
-                  className='hidden'
-                  type='file'
-                  accept='.pdf,.doc,.docx'
-                  onChange={debounce(handleFileUpload, 2000)}
-                  multiple
-                  ref={refElement}
-                /> */}
-                {/* <Controller
-                  name={name}
-                  control={control}
-                  defaultValue=''
-                  rules={{
-                    required: 'Vui lòng chọn tệp đính kèm.',
-                  }}
-                  render={({ field, fieldState: { error } }) => (
-                    <>
-                      {error && (
-                        <span className='text-red-500'>{error?.message}</span>
-                      )}
-                      <input
-                        {...field}
-                        className='hidden'
-                        type='file'
-                        accept='.pdf,.doc,.docx'
-                        onChange={(e) => {
-                          console.log(e.target.files, 'zzz')
-                          field.onChange(e)
-                          handleFileUpload(e)
-                        }}
-                        multiple
-                        ref={refElement}
-                      />
-                    </>
-                  )}
-                /> */}
                 <Controller
                   name={name}
                   control={control}

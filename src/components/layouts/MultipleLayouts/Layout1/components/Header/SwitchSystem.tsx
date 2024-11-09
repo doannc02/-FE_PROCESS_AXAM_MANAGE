@@ -12,8 +12,14 @@ const listWebApps = [
   {
     homepage: 'http://itf.viu.edu.vn/',
     imageUrl: '',
-    name: 'Homepage',
-    code: 'Homepage',
+    name: 'ITF',
+    code: 'ITF VIU',
+  },
+  {
+    homepage: 'http://itf.viu.edu.vn/admin',
+    imageUrl: '',
+    name: 'ADMIN',
+    code: 'ADMIN',
   },
 ]
 
@@ -32,7 +38,7 @@ export const SwitchSystem = () => {
           </IconButton>
 
           <Typography variant='body1' style={{ color: WHITE }}>
-            Module QL Đề Thi
+            Module QL Đề Thực Hành
           </Typography>
         </div>
       </div>
@@ -111,11 +117,7 @@ export const SwitchSystem = () => {
                       variant='body1'
                       className='group-hover:text-[#0078D4]'
                     >
-                      {system.name.split(' ').length > 1
-                        ? `${system.name.split(' ')[0][0]}${
-                            system.name.split(' ')[1][0]
-                          }`
-                        : system.name.slice(0, 4)}
+                      {system.name}
                     </Typography>
                   </div>
                 </Link>

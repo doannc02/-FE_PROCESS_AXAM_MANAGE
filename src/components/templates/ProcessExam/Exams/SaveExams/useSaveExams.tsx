@@ -428,8 +428,8 @@ const useSaveExams = () => {
         })
         refetch()
       }
-    } catch {
-      errorMsg('Phê duyệt đề thi thất bại!')
+    } catch (err) {
+      errorMsg(err)
     }
   }
 
