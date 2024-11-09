@@ -70,7 +70,6 @@ const UploadBox = (props: Props) => {
   const methodForm = useFormContext<any>()
   const { control } = methodForm
 
-
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target?.files
     console.log(selectedFiles, 'l;')
@@ -98,7 +97,6 @@ const UploadBox = (props: Props) => {
 
   return (
     <>
-   
       {/* ['docx', 'pdf'].some((find) => (url_res ?? '').includes(find)) */}
       {true ? (
         <Stack
@@ -182,7 +180,7 @@ const UploadBox = (props: Props) => {
                             />
                           </IconButton>
                         )}
-                        {url_res?.includes('pdf') && (
+                        {url_res && (
                           <IconButton
                             style={{
                               position: 'absolute',

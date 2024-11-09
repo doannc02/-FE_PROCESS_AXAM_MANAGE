@@ -14,6 +14,7 @@ const DialogViewFile = ({
     publicRuntimeConfig: { COMMON_URL },
   } = getConfig()
   const { hideDialog } = useDialog()
+
   return (
     <DialogCustom
       width={1100}
@@ -21,7 +22,7 @@ const DialogViewFile = ({
       title={`Chi tiết file ${nameFile}`}
     >
       <div className=''>
-        <CoreViewFile src={`${COMMON_URL}/qldethi/${src}`} />
+        <CoreViewFile src={`https://itf.viu.edu.vn:880/qldethi/${src}`} />
       </div>
     </DialogCustom>
   )

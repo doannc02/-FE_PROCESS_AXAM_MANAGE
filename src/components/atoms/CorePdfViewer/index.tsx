@@ -17,6 +17,7 @@ const PdfWrapper = ({ children }: { children: ReactNode }) => (
 )
 
 const CorePdfViewer = ({ pdfFilePath }: PDFViewerAppProps) => {
+  console.log(pdfFilePath, 'pathFile')
   const { viewerRef, usePDFSlickStore, PDFSlickViewer } = usePDFSlick(
     pdfFilePath,
     {
