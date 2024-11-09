@@ -9,6 +9,8 @@ import { MENU_URL } from '@/routes'
 import { Grid, Typography } from '@mui/material'
 import useSaveAcademicYear from './useSaveAcademicYear'
 import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
+import DialogDeleteAcademic from '../DialogDeleteAcademic'
+import { watch } from 'fs'
 
 const SaveAcademicYear = () => {
   const [values, handles] = useSaveAcademicYear()
@@ -21,9 +23,9 @@ const SaveAcademicYear = () => {
     id,
     router,
   } = values
-  const { onSubmit, t } = handles
+  const { onSubmit, t, showDialog } = handles
 
-  const { control } = methodForm
+  const { control, watch } = methodForm
   return (
     <PageContainer
       title={
@@ -159,7 +161,15 @@ const SaveAcademicYear = () => {
                 ),
                 rightAction: (
                   <TopAction
-                    actionList={[...(isView ? ['edit'] : [])] as any}
+                    actionList={
+                      [
+                        ...(isUpdate
+                          ? ['delete']
+                          : isView
+                          ? ['edit', 'delete']
+                          : []),
+                      ] as any
+                    }
                     onEditAction={() => {
                       router.push({
                         pathname: `${MENU_URL.ACADEMIC}/[id]`,
@@ -167,6 +177,14 @@ const SaveAcademicYear = () => {
                           id: Number(id),
                         },
                       })
+                    }}
+                    onDeleteAction={() => {
+                      showDialog(
+                        <DialogDeleteAcademic
+                          nameCourse={watch('name')}
+                          id={Number(id)}
+                        />
+                      )
                     }}
                   />
                 ),

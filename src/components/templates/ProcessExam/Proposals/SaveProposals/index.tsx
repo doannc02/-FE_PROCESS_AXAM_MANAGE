@@ -25,6 +25,7 @@ import DialogCfAddExamSet from '../Dialogs/DialogConfirmAddExamSet'
 import DetailExamSet from './Components/DetailExamSet'
 import { useSaveProposals } from './useSaveProposals'
 import DialogConfirmAssign from '../Dialogs/DialogConfirmAssign'
+import DialogDeleteProposal from '../Dialogs/DialogDeleteProposal'
 
 const SaveProposals = () => {
   const [, _] = useSaveProposals()
@@ -52,6 +53,7 @@ const SaveProposals = () => {
     onSubmitPendingApprove,
     setValue,
     t,
+    onChangeStateExam,
     append,
     remove,
     onSubmitApprove,
@@ -249,6 +251,11 @@ const SaveProposals = () => {
                           label='Tạo kế hoạch kèm theo bộ đề có sẵn'
                           name='isCreateExamSet'
                           isViewProp={role === 'Admin'}
+                          onRateChange={() => {
+                            if (!watch('isCreateExamSet')) {
+                              setValue('exam_sets', [] as any)
+                            }
+                          }}
                         />
                       )}
 
@@ -421,6 +428,10 @@ const SaveProposals = () => {
                                                     theme='cancel'
                                                     onClick={(e) => {
                                                       e.stopPropagation()
+                                                      onChangeStateExam(
+                                                        'rejected',
+                                                        index
+                                                      )
                                                     }}
                                                   >
                                                     Từ chối
@@ -430,26 +441,32 @@ const SaveProposals = () => {
                                                     theme='submit'
                                                     onClick={(e) => {
                                                       e.stopPropagation()
+                                                      onChangeStateExam(
+                                                        'approved',
+                                                        index
+                                                      )
                                                     }}
                                                   >
                                                     Phê duyệt
                                                   </CoreButton>
                                                 </>
                                               )}
-                                            <CoreButton
-                                              onClick={(e) => {
-                                                router.push({
-                                                  pathname: `${MENU_URL.EXAM_SET}/[id]`,
-                                                  query: {
-                                                    id: item?.id,
-                                                    actionType: 'VIEW',
-                                                  },
-                                                })
-                                                e.stopPropagation()
-                                              }}
-                                            >
-                                              Xem chi tiết
-                                            </CoreButton>
+                                            {item?.id && (
+                                              <CoreButton
+                                                onClick={(e) => {
+                                                  router.push({
+                                                    pathname: `${MENU_URL.EXAM_SET}/[id]`,
+                                                    query: {
+                                                      id: item?.id,
+                                                      actionType: 'VIEW',
+                                                    },
+                                                  })
+                                                  e.stopPropagation()
+                                                }}
+                                              >
+                                                Xem chi tiết
+                                              </CoreButton>
+                                            )}
 
                                             {!isView && role !== 'Admin' && (
                                               <CoreButton
@@ -626,7 +643,14 @@ const SaveProposals = () => {
                             : []),
                         ] as any
                       }
-                      onDeleteAction={() => {}}
+                      onDeleteAction={() => {
+                        showDialog(
+                          <DialogDeleteProposal
+                            id={Number(id)}
+                            nameCourse={watch('code')}
+                          />
+                        )
+                      }}
                       onEditAction={() => {
                         router.push({
                           pathname: `${MENU_URL.PROPOSAL}/[id]`,

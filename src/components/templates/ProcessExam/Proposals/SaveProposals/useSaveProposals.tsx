@@ -8,6 +8,7 @@ import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
 import { useAppDispatch } from '@/redux/hook'
 import { MENU_URL } from '@/routes'
+import { actionExamSet } from '@/service/examSet'
 import { state } from '@/service/examSet/type'
 import {
   actionProposals,
@@ -182,16 +183,31 @@ export const useSaveProposals = () => {
   }, [data?.data, isUpdate, reset])
 
   const onSubmitDraft = handleSubmit(async (input) => {
+    let valid = true
+    input.exam_sets.map((i) => {
+      if (!i.name) {
+        errorMsg(
+          'Vui lòng nhập thông tin cho bộ đề hoặc lưu nháp nhưng không tạo kèm theo bộ đề!!!'
+        )
+        valid = false
+      }
+    })
     const { isCreateExamSet, ...rest } = input
 
-    mutate({
-      method: isUpdate ? 'put' : 'post',
-      data: {
-        ...rest,
-        exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
-        status: 'in_progress',
-      },
-    })
+    if (valid) {
+      mutate({
+        method: isUpdate ? 'put' : 'post',
+        data: {
+          ...rest,
+          exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
+          status: isAddNew
+            ? 'in_progress'
+            : role === 'Admin'
+            ? input.status
+            : 'in_progress',
+        },
+      })
+    }
   })
   const onSubmitPendingApprove = handleSubmit(async (input) => {
     let valid = true
@@ -208,7 +224,7 @@ export const useSaveProposals = () => {
       i.exams.map((ele) => {
         if (ele.status === 'in_progress' || ele.status === 'rejected') {
           errorMsg(
-            'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề đang thực hiện!!'
+            'Không thể chuyển trạng thái do kế hoạch này vẫn còn đề đang thực hiện!!'
           )
           valid = false
         }
@@ -216,12 +232,14 @@ export const useSaveProposals = () => {
     })
     if (countExams === 0) {
       errorMsg(
-        'Không thể phê duyệt do kế hoạch này không có đề chi tiết trong bộ đề!!'
+        'Không thể chuyển trạng thái sang chờ duyệt do kế hoạch này không có đề chi tiết trong bộ đề!!'
       )
       valid = false
     }
     if (input.exam_sets.length === 0) {
-      errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
+      errorMsg(
+        'Không thể chuyển trạng thái do kế hoạch này không có bộ đề nào!!'
+      )
       valid = false
     }
 
@@ -344,6 +362,23 @@ export const useSaveProposals = () => {
       errorMsg('Phê duyệt bộ đề thất bại!')
     }
   }
+
+  const onChangeStateExam = async (
+    status: 'rejected' | 'approved',
+    index: number
+  ) => {
+    try {
+      const res = await actionExamSet({
+        method: 'put',
+        data: { ...watch(`exam_sets.${index}`), status: status },
+      })
+      if (res.data) {
+        setValue(`exam_sets.${index}`, res.data)
+      }
+    } catch (err) {
+      errorMsg(err)
+    }
+  }
   return [
     {
       methodForm,
@@ -364,6 +399,7 @@ export const useSaveProposals = () => {
       onSubmitPendingApprove,
       onSubmitDraft,
       setValue,
+      onChangeStateExam,
       onUpdateState,
       t,
       append,

@@ -134,7 +134,7 @@ export const TableRowPE = (props: Props) => {
                             <EditText
                               title='Mô tả đề'
                               error=''
-                              disabled={isView || role === 'admin'}
+                              disabled={isView || role === 'Admin'}
                               editorText={watch(`exams.${index}.description`)}
                               placeholder='Mô tả đề'
                               setEditorText={(text) =>
@@ -147,7 +147,7 @@ export const TableRowPE = (props: Props) => {
                             <EditText
                               title='Nhận xét đề'
                               error=''
-                              disabled={isView || role !== 'admin'}
+                              disabled={isView || role !== 'Admin'}
                               editorText={watch(`exams.${index}.comment`)}
                               placeholder='Nhận xét của Admin'
                               setEditorText={(text) =>

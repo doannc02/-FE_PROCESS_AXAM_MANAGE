@@ -11,6 +11,7 @@ import { Grid, Typography } from '@mui/material'
 import { debounce } from 'lodash'
 import useSaveDepartment from './useSaveDepartment'
 import CoreLoading from '@/components/molecules/CoreLoading'
+import DialogDeleteDepartment from '../DialogDeleteDepartment'
 
 const SaveDepartment = () => {
   const [values, handles] = useSaveDepartment()
@@ -27,9 +28,9 @@ const SaveDepartment = () => {
     isLoadingTable,
     name,
   } = values
-  const { onSubmit, t } = handles
+  const { onSubmit, t, showDialog } = handles
 
-  const { control } = methodForm
+  const { control, watch } = methodForm
   return (
     <PageContainer
       title={
@@ -164,7 +165,15 @@ const SaveDepartment = () => {
                 ),
                 rightAction: (
                   <TopAction
-                    actionList={[...(isView ? ['edit'] : [])] as any}
+                    actionList={
+                      [
+                        ...(isUpdate
+                          ? ['delete']
+                          : isView
+                          ? ['edit', 'delete']
+                          : []),
+                      ] as any
+                    }
                     onEditAction={() => {
                       router.push({
                         pathname: `${MENU_URL.DEPARTMENT}/[id]`,
@@ -172,6 +181,14 @@ const SaveDepartment = () => {
                           id: Number(id),
                         },
                       })
+                    }}
+                    onDeleteAction={() => {
+                      showDialog(
+                        <DialogDeleteDepartment
+                          nameCourse={watch('name')}
+                          id={Number(id)}
+                        />
+                      )
                     }}
                   />
                 ),

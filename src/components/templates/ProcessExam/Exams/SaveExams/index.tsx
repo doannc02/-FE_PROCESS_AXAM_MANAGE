@@ -25,6 +25,7 @@ const SaveExams = () => {
   const {
     router,
     methodForm,
+    examQuantity,
     columns,
     id,
     isUpdate,
@@ -110,6 +111,10 @@ const SaveExams = () => {
                         isLoading={isLoading}
                         actionTable={
                           isUpdate || role === 'Admin' ? null : (
+                              Number(examQuantity)
+                                ? Number(examQuantity) > tableData.length
+                                : true
+                            ) ? (
                             <ActionTable
                               append={append}
                               defaultValueLine={{
@@ -121,7 +126,7 @@ const SaveExams = () => {
                                 },
                               }}
                             />
-                          )
+                          ) : null
                         }
                       />
                       <div>

@@ -35,7 +35,7 @@ import { useMutation } from 'react-query'
 const useSaveExams = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { id, actionType, name, idExamSet, nameExamSet } = router.query
+  const { id, actionType, examQuantity, idExamSet, nameExamSet } = router.query
 
   const defaultValues = {
     exams: [
@@ -450,6 +450,7 @@ const useSaveExams = () => {
       idExamSet,
       nameExamSet,
       isDirty,
+      examQuantity,
     },
     {
       append,

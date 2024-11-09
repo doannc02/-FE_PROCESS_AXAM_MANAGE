@@ -6,7 +6,12 @@ import { Props } from '.'
 import { useRouter } from 'next/router'
 import { MENU_URL } from '@/routes'
 
-const useDialogCfAddExamSet = ({ idExamSet, nameExamSet, refetch }: Props) => {
+const useDialogCfAddExamSet = ({
+  idExamSet,
+  examQuantity,
+  nameExamSet,
+  refetch,
+}: Props) => {
   const { t } = useTranslation()
   const { hideDialog } = useDialog()
   const router = useRouter()
@@ -29,6 +34,7 @@ const useDialogCfAddExamSet = ({ idExamSet, nameExamSet, refetch }: Props) => {
         query: {
           idExamSet: idExamSet,
           nameExamSet: nameExamSet,
+          examQuantity: examQuantity,
         },
       })
       hideDialog()

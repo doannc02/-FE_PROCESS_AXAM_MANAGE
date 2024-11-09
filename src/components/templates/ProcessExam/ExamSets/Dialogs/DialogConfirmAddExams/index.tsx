@@ -8,13 +8,15 @@ import useDialogCfAddExamSet from './useDialogConfirmAddExams'
 export type Props = {
   idExamSet: number
   nameExamSet: string
+  examQuantity: number
   refetch?: any
 }
 
-const DialogCfAddExams = ({ idExamSet, nameExamSet, refetch }: Props) => {
+const DialogCfAddExams = ({ examQuantity,idExamSet, nameExamSet, refetch }: Props) => {
   const { t } = useTranslation()
   const { hideDialog } = useDialog()
   const [values, handles] = useDialogCfAddExamSet({
+    examQuantity,
     idExamSet,
     nameExamSet,
     refetch,

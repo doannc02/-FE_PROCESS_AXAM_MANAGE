@@ -3,7 +3,7 @@ import { useDialog } from '@/components/hooks/dialog/useDialog'
 import { DialogCustom } from '@/components/organism/DialogCustom'
 import { Box, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import useDialogDeleteCourse from './useDialogDeleteCoures'
+import useDialogAcademic from './useDialogDeleteCoures'
 
 export type Props = {
   id: number
@@ -11,10 +11,10 @@ export type Props = {
   refetch?: any
 }
 
-const DialogDeleteCourse = ({ id, nameCourse, refetch }: Props) => {
+const DialogDeleteAcademic = ({ id, nameCourse, refetch }: Props) => {
   const { t } = useTranslation()
   const { hideDialog } = useDialog()
-  const [values, handles] = useDialogDeleteCourse({ id })
+  const [values, handles] = useDialogAcademic({ id })
   const { isLoading } = values
   const { onSubmit } = handles
 
@@ -27,7 +27,7 @@ const DialogDeleteCourse = ({ id, nameCourse, refetch }: Props) => {
             lineHeight: 1.5,
           }}
         >
-          {`Bạn có chắc chắn muốn xóa học phần "${nameCourse}" này không?`}
+          {`Bạn có chắc chắn muốn xóa năm học "${nameCourse}" này không?`}
         </Typography>
       </Box>
 
@@ -55,4 +55,4 @@ const DialogDeleteCourse = ({ id, nameCourse, refetch }: Props) => {
   )
 }
 
-export default DialogDeleteCourse
+export default DialogDeleteAcademic

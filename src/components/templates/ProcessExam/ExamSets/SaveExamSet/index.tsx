@@ -283,6 +283,9 @@ const SaveExamSet = () => {
                                   onClick={() => {
                                     showDialog(
                                       <DialogCfAddExams
+                                        examQuantity={Number(
+                                          watch('exam_quantity')
+                                        )}
                                         nameExamSet={watch('name')}
                                         idExamSet={Number(watch('id'))}
                                       />

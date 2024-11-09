@@ -10,7 +10,7 @@ import { useState } from 'react'
 export const useLogin = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const dispatch = useAppDispatch()
+
   const pathParams = router.query?.redirect
   const {
     publicRuntimeConfig: { SUBDOMAIN },
@@ -33,16 +33,12 @@ export const useLogin = () => {
         router.push(`https://${pathParams}${SUBDOMAIN}`)
         setCmsToken(data)
       } else {
-        if (data && data?.errorCodes) {
-          errorMsg(data?.errorCodes[0]?.message)
-          setLoading(false)
-          return
-        }
+        setLoading(false)
         router.push('/dashboard')
       }
       setLoading(false)
     } catch (err) {
-      errorMsg(err, 'Có lỗi')
+      errorMsg(err)
       localStorage.clear()
       sessionStorage.clear()
       setLoading(false)
