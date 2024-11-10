@@ -33,8 +33,7 @@ export default function CoreViewFile({ src }: { src: string }) {
     <div className='relative w-full h-[100vh] flex justify-center'>
       {src && (
         <PdfWrapper>
-          {getType(src) === 'pdf' ||
-            (getType(src) === 'docx' && <CorePdfViewer pdfFilePath={src} />)}
+          <CorePdfViewer pdfFilePath={src} />
         </PdfWrapper>
       )}
     </div>
