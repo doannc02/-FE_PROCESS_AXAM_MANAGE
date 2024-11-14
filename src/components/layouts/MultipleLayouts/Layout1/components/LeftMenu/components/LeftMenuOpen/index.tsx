@@ -16,7 +16,7 @@ import { getRole } from '@/config/token'
 
 const LeftMenuOpen = () => {
   const { t } = useTranslation(TRANSLATE.COMMON)
-  const { firstMainColor: PRIMARY } = useAppSelector(
+  const { firstMainColor: GREEN_VIU } = useAppSelector(
     (state) => state.themeColorData
   )
   const role = getRole()
@@ -35,9 +35,9 @@ const LeftMenuOpen = () => {
         <button
           className='w-55 h-16 cursor-pointer'
           style={{
-            border: `1px solid ${PRIMARY}`,
+            border: `1px solid ${GREEN_VIU}`,
             borderRadius: '4px',
-            color: PRIMARY,
+            color: GREEN_VIU,
             fontSize: 12,
           }}
           onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -78,13 +78,13 @@ const LeftMenuOpen = () => {
           >
             <ArrowBackIcon
               style={{
-                color: PRIMARY,
+                color: GREEN_VIU,
               }}
             />
             <Typography
               variant='h6'
               style={{
-                color: PRIMARY,
+                color: GREEN_VIU,
               }}
             >
               {t(titleSubMenu)}

@@ -43,7 +43,7 @@ const MenuItemClose = ({ item }: Props) => {
 
   const isGroupMenuChecked = groupMenuChecked(item)
 
-  const { firstMainColor: PRIMARY } = useAppSelector(
+  const { firstMainColor: GREEN_VIU } = useAppSelector(
     (state) => state.themeColorData
   )
 
@@ -54,7 +54,7 @@ const MenuItemClose = ({ item }: Props) => {
           <Typography
             variant='body1'
             style={{
-              color: isGroupMenuChecked ? PRIMARY : BLACK,
+              color: isGroupMenuChecked ? GREEN_VIU : BLACK,
             }}
           >
             {t(item.name)}
@@ -77,7 +77,7 @@ const MenuItemClose = ({ item }: Props) => {
       <div
         className='relative flex items-center w-25 h-18 hover:bg-cyan-50 group rounded-[8px] my-3 overflow-x-hidden'
         style={{
-          color: isGroupMenuChecked ? PRIMARY : BLACK,
+          color: isGroupMenuChecked ? GREEN_VIU : BLACK,
         }}
         onClick={() => {
           router.push(item.path)
@@ -87,7 +87,7 @@ const MenuItemClose = ({ item }: Props) => {
           className='w-2 h-18'
           style={{
             borderRadius: '4px 0px 0px 4px',
-            backgroundColor: isGroupMenuChecked ? PRIMARY : WHITE,
+            backgroundColor: isGroupMenuChecked ? GREEN_VIU : WHITE,
           }}
         />
 

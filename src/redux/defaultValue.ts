@@ -2,9 +2,9 @@ import {
   BLACK,
   GRAY_SCALE,
   GREEN,
+  GREEN_VIU,
   GREY,
   ORANGE,
-  PRIMARY,
   RED,
   WHITE,
 } from '@/helper/colors'
@@ -19,7 +19,7 @@ import {
 const themeColorDefaultConfig: ThemeColorConfig = {
   layout: 'layout1',
   theme: 'THEME_1',
-  firstMainColor: PRIMARY,
+  firstMainColor: GREEN_VIU,
   secondMainColor: BLACK,
   thirdMainColor: '#E2E2E2',
   fourthMainColor: '#E2E2E2',
@@ -78,12 +78,12 @@ const fontDefaultConfig: FontConfig = {
 
 const buttonDefaultConfig: ButtonConfig = {
   submitButton: {
-    textColor: PRIMARY,
+    textColor: GREEN_VIU,
     hoverTextColor: WHITE,
     backgroundColor: WHITE,
-    backgroundHoverColor: PRIMARY,
-    borderColor: PRIMARY,
-    borderHoverColor: PRIMARY,
+    backgroundHoverColor: GREEN_VIU,
+    borderColor: GREEN_VIU,
+    borderHoverColor: GREEN_VIU,
   },
   draftButton: {
     textColor: GREY,
@@ -110,7 +110,6 @@ const buttonDefaultConfig: ButtonConfig = {
     borderHoverColor: GRAY_SCALE,
   },
 }
-
 
 const tableConfig: TableConfig = []
 

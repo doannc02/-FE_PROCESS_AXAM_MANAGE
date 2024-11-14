@@ -34,7 +34,7 @@ export const MenuItemCloseWithChid = ({ item }: Props) => {
 
   const isGroupMenuChecked = groupMenuChecked(item)
 
-  const { firstMainColor: PRIMARY } = useAppSelector(
+  const { firstMainColor: GREEN_VIU } = useAppSelector(
     (state) => state.themeColorData
   )
 
@@ -56,7 +56,7 @@ export const MenuItemCloseWithChid = ({ item }: Props) => {
       title={
         <div className='flex flex-col min-w-[150px]'>
           <div className='flex h-18 items-center pl-4'>
-            <Typography color={PRIMARY}>{t(item.name)}</Typography>
+            <Typography color={GREEN_VIU}>{t(item.name)}</Typography>
           </div>
           <div className='flex flex-col'>
             {child.map((ele) => {
@@ -70,14 +70,14 @@ export const MenuItemCloseWithChid = ({ item }: Props) => {
       <div
         className='relative flex items-center w-25 h-18 hover:bg-cyan-50 group rounded-[8px] my-3 overflow-x-hidden'
         style={{
-          color: isGroupMenuChecked ? PRIMARY : BLACK,
+          color: isGroupMenuChecked ? GREEN_VIU : BLACK,
         }}
       >
         <div
           className='w-2 h-18'
           style={{
             borderRadius: '4px 0px 0px 4px',
-            backgroundColor: isGroupMenuChecked ? PRIMARY : WHITE,
+            backgroundColor: isGroupMenuChecked ? GREEN_VIU : WHITE,
           }}
         />
 

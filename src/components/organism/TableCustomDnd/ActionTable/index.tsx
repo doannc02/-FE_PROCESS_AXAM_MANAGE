@@ -1,4 +1,4 @@
-import { PRIMARY } from '@/helper/colors'
+import { GREEN_VIU } from '@/helper/colors'
 import { TableCell, TableRow, Typography } from '@mui/material'
 
 type Props = {
@@ -23,7 +23,7 @@ export const ActionTable = ({
           <Typography
             variant='body1'
             style={{
-              color: PRIMARY,
+              color: GREEN_VIU,
               cursor: 'pointer',
             }}
             onClick={() => {

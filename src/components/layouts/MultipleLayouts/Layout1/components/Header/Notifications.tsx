@@ -1,8 +1,31 @@
 import { WHITE } from '@/helper/colors'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { Menu, Typography } from '@mui/material'
+import moment from 'moment'
 import { useState } from 'react'
 
+const dataNotify = {
+  unRead: [
+    {
+      content: 'Tiêu đề mới',
+      image: '',
+      time: moment().hour(),
+      isRead: true,
+    },
+  ],
+  new: {
+    content: 'Tiêu đề mới',
+    image: '',
+    time: moment().hour(),
+    isRead: true,
+  },
+  old: {
+    content: 'Tiêu đề trước đó',
+    image: '',
+    time: moment().hour(),
+    isRead: true,
+  },
+}
 export const Notifications = ({ numberUnRead }: { numberUnRead: number }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null)
 
@@ -21,7 +44,7 @@ export const Notifications = ({ numberUnRead }: { numberUnRead: number }) => {
               fontSize: 8,
             }}
           >
-            {numberUnRead}
+            {dataNotify.unRead.length}
           </Typography>
         </div>
       </div>

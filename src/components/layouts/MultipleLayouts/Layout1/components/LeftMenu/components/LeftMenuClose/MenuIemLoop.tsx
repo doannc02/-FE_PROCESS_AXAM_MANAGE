@@ -39,7 +39,7 @@ export const MenuItemLoop = ({ item }: Props) => {
 
   const isGroupMenuChecked = groupMenuChecked(item)
 
-  const { firstMainColor: PRIMARY } = useAppSelector(
+  const { firstMainColor: GREEN_VIU } = useAppSelector(
     (state) => state.themeColorData
   )
 
@@ -48,7 +48,7 @@ export const MenuItemLoop = ({ item }: Props) => {
       <div
         className='flex items-center h-18 hover:bg-cyan-50 group rounded-[8px] my-3 cursor-pointer'
         style={{
-          color: isGroupMenuChecked ? PRIMARY : BLACK,
+          color: isGroupMenuChecked ? GREEN_VIU : BLACK,
         }}
       >
         {isGroupMenuChecked ? (
@@ -60,7 +60,7 @@ export const MenuItemLoop = ({ item }: Props) => {
         <div
           className='flex gap-6 items-center h-full w-full pl-5'
           style={{
-            color: isGroupMenuChecked ? PRIMARY : BLACK,
+            color: isGroupMenuChecked ? GREEN_VIU : BLACK,
           }}
           onClick={() => {
             router.push(item.path)
@@ -69,7 +69,7 @@ export const MenuItemLoop = ({ item }: Props) => {
           <Typography
             variant='body1'
             style={{
-              color: isGroupMenuChecked ? PRIMARY : BLACK,
+              color: isGroupMenuChecked ? GREEN_VIU : BLACK,
             }}
           >
             {t(item.name)}
@@ -92,7 +92,7 @@ export const MenuItemLoop = ({ item }: Props) => {
       title={
         <div className='flex flex-col min-w-[150px]'>
           <div className='flex h-18 items-center pl-4'>
-            <Typography color={PRIMARY}>{t(item.name)}</Typography>
+            <Typography color={GREEN_VIU}>{t(item.name)}</Typography>
           </div>
           <div className='flex flex-col'>
             {child.map((ele) => {
@@ -106,14 +106,14 @@ export const MenuItemLoop = ({ item }: Props) => {
       <div
         className='flex items-center min-w-[150px] h-18 hover:bg-cyan-50 rounded-[8px] my-3 overflow-x-hidden'
         style={{
-          color: isGroupMenuChecked ? PRIMARY : BLACK,
+          color: isGroupMenuChecked ? GREEN_VIU : BLACK,
         }}
       >
         <div
           className='w-2 h-18'
           style={{
             borderRadius: '4px 0px 0px 4px',
-            backgroundColor: isGroupMenuChecked ? PRIMARY : WHITE,
+            backgroundColor: isGroupMenuChecked ? GREEN_VIU : WHITE,
           }}
         />
 
@@ -121,7 +121,7 @@ export const MenuItemLoop = ({ item }: Props) => {
           <Typography
             variant='body1'
             style={{
-              color: isGroupMenuChecked ? PRIMARY : BLACK,
+              color: isGroupMenuChecked ? GREEN_VIU : BLACK,
             }}
           >
             {t(item.name)}

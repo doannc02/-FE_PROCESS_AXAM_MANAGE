@@ -49,7 +49,7 @@ const SystemAppBox = (props: any) => {
 }
 
 export const useSwitchSystem = () => {
-  const { firstMainColor: PRIMARY } = useAppSelector(
+  const { firstMainColor: GREEN_VIU } = useAppSelector(
     (state) => state.themeColorData
   )
   const [open, setOpen] = useState(false)
@@ -81,7 +81,7 @@ export const useSwitchSystem = () => {
       >
         <DialogTitle
           style={{
-            backgroundColor: PRIMARY,
+            backgroundColor: GREEN_VIU,
             color: WHITE,
             borderTopLeftRadius: 8,
 

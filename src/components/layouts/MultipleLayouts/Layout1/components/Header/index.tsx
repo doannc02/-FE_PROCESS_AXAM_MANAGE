@@ -4,7 +4,7 @@ import { Notifications } from './Notifications'
 import { SwitchSystem } from './SwitchSystem'
 
 export const Header = () => {
-  const { firstMainColor: PRIMARY } = useAppSelector(
+  const { firstMainColor: GREEN_VIU } = useAppSelector(
     (state) => state.themeColorData
   )
 
@@ -14,7 +14,7 @@ export const Header = () => {
     <div
       className='flex justify-between h-[45px] top-0 sticky'
       style={{
-        backgroundColor: PRIMARY,
+        backgroundColor: GREEN_VIU,
       }}
     >
       <div className='flex items-center gap-10 h-full'>

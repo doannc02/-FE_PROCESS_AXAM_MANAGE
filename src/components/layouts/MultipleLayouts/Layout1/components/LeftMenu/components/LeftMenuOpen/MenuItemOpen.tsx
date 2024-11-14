@@ -46,7 +46,7 @@ const MenuItemOpen = (props: Props) => {
 
   const isGroupMenuChecked = groupMenuChecked(item)
 
-  const { firstMainColor: PRIMARY } = useAppSelector(
+  const { firstMainColor: GREEN_VIU } = useAppSelector(
     (state) => state.themeColorData
   )
 
@@ -56,7 +56,7 @@ const MenuItemOpen = (props: Props) => {
         <div
           className='flex items-center h-18 hover:bg-cyan-50 group rounded-[8px] my-3 cursor-pointer'
           style={{
-            color: isGroupMenuChecked ? PRIMARY : BLACK,
+            color: isGroupMenuChecked ? GREEN_VIU : BLACK,
           }}
           onClick={() => {
             setMenuList(item.subMenu)
@@ -64,12 +64,12 @@ const MenuItemOpen = (props: Props) => {
           }}
         >
           {isGroupMenuChecked ? (
-            <div className='w-2 h-full rounded-l-[4px] bg-[#0078D4]' />
+            <div className='w-2 h-full rounded-l-[4px] bg-[#16a34a]' />
           ) : (
-            <div className='w-2 h-full rounded-l-[4px] group-hover:bg-[#0078D4]' />
+            <div className='w-2 h-full rounded-l-[4px] group-hover:bg-[#16a34a]' />
           )}
 
-          <div className='flex gap-6 items-center h-full w-full pl-5 group-hover:text-[#0078D4]'>
+          <div className='flex gap-6 items-center h-full w-full pl-5 group-hover:text-[#16a34a]'>
             {item.icon}
 
             <Typography variant='body1'>{t(item.name)}</Typography>
@@ -87,7 +87,7 @@ const MenuItemOpen = (props: Props) => {
         <div
           className='flex items-center h-18 hover:bg-cyan-50 group rounded-[8px] my-3 cursor-pointer'
           style={{
-            color: isGroupMenuChecked ? PRIMARY : BLACK,
+            color: isGroupMenuChecked ? GREEN_VIU : BLACK,
           }}
           onClick={() => {
             console.log(item)
@@ -96,12 +96,12 @@ const MenuItemOpen = (props: Props) => {
           }}
         >
           {isGroupMenuChecked ? (
-            <div className='w-2 h-full rounded-l-[4px] bg-[#0078D4]' />
+            <div className='w-2 h-full rounded-l-[4px] bg-[#16a34a]' />
           ) : (
-            <div className='w-2 h-full rounded-l-[4px] group-hover:bg-[#0078D4]' />
+            <div className='w-2 h-full rounded-l-[4px] group-hover:bg-[#16a34a]' />
           )}
 
-          <div className='flex gap-6 items-center h-full w-full pl-5 group-hover:text-[#0078D4]'>
+          <div className='flex gap-6 items-center h-full w-full pl-5 group-hover:text-[#16a34a]'>
             {item.icon}
 
             <Typography variant='body1'>{t(item.name)}</Typography>
@@ -126,17 +126,17 @@ const MenuItemOpen = (props: Props) => {
     <div
       className='flex items-center h-18 hover:bg-cyan-50 group rounded-[8px] my-3 cursor-pointer'
       style={{
-        color: isGroupMenuChecked ? PRIMARY : BLACK,
+        color: isGroupMenuChecked ? GREEN_VIU : BLACK,
       }}
     >
       {isGroupMenuChecked ? (
-        <div className='w-2 h-full rounded-l-[4px] bg-[#0078D4]' />
+        <div className='w-2 h-full rounded-l-[4px] bg-[#16a34a]' />
       ) : (
-        <div className='w-2 h-full rounded-l-[4px] group-hover:bg-[#0078D4]' />
+        <div className='w-2 h-full rounded-l-[4px] group-hover:bg-[#16a34a]' />
       )}
 
       <div
-        className='flex gap-6 items-center h-full w-full pl-5 group-hover:text-[#0078D4]'
+        className='flex gap-6 items-center h-full w-full pl-5 group-hover:text-[#16a34a]'
         onClick={() => {
           router.push(item.path)
         }}

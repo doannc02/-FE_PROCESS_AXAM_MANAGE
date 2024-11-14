@@ -1,4 +1,4 @@
-import { PRIMARY } from '@/helper/colors'
+import { GREEN_VIU } from '@/helper/colors'
 import { Typography } from '@mui/material'
 import { ReactNode } from 'react'
 
@@ -28,7 +28,7 @@ const PageWithDetail = ({
           <div
             style={{
               width:'90px',
-              backgroundColor: PRIMARY,
+              backgroundColor: GREEN_VIU,
               borderRadius: '4px 4px 0px 0px',
               padding: '10px 20px 10px 20px',
               color: 'white',

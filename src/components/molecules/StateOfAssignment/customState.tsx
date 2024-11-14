@@ -1,5 +1,5 @@
 import VectorIcon from '@/assets/svg/vectorArrow.svg'
-import { BLACK, PRIMARY, WHITE } from '@/helper/colors'
+import { BLACK, GREEN_VIU, WHITE } from '@/helper/colors'
 import { Box, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -16,7 +16,7 @@ const CustomState = ({
   listStep = ['NHÁP', 'ĐANG THỰC HIỆN', 'SẮP HOÀN THÀNH', 'HOÀN THÀNH'],
   index,
   enableNextStep = true,
-  color = PRIMARY,
+  color = GREEN_VIU,
   height = 30,
 }: Props) => {
   const [step, setStep] = useState(index ?? 0)

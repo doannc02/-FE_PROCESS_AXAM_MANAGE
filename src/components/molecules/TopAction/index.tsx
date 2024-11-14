@@ -1,4 +1,4 @@
-import { PRIMARY } from '@/helper/colors'
+import { GREEN_VIU } from '@/helper/colors'
 import EditOffIcon from '@mui/icons-material/EditOff'
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop'
 import { IconButton, Typography } from '@mui/material'
@@ -245,7 +245,7 @@ export const TopAction = ({
         >
           <LocalPrintshopIcon
             sx={{
-              color: PRIMARY,
+              color: GREEN_VIU,
             }}
           />
           <Typography variant='body2'>Print</Typography>
@@ -259,7 +259,7 @@ export const TopAction = ({
         >
           <EditOffIcon
             sx={{
-              color: PRIMARY,
+              color: GREEN_VIU,
             }}
             fontSize='small'
           />

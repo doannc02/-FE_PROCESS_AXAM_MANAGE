@@ -3,7 +3,7 @@ import CoreInput from '@/components/atoms/CoreInput'
 import { useDialog } from '@/components/hooks/dialog/useDialog'
 import ThreeDotVertical from '@/components/icons/ThreeDotVertical'
 import { CoreDialog } from '@/components/organism/CoreDialog'
-import { PRIMARY } from '@/helper/colors'
+import { GREEN_VIU } from '@/helper/colors'
 import { useFormCustom } from '@/lib/form'
 import { useAppDispatch } from '@/redux/hook'
 import { addOneTableConfig } from '@/redux/reducer/tableReducer'
@@ -210,7 +210,7 @@ export const DialogTable = ({
             <Typography
               variant='body2'
               sx={{
-                color: PRIMARY,
+                color: GREEN_VIU,
               }}
             >
               Bỏ chọn tất cả các cột

@@ -40,7 +40,7 @@ export const AvatarCustom = ({
   email: string
 }) => {
   const { t } = useTranslation(TRANSLATE.COMMON)
-  const { firstMainColor: PRIMARY } = useAppSelector(
+  const { firstMainColor: GREEN_VIU } = useAppSelector(
     (state) => state.themeColorData
   )
 
@@ -64,7 +64,7 @@ export const AvatarCustom = ({
           <div
             className='h-14 w-14 rounded-full flex items-center justify-center px-2'
             style={{
-              backgroundColor: PRIMARY,
+              backgroundColor: GREEN_VIU,
             }}
           >
             <Typography
@@ -110,7 +110,7 @@ export const AvatarCustom = ({
               <div
                 className='relative h-15 w-15 bg-white rounded-full flex items-center justify-center'
                 style={{
-                  backgroundColor: PRIMARY,
+                  backgroundColor: GREEN_VIU,
                 }}
               >
                 <StateAccount />
@@ -157,7 +157,7 @@ export const AvatarCustom = ({
               <Typography
                 variant='body1'
                 style={{
-                  color: PRIMARY,
+                  color: GREEN_VIU,
                 }}
               >
                 Trở về trang chính của website

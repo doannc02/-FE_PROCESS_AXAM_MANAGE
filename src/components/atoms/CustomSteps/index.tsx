@@ -1,7 +1,7 @@
 import VectorIcon from '@/assets/svg/vectorArrow.svg'
 import {
   BLACK,
-  PRIMARY,
+  GREEN_VIU,
   WHITE,
 } from '@/helper/colors'
 import { Box, Typography } from '@mui/material'
@@ -20,7 +20,7 @@ const CustomStep = ({
   listStep = ['NHÁP', 'ĐANG THỰC HIỆN', 'SẮP HOÀN THÀNH', 'HOÀN THÀNH'],
   index,
   enableNextStep = true,
-  color = PRIMARY,
+  color = GREEN_VIU,
   height = 30,
 }: Props) => {
   const [step, setStep] = useState(index ?? 0)
