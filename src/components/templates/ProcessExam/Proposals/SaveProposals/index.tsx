@@ -22,10 +22,10 @@ import { ExamSet } from '@/service/examSet/type'
 import { Grid, IconButton, Typography } from '@mui/material'
 import { FormProvider } from 'react-hook-form'
 import DialogCfAddExamSet from '../Dialogs/DialogConfirmAddExamSet'
-import DetailExamSet from './Components/DetailExamSet'
-import { useSaveProposals } from './useSaveProposals'
 import DialogConfirmAssign from '../Dialogs/DialogConfirmAssign'
 import DialogDeleteProposal from '../Dialogs/DialogDeleteProposal'
+import DetailExamSet from './Components/DetailExamSet'
+import { useSaveProposals } from './useSaveProposals'
 
 const SaveProposals = () => {
   const [, _] = useSaveProposals()
@@ -43,8 +43,7 @@ const SaveProposals = () => {
     isView,
     isAddNew,
     role,
-    columns,
-    tableData,
+    isTracking,
     fields,
   } = values
 
@@ -77,8 +76,8 @@ const SaveProposals = () => {
           isShowDashboard
           breadcrumbs={[
             {
-              title: 'Danh sách phê duyệt',
-              pathname: MENU_URL.PROPOSAL,
+              title: isTracking ? 'Theo dõi phê duyệt' : 'Danh sách phê duyệt',
+              pathname: isTracking ? MENU_URL.TRACKING : MENU_URL.PROPOSAL,
             },
             {
               title: (

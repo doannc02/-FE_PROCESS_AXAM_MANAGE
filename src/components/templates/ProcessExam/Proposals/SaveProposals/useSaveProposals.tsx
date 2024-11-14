@@ -1,12 +1,7 @@
 import { useDialog } from '@/components/hooks/dialog/useDialog'
-import DisplayStatus from '@/components/molecules/DisplayStatus'
-import { Tooltip } from '@/components/molecules/Tooltip'
-import { ColumnProps } from '@/components/organism/CoreTable'
 import { getRole } from '@/config/token'
-import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
-import { useAppDispatch } from '@/redux/hook'
 import { MENU_URL } from '@/routes'
 import { actionExamSet } from '@/service/examSet'
 import { state } from '@/service/examSet/type'
@@ -17,9 +12,8 @@ import {
 } from '@/service/proposals'
 import { Proposals, RequestProposals } from '@/service/proposals/type'
 import { convertToDate } from '@/utils/date/convertToDate'
-import { Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from 'react-query'
@@ -31,7 +25,7 @@ export const useSaveProposals = () => {
     isCreateExamSet: false,
   }
   const { t } = useTranslation('')
-  const dispatch = useAppDispatch()
+
   const methodForm = useFormCustom<Proposals>({
     defaultValues,
   })
@@ -39,11 +33,12 @@ export const useSaveProposals = () => {
   const { control, watch, setValue, reset, setError, handleSubmit } = methodForm
   const router = useRouter()
   const isAddNew = router.asPath.includes('/addNew')
+  const isTracking = router.asPath.includes('/trackingApprove')
   const { actionType, id } = router.query
   const isUpdate = !!id && !isAddNew
   const isView = actionType === 'VIEW'
 
-  const { hideDialog, showDialog } = useDialog()
+  const { showDialog } = useDialog()
   // get data detail step proposal
   const { data, isLoading, refetch } = useQueryGetDetailProposals(
     {
@@ -58,105 +53,15 @@ export const useSaveProposals = () => {
     keyName: 'key',
   })
 
-  const columns = useMemo(
-    () =>
-      [
-        {
-          header: 'Bộ đề',
-          fieldName: 'name',
-        },
-        {
-          header: 'Ngành',
-          fieldName: 'department',
-        },
-        {
-          header: 'Chuyên ngành',
-          fieldName: 'major',
-        },
-        // {
-        //   header: 'Số đề đang thực hiện',
-        //   fieldName: 'total_exams',
-        // },
-        {
-          header: 'Số đề yêu cầu',
-          fieldName: 'exam_quantity',
-        },
-        {
-          header: 'Mô tả',
-          fieldName: 'description',
-        },
-        {
-          header: 'Giảng viên thực hiện',
-          fieldName: 'userName',
-        },
-        {
-          header: 'Học phần',
-          fieldName: 'courseName',
-        },
-        {
-          header: 'Trạng thái',
-          fieldName: 'status',
-        },
-      ] as ColumnProps[],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [t]
-  )
-  const tableData = (fields ?? []).map((item) => {
-    return {
-      ...item,
-      id: item?.id,
-      major: item?.major?.name,
-      department: item?.department?.name,
-      courseName: item?.course?.code + ' - ' + item?.course?.name,
-      userName: item?.user?.name ?? '-',
-      description: item?.description && (
-        <Stack direction='row' justifyContent='space-between'>
-          <Typography>{item?.description.slice(0, 19)}</Typography>
-          {item?.description?.length > 20 ? (
-            <div className='w-1/3'>
-              <Tooltip
-                isShowIcon
-                showText
-                tooltips={[{ title: item?.description ?? '' }]}
-              ></Tooltip>
-            </div>
-          ) : (
-            <div className='w-1/3'></div>
-          )}
-        </Stack>
-      ),
-      status: (
-        <DisplayStatus
-          text={
-            item?.status === 'pending_approval'
-              ? 'Chờ phê duyệt'
-              : item?.status === 'in_progress'
-              ? 'Đang thực hiện'
-              : item?.status === 'approved'
-              ? 'Đã phê duyệt'
-              : 'Bị từ chối'
-          }
-          color={
-            item?.status === 'pending_approval'
-              ? ORANGE
-              : item?.status === 'in_progress'
-              ? BLACK
-              : item?.status === 'approved'
-              ? GREEN
-              : RED
-          }
-        />
-      ),
-    }
-  })
   // mutate proposal
   const { mutate, isLoading: isLoadingSubmit } = useMutation(actionProposals, {
     onSuccess: (res: any) => {
       successMsg(t('common:message.success'))
 
       if (res?.data?.id) {
+        let path = isTracking ? MENU_URL.TRACKING : MENU_URL.PROPOSAL
         router.push({
-          pathname: `${MENU_URL.PROPOSAL}/[id]`,
+          pathname: `${path}/[id]`,
           query: {
             id: res?.data?.id,
             actionType: 'VIEW',
@@ -209,6 +114,7 @@ export const useSaveProposals = () => {
       })
     }
   })
+
   const onSubmitPendingApprove = handleSubmit(async (input) => {
     let valid = true
     let countExams
@@ -339,6 +245,7 @@ export const useSaveProposals = () => {
       },
     })
   })
+
   const onUpdateState = async (state: state) => {
     try {
       const params = {
@@ -379,6 +286,7 @@ export const useSaveProposals = () => {
       errorMsg(err)
     }
   }
+
   return [
     {
       methodForm,
@@ -390,10 +298,9 @@ export const useSaveProposals = () => {
       actionType,
       isAddNew,
       role,
-      columns,
-      tableData,
       fields,
       id,
+      isTracking,
     },
     {
       onSubmitPendingApprove,

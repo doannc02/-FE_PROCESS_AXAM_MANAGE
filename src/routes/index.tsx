@@ -10,6 +10,8 @@ import SchoolIcon from '@mui/icons-material/School'
 import SubjectIcon from '@mui/icons-material/Subject'
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import { ReactNode } from 'react'
+import AnalyticsIcon from '@mui/icons-material/Analytics'
+import TextSnippetIcon from '@mui/icons-material/TextSnippet'
 export interface MenuPathProps {
   name: string
   path: string
@@ -36,6 +38,7 @@ export const MENU_URL = {
   EXAM_SET: '/examSet',
   MAJOR: '/major',
   ACADEMIC: '/academicYear',
+  TRACKING: '/trackingApprove',
 }
 
 export const listMenuForAdminRoutes: MenuPathProps[] = [
@@ -95,19 +98,11 @@ export const listMenuForAdminRoutes: MenuPathProps[] = [
       },
     ],
   },
-
-  // {
-  //   name: 'Đề Xuất',
-  //   path: 'P',
-  //   icon: <AssignmentIcon />,
-  //   children: [
-  //     {
-  //       name: 'Phê Duyệt Kế Hoạch',
-  //       path: MENU_URL.APPROVE,
-  //       icon: <AssignmentIcon />,
-  //     },
-  //   ],
-  // },
+  {
+    name: 'Yêu cầu phê duyệt',
+    path: MENU_URL.TRACKING,
+    icon: <AnalyticsIcon />,
+  },
 ]
 
 export const listMenuForUserRoutes: MenuPathProps[] = [
@@ -116,7 +111,6 @@ export const listMenuForUserRoutes: MenuPathProps[] = [
     path: '/dashboard',
     icon: <Dashboard />,
   },
-
   {
     name: 'Quản lý Tài Liệu',
     path: 'M',
@@ -125,7 +119,7 @@ export const listMenuForUserRoutes: MenuPathProps[] = [
       {
         name: 'QL Đề Chi Tiết',
         path: MENU_URL.DETAIL_EXAM,
-        icon: <SubjectIcon />,
+        icon: <TextSnippetIcon />,
       },
       {
         name: 'QL Bộ Đề',
@@ -138,5 +132,10 @@ export const listMenuForUserRoutes: MenuPathProps[] = [
         icon: <NoteAltIcon />,
       },
     ],
+  },
+  {
+    name: 'Theo dõi phê duyệt',
+    path: MENU_URL.TRACKING,
+    icon: <AnalyticsIcon />,
   },
 ]

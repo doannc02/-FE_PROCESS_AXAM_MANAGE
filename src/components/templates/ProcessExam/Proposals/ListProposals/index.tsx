@@ -25,6 +25,7 @@ const ListProposals = () => {
     page,
     isLoadingTable,
     isProposal,
+    isTracking,
   } = values
 
   const { control } = methodForm
@@ -56,18 +57,19 @@ const ListProposals = () => {
             />
           </Grid>
 
+          {!isTracking && (
+            <Grid item xs={12} sm={12} md={4} lg={4}>
+              <CoreAutocomplete
+                control={control}
+                name='status'
+                label='Trạng thái'
+                labelPath='name'
+                placeholder='Chọn trạng thái'
+                options={menuState}
+              />
+            </Grid>
+          )}
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <CoreAutocomplete
-              control={control}
-              name='status'
-              label='Trạng thái'
-              labelPath='name'
-              placeholder='Chọn trạng thái'
-              options={menuState}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            {' '}
             <CoreAutocomplete
               control={control}
               className='w-full'
@@ -89,7 +91,11 @@ const ListProposals = () => {
               views={['month']}
               inputFormat='MM'
               format='MM'
-              title='Tháng phải hoàn thành'
+              title={
+                isTracking
+                  ? 'Thời hạn đề xuất (Tháng)'
+                  : 'Tháng phải hoàn thành'
+              }
               placeholder='Tìm kiếm kế hoạch theo tháng phải hoàn thành'
             />
           </Grid>
@@ -146,7 +152,7 @@ const ListProposals = () => {
           if (isProposal) {
             pathname = MENU_URL.PROPOSAL
           } else {
-            pathname = MENU_URL.APPROVE
+            pathname = MENU_URL.TRACKING
           }
           router.push({
             pathname: `${pathname}/[id]`,

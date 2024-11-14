@@ -1,5 +1,6 @@
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { ColumnProps } from '@/components/organism/CoreTable'
+import { getRole } from '@/config/token'
 import { BLACK, GREEN, ORANGE, RED } from '@/helper/colors'
 import { useFormCustom } from '@/lib/form'
 import { useQueryGetProposalsList } from '@/service/proposals'
@@ -10,19 +11,26 @@ import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 
-const defaultValues = {
-  search: '',
-  page: 1,
-  size: 20,
-  startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
-  endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
-}
-
 const useListProposals = () => {
   const { t } = useTranslation('')
 
   const router = useRouter()
   const isProposal = router.asPath.includes('/proposal')
+  const isTracking = router.asPath.includes('/trackingApprove')
+  const role = getRole()
+  const defaultValues = {
+    search: '',
+    page: 1,
+    size: 20,
+    startDate: convertToDate(moment().startOf('month'), 'YYYY-MM-DD'),
+    endDate: convertToDate(moment().endOf('month'), 'YYYY-MM-DD'),
+    month_end: moment().month() + 1,
+    status: isTracking
+      ? role === 'Admin'
+        ? 'pending_approval'
+        : 'approved'
+      : undefined,
+  }
   const methodForm = useFormCustom<any>({
     defaultValues,
   })
@@ -158,6 +166,7 @@ const useListProposals = () => {
       size: data?.data?.size,
       totalPages: data?.data?.totalPages,
       isProposal,
+      isTracking,
     },
     { t, onSubmit, onReset, onChangePageSize },
   ] as const

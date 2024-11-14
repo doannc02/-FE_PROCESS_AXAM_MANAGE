@@ -35,9 +35,6 @@ export const errorMsg = (error: any, setError?: any) => {
           type: 'be',
           message: item.message,
         })
-      } else {
-        console.log(item.field, item)
-        errorMsg(item.message)
       }
     })
   } else if (typeof error === 'string') {
