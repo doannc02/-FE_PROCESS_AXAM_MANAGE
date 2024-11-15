@@ -110,7 +110,7 @@ export default function Notifications() {
               >
                 {(!notifications.length ||
                   (unreadCount === 0 && showUnreadOnly)) && (
-                  <div className='flex justify-center flex-col'>
+                  <div className='min-w-[400px] flex justify-center flex-col'>
                     <Typography variant='body2'>
                       Không có thông báo nào!!
                     </Typography>

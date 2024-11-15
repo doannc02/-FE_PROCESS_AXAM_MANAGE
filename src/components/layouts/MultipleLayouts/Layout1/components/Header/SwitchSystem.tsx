@@ -1,13 +1,13 @@
 import DefaultImageApp from '@/assets/png/customer.png'
 import IconApplication from '@/assets/svg/layout1/application.svg'
 import SquaresFour from '@/components/icons/SquaresFour'
-import { WHITE } from '@/helper/colors'
+import { BLACK, GREEN_VIU, WHITE } from '@/helper/colors'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { IconButton, Menu, Typography } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
 const listWebApps = [
   {
     homepage: 'http://itf.viu.edu.vn/',
@@ -34,10 +34,11 @@ export const SwitchSystem = () => {
       >
         <div className='flex gap-3 items-center pl-7'>
           <IconButton>
-            <Image alt='' src={IconApplication} width={20} height={20} />
+            {/* <Image alt='' src={IconApplication} width={20} height={20} /> */}
+            <SettingsSuggestIcon />
           </IconButton>
 
-          <Typography variant='body1' style={{ color: WHITE }}>
+          <Typography variant='body1' style={{ color: BLACK }}>
             Module QL Đề Thực Hành
           </Typography>
         </div>
