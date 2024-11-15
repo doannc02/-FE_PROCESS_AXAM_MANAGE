@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/redux/hook'
 import { AvatarCustom } from './AvatarCustom'
-import { Notifications } from './Notifications'
 import { SwitchSystem } from './SwitchSystem'
+import Notifications from './Notifications'
 
 export const Header = () => {
   const { firstMainColor: GREEN_VIU } = useAppSelector(
@@ -24,7 +24,7 @@ export const Header = () => {
       </div>
 
       <div className='flex items-center gap-6 px-5'>
-        <Notifications numberUnRead={15} />
+        <Notifications />
         <AvatarCustom
           email={user.email ?? ''}
           username={user.name}

@@ -17,7 +17,7 @@ const RegisterPanel = () => {
   if (matches) return null
 
   return (
-    <div className={`flex flex-1 ${styles.imageBg} w-1/2`}>
+    <div className={`flex flex-1 ${styles.imageBg} bg-lime-600 w-1/2`}>
       <div className={`w-full p-20 h-full flex-1 ${styles.frameBg}`}>
         <Stack width={'100%'} direction={'row'} justifyContent={'space-around'}>
           <div className='w-[100px] h-[100px]'>

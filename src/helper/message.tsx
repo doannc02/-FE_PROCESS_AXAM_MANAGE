@@ -1,5 +1,5 @@
 import Cancel from '@/components/icons/Cancel'
-import { GRAY_SCALE } from '@/helper/colors'
+import { GRAY_SCALE, GREEN_VIU } from '@/helper/colors'
 import { ErrorCodes } from '@/service/type'
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'

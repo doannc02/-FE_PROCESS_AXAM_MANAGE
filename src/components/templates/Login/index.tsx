@@ -1,7 +1,7 @@
 import { CoreButton } from '@/components/atoms/CoreButton'
 import CoreInput from '@/components/atoms/CoreInput'
 import LanguageButton from '@/components/templates/Login/components/LanguageButton'
-import { WHITE } from '@/helper/colors'
+import { GREEN_VIU, WHITE } from '@/helper/colors'
 import RegisterPanel from '@/components/organism/RegisterPanel'
 import { useFormCustom } from '@/lib/form'
 import { Box, ButtonBase, Link, Typography } from '@mui/material'
@@ -131,7 +131,7 @@ const Login = () => {
                   width: '100%',
                   color: '#747475',
                   backgroundColor: WHITE,
-                  borderColor: '#DFE0EB',
+                  borderColor: GREEN_VIU,
                 }}
                 startIcon={
                   <Image

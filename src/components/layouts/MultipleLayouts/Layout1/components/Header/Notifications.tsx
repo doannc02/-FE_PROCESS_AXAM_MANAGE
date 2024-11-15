@@ -1,85 +1,171 @@
-import { WHITE } from '@/helper/colors'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import { Menu, Typography } from '@mui/material'
-import moment from 'moment'
-import { useState } from 'react'
+import CheckIcon from '@mui/icons-material/Check'
+import MailIcon from '@mui/icons-material/Mail'
+import MarkChatReadIcon from '@mui/icons-material/MarkChatRead'
+import {
+  Alert,
+  AlertColor,
+  Badge,
+  Box,
+  Fade,
+  FormControlLabel,
+  FormGroup,
+  IconButton,
+  Popper,
+  Stack,
+  Switch,
+  Typography,
+} from '@mui/material'
+import { ReactNode, useState } from 'react'
 
-const dataNotify = {
-  unRead: [
-    {
-      content: 'Tiêu đề mới',
-      image: '',
-      time: moment().hour(),
-      isRead: true,
-    },
-  ],
-  new: {
-    content: 'Tiêu đề mới',
-    image: '',
-    time: moment().hour(),
-    isRead: true,
-  },
-  old: {
-    content: 'Tiêu đề trước đó',
-    image: '',
-    time: moment().hour(),
-    isRead: true,
-  },
-}
-export const Notifications = ({ numberUnRead }: { numberUnRead: number }) => {
-  const [anchorEl, setAnchorEl] = useState<any>(null)
+import { CoreButton } from '@/components/atoms/CoreButton'
+import { BLACK, GRAY_SCALE } from '@/helper/colors'
+import { toast, TypeOptions } from 'react-toastify'
+import { useNotificationCenter } from 'react-toastify/addons/use-notification-center'
+
+const types = ['success', 'info', 'warning', 'error']
+
+export default function Notifications() {
+  const { notifications, clear, markAllAsRead, markAsRead, unreadCount } =
+    useNotificationCenter()
+  const [showUnreadOnly, setShowUnreadOnly] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const addNotification = () => {
+    // use a random type of notification
+    toast('Lorem ipsum dolor sit amet, consectetur adipiscing elit', {
+      type: types[Math.floor(Math.random() * types.length)] as TypeOptions,
+    })
+  }
+
+  const toggleNotificationCenter = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+    setIsOpen(!isOpen)
+  }
+
+  const toggleFilter = (e: React.ChangeEvent) => {
+    setShowUnreadOnly(!showUnreadOnly)
+  }
 
   return (
-    <>
-      <div
-        className='relative text-white cursor-pointer mt-2'
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-      >
-        <NotificationsIcon fontSize='small' />
+    <Box sx={{ margin: '8px' }}>
+      <IconButton size='large' onClick={toggleNotificationCenter}>
+        <Badge badgeContent={unreadCount} color='error'>
+          <MailIcon color='action' />
+        </Badge>
+      </IconButton>
+      <button onClick={addNotification}>Add notification</button>
 
-        <div className='absolute -top-[4px] left-1/2 h-7 w-7 bg-[#FF4956] rounded-full flex items-center justify-center'>
-          <Typography
+      <Popper open={isOpen} anchorEl={anchorEl} transition>
+        {({ TransitionProps }) => (
+          <Fade
             style={{
-              color: WHITE,
-              fontSize: 8,
+              width: '85%',
+              borderRadius: '8px',
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
             }}
+            {...TransitionProps}
+            timeout={350}
           >
-            {dataNotify.unRead.length}
-          </Typography>
-        </div>
-      </div>
+            <Box
+              sx={{
+                borderRadius: '8px',
+              }}
+            >
+              <Box
+                sx={{
+                  borderTopLeftRadius: '8px',
+                  borderTopRightRadius: '8px',
+                  background: '#ffff',
+                  padding: '8px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography variant='h6' color={BLACK}>
+                  Thông báo
+                </Typography>
+                <FormGroup sx={{ color: BLACK }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        color='secondary'
+                        onChange={toggleFilter}
+                        checked={showUnreadOnly}
+                      />
+                    }
+                    label='Hiển thị chưa đọc'
+                  />
+                </FormGroup>
+              </Box>
+              <Stack
+                sx={{
+                  height: '400px',
+                  padding: '12px',
+                  background: GRAY_SCALE,
+                  overflowY: 'auto',
+                }}
+                spacing={2}
+              >
+                {(!notifications.length ||
+                  (unreadCount === 0 && showUnreadOnly)) && (
+                  <div className='flex justify-center flex-col'>
+                    <Typography variant='body2'>
+                      Không có thông báo nào!!
+                    </Typography>
+                  </div>
+                )}
+                {(showUnreadOnly
+                  ? notifications.filter((v) => !v.read)
+                  : notifications
+                ).map((notification) => {
+                  return (
+                    <Alert
+                      key={notification.id}
+                      severity={(notification.type as AlertColor) || 'info'}
+                      action={
+                        notification.read ? (
+                          <CheckIcon />
+                        ) : (
+                          <CoreButton
+                            color='primary'
+                            aria-label='upload picture'
+                            onClick={() => markAsRead(notification.id)}
+                          >
+                            <MarkChatReadIcon />
+                          </CoreButton>
+                        )
+                      }
+                    >
+                      {notification?.content as ReactNode}
+                    </Alert>
+                  )
+                })}
+              </Stack>
+              <Box
+                sx={{
+                  background: '#ffff',
+                  padding: '8px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  borderBottomLeftRadius: '8px',
+                  borderBottomRightRadius: '8px',
+                }}
+              >
+                <CoreButton variant='contained' onClick={clear}>
+                  Xóa tất cả
+                </CoreButton>
 
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        classes={{
-          root: 'mt-3',
-        }}
-      >
-        <div className='flex flex-col w-201 min-h-100 m-2'>
-          <div className='flex items-center px-5 pt-2'>
-            <Typography variant='h5'>Thông báo</Typography>
-          </div>
-
-          <div className='flex gap-2 px-5 mt-8'>
-            <div className='w-31 h-13 text-white bg-[#0078D4] rounded-[4px] flex justify-center items-center'>
-              <Typography variant='body2'>Tất cả</Typography>
-            </div>
-            <div className='w-31 h-13 text-white bg-[#0078D4] rounded-[4px] flex justify-center items-center'>
-              <Typography variant='body2'>Chưa đọc</Typography>
-            </div>
-          </div>
-        </div>
-      </Menu>
-    </>
+                <CoreButton variant='contained' onClick={markAllAsRead}>
+                  Đánh dấu đã đọc
+                </CoreButton>
+              </Box>
+            </Box>
+          </Fade>
+        )}
+      </Popper>
+    </Box>
   )
 }
