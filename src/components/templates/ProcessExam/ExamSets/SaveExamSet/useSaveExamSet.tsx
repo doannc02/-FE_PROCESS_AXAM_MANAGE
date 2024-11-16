@@ -233,8 +233,8 @@ export const useSaveExamSet = () => {
     if (isUpdate && data?.data) {
       console.log(data?.data)
       reset({
-        ...data?.data?.data,
-        isCreateExam: data?.data?.data?.exams?.length > 0 ? true : false,
+        ...data?.data,
+        isCreateExam: data?.data?.exams?.length > 0 ? true : false,
       })
     }
   }, [data?.data, isUpdate, reset])
