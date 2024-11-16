@@ -7,7 +7,13 @@ import { Tooltip } from '@/components/molecules/Tooltip'
 import { TopAction } from '@/components/molecules/TopAction'
 import { ColumnProps } from '@/components/organism/CoreTable'
 import { getRole } from '@/config/token'
-import { menuState, menuStateUser, stateEnum, stateEnumUser } from '@/enum'
+import {
+  menuStateView,
+  menuStateAdmin,
+  menuStateUser,
+  stateEnum,
+  stateEnumUser,
+} from '@/enum'
 import { BLACK, GREEN, ORANGE, RED, WHITE } from '@/helper/colors'
 import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
@@ -284,11 +290,24 @@ const useSaveExams = () => {
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={() => setAnchorEl(null)}
-            itemList={role === 'Admin' ? menuState : menuStateUser}
+            itemList={
+              isView
+                ? menuStateView
+                : role === 'Admin'
+                ? menuStateAdmin
+                : menuStateUser
+            }
             onItemAction={(item) => {
-              setValue(`exams.${index}.status`, item?.value as any)
-              console.log(item)
-              setAnchorEl(null)
+              if (getValues(`exams.${index}.exam_set`)?.id) {
+                setValue(`exams.${index}.status`, item?.value as any)
+                setAnchorEl(null)
+              } else {
+                errorMsg(
+                  `Không thể chuyển trạng thái do Đề ${getValues(
+                    `exams.${index}.name`
+                  )} chưa được gán cho bộ đề nào!`
+                )
+              }
             }}
             currentValue={selectedMenu}
           />
@@ -339,6 +358,7 @@ const useSaveExams = () => {
     },
     onError: (error: any) => {
       errorMsg(error, setError)
+      refetch()
     },
   })
 

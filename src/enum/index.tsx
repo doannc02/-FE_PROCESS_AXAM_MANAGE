@@ -10,9 +10,16 @@ export const stateEnumUser = [
   { pending_approval: 'Yêu cầu phê duyệt' },
 ]
 
-export const menuState = [
+
+
+export const menuStateView = [
   { value: 'in_progress', name: 'Đang thực hiện' },
   { value: 'pending_approval', name: 'Yêu cầu phê duyệt' },
+  { value: 'approved', name: 'Phê duyệt' },
+  { value: 'rejected', name: 'Từ chối' },
+]
+
+export const menuStateAdmin = [
   { value: 'approved', name: 'Phê duyệt' },
   { value: 'rejected', name: 'Từ chối' },
 ]

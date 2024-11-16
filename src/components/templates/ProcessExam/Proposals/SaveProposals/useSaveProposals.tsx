@@ -72,6 +72,7 @@ export const useSaveProposals = () => {
     },
     onError: (error: any) => {
       errorMsg(error, setError)
+      refetch()
     },
   })
 
@@ -284,6 +285,7 @@ export const useSaveProposals = () => {
       }
     } catch (err) {
       errorMsg(err)
+      refetch()
     }
   }
 
