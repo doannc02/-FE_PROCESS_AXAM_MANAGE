@@ -11,7 +11,7 @@ import { Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import useListProposals from './useListProposals'
 import { MENU_URL } from '@/routes'
-import { menuState } from '@/enum'
+import { menuStateView } from '@/enum'
 
 const ListProposals = () => {
   const [values, handles] = useListProposals()
@@ -65,7 +65,7 @@ const ListProposals = () => {
                 label='Trạng thái'
                 labelPath='name'
                 placeholder='Chọn trạng thái'
-                options={menuState}
+                options={menuStateView}
               />
             </Grid>
           )}

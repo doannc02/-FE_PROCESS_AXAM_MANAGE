@@ -1,21 +1,16 @@
 import { CoreTable } from '@/components/organism/CoreTable'
 
+import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import { CoreButton } from '@/components/atoms/CoreButton'
+import CoreInput from '@/components/atoms/CoreInput'
 import DotThree from '@/components/icons/DotThree'
 import { TopAction } from '@/components/molecules/TopAction'
-import { MENU_URL } from '@/routes'
-import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
-import { Grid } from '@mui/material'
-import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
-import CoreInput from '@/components/atoms/CoreInput'
-import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import PageContainer from '@/components/organism/PageContainer'
+import { MENU_URL } from '@/routes'
+import { Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { menuState } from '@/enum'
 import useListMajor from './useListMajor'
-import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
-import { getDepartment } from '@/service/department'
 
 const ListAcademicYear = () => {
   const { t } = useTranslation()

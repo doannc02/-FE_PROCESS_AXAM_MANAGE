@@ -12,7 +12,7 @@ import useListExamSets from './useListExamSets'
 import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
 import { getAcademicYears } from '@/service/academicYear'
 import CoreAutocomplete from '@/components/atoms/CoreAutocomplete'
-import { menuState } from '@/enum'
+import { menuStateView } from '@/enum'
 import { getListCourse } from '@/service/course'
 
 const ListExamSets = () => {
@@ -65,7 +65,7 @@ const ListExamSets = () => {
               label='Trạng thái'
               labelPath='name'
               placeholder='Chọn trạng thái'
-              options={menuState}
+              options={menuStateView}
             />
           </Grid>
 

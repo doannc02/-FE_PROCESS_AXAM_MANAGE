@@ -12,7 +12,7 @@ import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import PageContainer from '@/components/organism/PageContainer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { menuState } from '@/enum'
+import { menuStateView } from '@/enum'
 
 const ListExams = () => {
   const { t } = useTranslation()
@@ -62,7 +62,7 @@ const ListExams = () => {
               label='Trạng thái'
               labelPath='name'
               placeholder='Chọn trạng thái'
-              options={menuState}
+              options={menuStateView}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4}>

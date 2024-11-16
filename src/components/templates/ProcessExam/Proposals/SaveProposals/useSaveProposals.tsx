@@ -79,10 +79,10 @@ export const useSaveProposals = () => {
   useEffect(() => {
     if (isUpdate && data?.data) {
       reset({
-        ...data?.data?.data,
-        end_date: convertToDate(data?.data?.data?.end_date, 'YYYY-MM-DD'),
-        start_date: convertToDate(data?.data?.data?.start_date, 'YYYY-MM-DD'),
-        isCreateExamSet: data?.data?.data?.exam_sets?.length > 0 ? true : false,
+        ...data?.data,
+        end_date: convertToDate(data?.data?.end_date, 'YYYY-MM-DD'),
+        start_date: convertToDate(data?.data?.start_date, 'YYYY-MM-DD'),
+        isCreateExamSet: data?.data?.exam_sets?.length > 0 ? true : false,
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
