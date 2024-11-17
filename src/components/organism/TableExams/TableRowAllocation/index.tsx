@@ -85,7 +85,8 @@ export const TableRowPE = (props: Props) => {
                   onClick={() => {
                     if (
                       column.fieldName === 'action' ||
-                      column.fieldName === 'index'
+                      column.fieldName === 'index' ||
+                      column.fieldName === 'button'
                     ) {
                       handleRowClick()
                     }

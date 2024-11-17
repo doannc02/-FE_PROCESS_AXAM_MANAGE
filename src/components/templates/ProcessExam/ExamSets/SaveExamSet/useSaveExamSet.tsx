@@ -1,4 +1,5 @@
 import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
+import { CoreButton } from '@/components/atoms/CoreButton'
 import { useDialog } from '@/components/hooks/dialog/useDialog'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import { Tooltip } from '@/components/molecules/Tooltip'
@@ -77,12 +78,21 @@ export const useSaveExamSet = () => {
           header: 'Trạng thái',
           fieldName: 'status',
         },
-        {
-          header: '',
-          fieldName: 'action',
-        },
+        ...(isView
+          ? [
+              {
+                header: '',
+                fieldName: 'button',
+              },
+            ]
+          : [
+              {
+                header: '',
+                fieldName: 'action',
+              },
+            ]),
       ] as ColumnProps[],
-    []
+    [isView]
   )
 
   const tableData = (watch('exams') ?? []).map((item, index) => {
@@ -186,17 +196,19 @@ export const useSaveExamSet = () => {
         />
       ),
       code: watch(`exams.${index}.code`),
-      action: !isView &&
-        watch(`exams.${index}.status`) !== 'approved' &&
-        index > 0 && (
-          <TopAction
-            isShowText={false}
-            actionList={['delete']}
-            onDeleteAction={() => {
-              remove(index)
-            }}
-          />
-        ),
+      button: <CoreButton>Xem thêm...</CoreButton>,
+      action: isView
+        ? null
+        : watch(`exams.${index}.status`) !== 'approved' &&
+          index > 0 && (
+            <TopAction
+              isShowText={false}
+              actionList={['delete']}
+              onDeleteAction={() => {
+                remove(index)
+              }}
+            />
+          ),
     }
   })
 
