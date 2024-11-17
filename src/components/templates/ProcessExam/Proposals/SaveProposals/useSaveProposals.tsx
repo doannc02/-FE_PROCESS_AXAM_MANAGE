@@ -3,7 +3,7 @@ import { getRole } from '@/config/token'
 import { errorMsg, successMsg } from '@/helper/message'
 import { useFormCustom } from '@/lib/form'
 import { MENU_URL } from '@/routes'
-import { actionExamSet } from '@/service/examSet'
+import { actionExamSet, getDetailExamSet } from '@/service/examSet'
 import { state } from '@/service/examSet/type'
 import {
   actionProposals,
@@ -20,30 +20,30 @@ import { useMutation } from 'react-query'
 
 export const useSaveProposals = () => {
   const role = getRole()
-  const defaultValues = {
-    status: 'in_progress' as any,
-    isCreateExamSet: false,
-  }
   const { t } = useTranslation('')
-
-  const methodForm = useFormCustom<Proposals>({
-    defaultValues,
-  })
-
-  const { control, watch, setValue, reset, setError, handleSubmit } = methodForm
+  const { showDialog } = useDialog()
   const router = useRouter()
+
   const isAddNew = router.asPath.includes('/addNew')
   const isTracking = router.asPath.includes('/trackingApprove')
   const { actionType, id } = router.query
   const isUpdate = !!id && !isAddNew
   const isView = actionType === 'VIEW'
 
-  const { showDialog } = useDialog()
-  // get data detail step proposal
+  const defaultValues = {
+    status: 'in_progress' as
+      | 'in_progress'
+      | 'approved'
+      | 'pending_approval'
+      | 'rejected',
+    isCreateExamSet: false,
+  }
+
+  const methodForm = useFormCustom<Proposals>({ defaultValues })
+  const { control, watch, setValue, reset, setError, handleSubmit } = methodForm
+
   const { data, isLoading, refetch } = useQueryGetDetailProposals(
-    {
-      id: Number(id),
-    },
+    { id: Number(id) },
     { enabled: !!id }
   )
 
@@ -53,24 +53,54 @@ export const useSaveProposals = () => {
     keyName: 'key',
   })
 
-  // mutate proposal
-  const { mutate, isLoading: isLoadingSubmit } = useMutation(actionProposals, {
-    onSuccess: (res: any) => {
-      successMsg(t('common:message.success'))
+  const handleSuccess = (res: any, status: string) => {
+    successMsg(t('common:message.success'))
+    if (res?.data?.id) {
+      const path = isTracking ? MENU_URL.TRACKING : MENU_URL.PROPOSAL
+      router.push({
+        pathname: `${path}/[id]`,
+        query: { id: res.data.id, actionType: 'VIEW' },
+      })
+      refetch()
+    }
+  }
 
-      if (res?.data?.id) {
-        let path = isTracking ? MENU_URL.TRACKING : MENU_URL.PROPOSAL
-        router.push({
-          pathname: `${path}/[id]`,
-          query: {
-            id: res?.data?.id,
-            actionType: 'VIEW',
-          },
-        })
-        refetch()
+  const handleValidationErrors = (messages: string[]) => {
+    messages.forEach((msg) => errorMsg(msg))
+  }
+
+  const validateExamSets = (examSets: any[]): boolean => {
+    const validationMessages: string[] = []
+    let isValid = true
+
+    examSets.forEach((examSet) => {
+      if (!examSet.name) {
+        validationMessages.push(
+          'Please fill out the exam set details or save without creating an exam set.'
+        )
+        isValid = false
       }
+
+      const incompleteExams = examSet.exams.filter(
+        (exam: any) =>
+          exam.status === 'in_progress' || exam.status === 'rejected'
+      )
+      if (incompleteExams.length > 0) {
+        validationMessages.push('Some exams are still in progress or rejected.')
+        isValid = false
+      }
+    })
+
+    if (!isValid) handleValidationErrors(validationMessages)
+    return isValid
+  }
+
+  const { mutate, isLoading: isLoadingSubmit } = useMutation(actionProposals, {
+    onSuccess: (res) => {
+      handleSuccess(res, 'in_progress')
+      refetch()
     },
-    onError: (error: any) => {
+    onError: (error) => {
       errorMsg(error, setError)
       refetch()
     },
@@ -79,197 +109,29 @@ export const useSaveProposals = () => {
   useEffect(() => {
     if (isUpdate && data?.data) {
       reset({
-        ...data?.data,
-        end_date: convertToDate(data?.data?.end_date, 'YYYY-MM-DD'),
-        start_date: convertToDate(data?.data?.start_date, 'YYYY-MM-DD'),
-        isCreateExamSet: data?.data?.exam_sets?.length > 0 ? true : false,
+        ...data.data,
+        end_date: convertToDate(data.data.end_date, 'YYYY-MM-DD'),
+        start_date: convertToDate(data.data.start_date, 'YYYY-MM-DD'),
+        isCreateExamSet: !!data.data.exam_sets.length,
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, isUpdate, reset])
 
-  const onSubmitDraft = handleSubmit(async (input) => {
-    let valid = true
-    input.exam_sets.map((i) => {
-      if (!i.name) {
-        errorMsg(
-          'Vui lòng nhập thông tin cho bộ đề hoặc lưu nháp nhưng không tạo kèm theo bộ đề!!!'
-        )
-        valid = false
-      }
-    })
-    const { isCreateExamSet, ...rest } = input
-
-    if (valid) {
-      mutate({
-        method: isUpdate ? 'put' : 'post',
-        data: {
-          ...rest,
-          exam_sets: !watch('isCreateExamSet') ? [] : input.exam_sets,
-          status: isAddNew
-            ? 'in_progress'
-            : role === 'Admin'
-            ? input.status
-            : 'in_progress',
-        },
-      })
-    }
-  })
-
-  const onSubmitPendingApprove = handleSubmit(async (input) => {
-    let valid = true
-    let countExams
-    const { isCreateExamSet, ...rest } = input
-    input.exam_sets.map((i) => {
-      if (i.status === 'in_progress') {
-        errorMsg(
-          'Không thể chuyển trạng thái do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
-        )
-        valid = false
-      }
-      countExams = +i.exams.length
-      i.exams.map((ele) => {
-        if (ele.status === 'in_progress' || ele.status === 'rejected') {
-          errorMsg(
-            'Không thể chuyển trạng thái do kế hoạch này vẫn còn đề đang thực hiện!!'
-          )
-          valid = false
-        }
-      })
-    })
-    if (countExams === 0) {
-      errorMsg(
-        'Không thể chuyển trạng thái sang chờ duyệt do kế hoạch này không có đề chi tiết trong bộ đề!!'
-      )
-      valid = false
-    }
-    if (input.exam_sets.length === 0) {
-      errorMsg(
-        'Không thể chuyển trạng thái do kế hoạch này không có bộ đề nào!!'
-      )
-      valid = false
-    }
-
-    if (valid) {
-      mutate({
-        method: isUpdate ? 'put' : 'post',
-        data: {
-          ...rest,
-          exam_sets: input.exam_sets,
-          status: 'pending_approval',
-        },
-      })
-    }
-  })
-
-  const onSubmitReject = handleSubmit(async (input) => {
-    let valid = true
-    let countExams
-    const { isCreateExamSet, ...rest } = input
-    input.exam_sets.map((i) => {
-      if (i.status === 'in_progress') {
-        errorMsg(
-          'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
-        )
-        valid = false
-      }
-      countExams = +i.exams.length
-      i.exams.map((ele) => {
-        if (ele.status === 'in_progress') {
-          errorMsg(
-            'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề đang thực hiện!!'
-          )
-          valid = false
-        }
-      })
-    })
-    if (countExams) {
-      errorMsg(
-        'Không thể phê duyệt do kế hoạch này không có đề chi tiết nào trong bộ đề!!'
-      )
-      valid = false
-    }
-    if (input.exam_sets.length === 0) {
-      errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
-      valid = false
-    }
-    if (valid) {
-      mutate({
-        method: isUpdate ? 'put' : 'post',
-        data: {
-          ...rest,
-          exam_sets: input.exam_sets,
-          status: 'rejected',
-        },
-      })
-    }
-  })
-
-  const onSubmitApprove = handleSubmit(async (input) => {
-    let valid = true
-    let countExams
-    const { isCreateExamSet, ...rest } = input
-    input.exam_sets.map((i) => {
-      if (i.status === 'in_progress') {
-        errorMsg(
-          'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn Bộ đề đang thực hiện!!'
-        )
-        valid = false
-      }
-      countExams = +i.exams.length
-      i.exams.map((ele) => {
-        if (ele.status === 'in_progress' || ele.status === 'rejected') {
-          errorMsg(
-            'Không thể chuyển trạng thái từ chối do kế hoạch này vẫn còn đề đang thực hiện!!'
-          )
-          valid = false
-        }
-      })
-    })
-    if (countExams === 0) {
-      errorMsg(
-        'Không thể phê duyệt do kế hoạch này không có đề chi tiết trong bộ đề!!'
-      )
-      valid = false
-    }
-    if (input.exam_sets.length === 0) {
-      errorMsg('Không thể phê duyệt do kế hoạch này không có bộ đề nào!!')
-      valid = false
-    }
-
-    mutate({
-      method: isUpdate ? 'put' : 'post',
-      data: {
-        ...rest,
-        exam_sets: input.exam_sets,
-        status: 'approved',
-      },
-    })
-  })
-
-  const onUpdateState = async (state: state) => {
-    try {
-      const params = {
-        status: state,
-        proposalId: watch('id'),
-      } as RequestProposals['UPDATE_STATE']
-      const res = await changeStateProposal(params)
-      if (res?.data?.id) {
-        console.log(res?.data, 'resdata')
-        successMsg('Phê duyệt thành công!!!')
-        router.push({
-          pathname: `${MENU_URL.PROPOSAL}/[id]`,
-          query: {
-            id: res?.data?.id,
-            actionType: 'VIEW',
+  const submitProposal = (
+    status: 'in_progress' | 'approved' | 'pending_approval' | 'rejected'
+  ) =>
+    handleSubmit((input) => {
+      if (validateExamSets(input.exam_sets)) {
+        mutate({
+          method: isUpdate ? 'put' : 'post',
+          data: {
+            ...input,
+            exam_sets: watch('isCreateExamSet') ? input.exam_sets : [],
+            status: status !== 'pending_approval' ? status : 'pending_approval',
           },
         })
-        refetch()
       }
-    } catch {
-      errorMsg('Phê duyệt bộ đề thất bại!')
-    }
-  }
+    })
 
   const onChangeStateExam = async (
     status: 'rejected' | 'approved',
@@ -278,10 +140,11 @@ export const useSaveProposals = () => {
     try {
       const res = await actionExamSet({
         method: 'put',
-        data: { ...watch(`exam_sets.${index}`), status: status },
+        data: { ...watch(`exam_sets.${index}`), status },
       })
-      if (res.data) {
-        setValue(`exam_sets.${index}`, res.data)
+      if (res.data?.id) {
+        const response = await getDetailExamSet({ req: res.data.id })
+        if (response.data) setValue(`exam_sets.${index}`, response.data)
       }
     } catch (err) {
       errorMsg(err)
@@ -293,10 +156,10 @@ export const useSaveProposals = () => {
     {
       methodForm,
       isLoading,
-      router,
       isLoadingSubmit,
       isView,
       isUpdate,
+      router,
       actionType,
       isAddNew,
       role,
@@ -305,17 +168,16 @@ export const useSaveProposals = () => {
       isTracking,
     },
     {
-      onSubmitPendingApprove,
-      onSubmitDraft,
+      onSubmitDraft: submitProposal('in_progress'),
+      onSubmitPendingApprove: submitProposal('pending_approval'),
+      onSubmitApprove: submitProposal('approved'),
+      onSubmitReject: submitProposal('rejected'),
       setValue,
-      onChangeStateExam,
-      onUpdateState,
-      t,
       append,
       remove,
-      onSubmitApprove,
-      onSubmitReject,
       showDialog,
+      onChangeStateExam,
+      t,
     },
   ] as const
 }

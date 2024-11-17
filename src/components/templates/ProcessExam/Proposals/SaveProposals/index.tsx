@@ -6,8 +6,8 @@ import { CoreButton } from '@/components/atoms/CoreButton'
 import CoreCheckbox from '@/components/atoms/CoreCheckbox'
 import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
 import CoreInput from '@/components/atoms/CoreInput'
-import LoadingPage from '@/components/atoms/LoadingPage'
 import { WarningText } from '@/components/atoms/WarningText'
+import CoreLoading from '@/components/molecules/CoreLoading'
 import DisplayStatus from '@/components/molecules/DisplayStatus'
 import StateOfAssignment from '@/components/molecules/StateOfAssignment'
 import { TopAction } from '@/components/molecules/TopAction'
@@ -97,7 +97,7 @@ const SaveProposals = () => {
       }
     >
       {isLoading ? (
-        <LoadingPage />
+        <CoreLoading />
       ) : (
         <FormProvider {...methodForm}>
           <form onSubmit={onSubmitPendingApprove}>
@@ -464,26 +464,6 @@ const SaveProposals = () => {
                                                 }}
                                               >
                                                 Xem chi tiết
-                                              </CoreButton>
-                                            )}
-
-                                            {!isView && role !== 'Admin' && (
-                                              <CoreButton
-                                                theme='cancel'
-                                                sx={{ marginLeft: '10px' }}
-                                                width={10}
-                                                onClick={(e) => {
-                                                  e.stopPropagation()
-                                                  remove(index)
-                                                }}
-                                              >
-                                                {role !== 'Admin' &&
-                                                  item?.status !==
-                                                    'approved' && (
-                                                    <TopAction
-                                                      actionList={['remove']}
-                                                    />
-                                                  )}
                                               </CoreButton>
                                             )}
                                           </div>

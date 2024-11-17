@@ -3,8 +3,8 @@ import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import { CoreButton } from '@/components/atoms/CoreButton'
 import CoreCheckbox from '@/components/atoms/CoreCheckbox'
 import CoreInput from '@/components/atoms/CoreInput'
-import LoadingPage from '@/components/atoms/LoadingPage'
 import { WarningText } from '@/components/atoms/WarningText'
+import CoreLoading from '@/components/molecules/CoreLoading'
 import StateOfAssignment from '@/components/molecules/StateOfAssignment'
 import { TopAction } from '@/components/molecules/TopAction'
 import CoreNavbar from '@/components/organism/CoreNavbar'
@@ -80,7 +80,7 @@ const SaveExamSet = () => {
       }
     >
       {isLoading ? (
-        <LoadingPage />
+        <CoreLoading />
       ) : (
         <FormProvider {...methodForm}>
           <form onSubmit={onSubmit}>
@@ -132,6 +132,9 @@ const SaveExamSet = () => {
                               name='department'
                               placeholder='Chọn khoa'
                               fetchDataFn={getDepartment}
+                              onChangeValue={() => {
+                                setValue('major', null as unknown as any)
+                              }}
                             />
                           </Grid>
 
@@ -283,9 +286,10 @@ const SaveExamSet = () => {
                                   onClick={() => {
                                     showDialog(
                                       <DialogCfAddExams
-                                        examQuantity={Number(
-                                          watch('exam_quantity')
-                                        )}
+                                        examQuantity={
+                                          Number(watch('exam_quantity')) -
+                                          Number((watch(`exams`) ?? []).length)
+                                        }
                                         nameExamSet={watch('name')}
                                         idExamSet={Number(watch('id'))}
                                       />

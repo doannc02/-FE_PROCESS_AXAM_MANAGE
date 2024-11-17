@@ -1,4 +1,5 @@
 import CoreAutoCompleteAPI from '@/components/atoms/CoreAutoCompleteAPI'
+import { CoreButton } from '@/components/atoms/CoreButton'
 import { CoreDatePicker } from '@/components/atoms/CoreDatePicker'
 import CoreInput from '@/components/atoms/CoreInput'
 import { MenuCustom } from '@/components/layouts/MultipleLayouts/Layout1/components/MenuCustom'
@@ -69,6 +70,7 @@ const useSaveExams = () => {
     handleSubmit,
     watch,
     setError,
+    clearErrors,
     reset,
   } = methodForm
   const role = getRole()
@@ -149,7 +151,6 @@ const useSaveExams = () => {
   )
 
   const tableData = (fields ?? []).map((item, index) => {
-    console.log(item, 'log')
     if (isView) {
       return {
         ...item,
@@ -210,6 +211,7 @@ const useSaveExams = () => {
             }
           />
         ),
+        action: <CoreButton>Xem thêm...</CoreButton>,
       }
     }
     return {
@@ -300,6 +302,7 @@ const useSaveExams = () => {
             onItemAction={(item) => {
               if (getValues(`exams.${index}.exam_set`)?.id) {
                 setValue(`exams.${index}.status`, item?.value as any)
+                clearErrors(`exams.${index}.status`)
                 setAnchorEl(null)
               } else {
                 errorMsg(
@@ -385,7 +388,7 @@ const useSaveExams = () => {
       }
     }
     if (!isValid) {
-      errorMsg('Vui lòng nhập mô tả và chọn tệp đính kèm!!')
+      errorMsg('Vui lòng nhập mô tả!!')
       return
     }
     mutate({
@@ -395,6 +398,7 @@ const useSaveExams = () => {
   })
 
   const onReRequest = handleSubmit(async (input) => {
+    console.log('aaa')
     const exams = input.exams || []
     let isValid = true
 
@@ -406,7 +410,7 @@ const useSaveExams = () => {
     }
 
     if (!isValid) {
-      errorMsg('Vui lòng nhập mô tả và chọn tệp đính kèm!!')
+      errorMsg('Vui lòng nhập mô tả!!')
       return
     }
     mutate({
@@ -449,7 +453,7 @@ const useSaveExams = () => {
         refetch()
       }
     } catch (err) {
-      errorMsg(err)
+      errorMsg(err, setError)
     }
   }
 
@@ -480,6 +484,7 @@ const useSaveExams = () => {
       changeStateExam,
       refetch,
       onUpdateState,
+      setError,
     },
   ] as const
 }

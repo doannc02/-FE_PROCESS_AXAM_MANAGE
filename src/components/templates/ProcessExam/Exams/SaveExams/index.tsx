@@ -1,22 +1,22 @@
 import { CoreBreadcrumbs } from '@/components/atoms/CoreBreadcrumbs'
 import { CoreButton } from '@/components/atoms/CoreButton'
-import LoadingPage from '@/components/atoms/LoadingPage'
 import { WarningText } from '@/components/atoms/WarningText'
 import { useDialog } from '@/components/hooks/dialog/useDialog'
+import CoreLoading from '@/components/molecules/CoreLoading'
 import { TopAction } from '@/components/molecules/TopAction'
 import CoreNavbar from '@/components/organism/CoreNavbar'
 import PageContainer from '@/components/organism/PageContainer'
 import { ActionTable } from '@/components/organism/TableCustomDnd/ActionTable'
 import { TableExams } from '@/components/organism/TableExams'
+import { errorMsg, successMsg } from '@/helper/message'
 import { MENU_URL } from '@/routes'
+import { actionExams } from '@/service/exam'
 import { convertToOffsetDateTime } from '@/utils/date/convertToDate'
 import { Typography } from '@mui/material'
 import { FormProvider } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import DialogDeleteExam from '../DialogDeleteExam'
 import useSaveExams from './useSaveExams'
-import { actionExams } from '@/service/exam'
-import { errorMsg, successMsg } from '@/helper/message'
 
 const SaveExams = () => {
   const { t } = useTranslation()
@@ -40,7 +40,7 @@ const SaveExams = () => {
     isDirty,
   } = values
 
-  const { append, onSubmit, onReRequest, refetch } = handles
+  const { append, onSubmit, onReRequest, refetch, setError } = handles
 
   const { showDialog } = useDialog()
 
@@ -71,7 +71,7 @@ const SaveExams = () => {
       }
     >
       {isLoading ? (
-        <LoadingPage />
+        <CoreLoading />
       ) : (
         <FormProvider {...methodForm}>
           <form onSubmit={onSubmit}>
@@ -185,8 +185,8 @@ const SaveExams = () => {
                                           })
                                           refetch()
                                         }
-                                      } catch {
-                                        errorMsg('Phê duyệt thất bại')
+                                      } catch (err) {
+                                        errorMsg(err, setError)
                                       }
                                     }}
                                   >
@@ -215,8 +215,8 @@ const SaveExams = () => {
                                           })
                                           refetch()
                                         }
-                                      } catch {
-                                        errorMsg('Phê duyệt thất bại')
+                                      } catch (err) {
+                                        errorMsg(err, setError)
                                       }
                                     }}
                                   >

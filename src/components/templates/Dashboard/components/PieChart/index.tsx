@@ -71,11 +71,11 @@ const PieChartComponent: React.FC = () => {
   }
 
   return (
-    <div style={{ position: 'relative', width: '70%', margin: 'auto' }}>
+    <div style={{ position: 'relative', width: '65%', margin: 'auto' }}>
       <Tabs value={selectedTab} onChange={handleTabChange} centered>
-        <Tab label='Kế hoạch' />
-        <Tab label='Bộ đề' />
-        <Tab label='Đề chi tiết' />
+        <Tab label='Kế hoạch' sx={{ fontSize: '0.6rem' }} />
+        <Tab label='Bộ đề' sx={{ fontSize: '0.6rem' }} />
+        <Tab label='Đề chi tiết' sx={{ fontSize: '0.6rem' }} />
       </Tabs>
 
       <Pie className='mt-10' data={pieData} options={pieOptions} />

@@ -25,7 +25,7 @@ export const successMsg = (msg: string) => {
 }
 
 export const errorMsg = (error: any, setError?: any) => {
-  console.log('log', error)
+
   if (Array.isArray(error) && error.length > 0) {
     errorMsg(error[0].message)
     error.map((item) => {
