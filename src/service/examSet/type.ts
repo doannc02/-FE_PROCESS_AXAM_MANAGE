@@ -31,11 +31,8 @@ export type ExamSet = {
     name: string
     id: number
   }
-  exams: Exam[] | Exam2[]
+  exams: Exam[]
   isCreateExam?: boolean
-}
-export interface Exam2 extends CommonObject {
-  status: state
 }
 
 export type Exam = {

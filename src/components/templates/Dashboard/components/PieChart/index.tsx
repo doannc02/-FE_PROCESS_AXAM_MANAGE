@@ -12,22 +12,22 @@ interface PieChartComponentProps {
 const PieChartComponent: React.FC = () => {
   const dataSets = [
     [
-      { label: 'Đã phê duyệt', value: 25 },
-      { label: 'Chờ phê duyệt', value: 35 },
-      { label: 'Đang thực hiện', value: 20 },
-      { label: 'Bị từ chối', value: 20 },
+      { label: 'Đã phê duyệt', value: 5 },
+      { label: 'Chờ phê duyệt', value: 4 },
+      { label: 'Đang thực hiện', value: 3 },
+      { label: 'Bị từ chối', value: 2 },
     ],
     [
-      { label: 'Đã phê duyệt', value: 15 },
-      { label: 'Chờ phê duyệt', value: 25 },
-      { label: 'Đang thực hiện', value: 30 },
-      { label: 'Bị từ chối', value: 31 },
+      { label: 'Đã phê duyệt', value: 1 },
+      { label: 'Chờ phê duyệt', value: 2 },
+      { label: 'Đang thực hiện', value: 3 },
+      { label: 'Bị từ chối', value: 4 },
     ],
     [
-      { label: 'Đã phê duyệt', value: 20 },
-      { label: 'Chờ phê duyệt', value: 40 },
-      { label: 'Đang thực hiện', value: 15 },
-      { label: 'Bị từ chối', value: 29 },
+      { label: 'Đã phê duyệt', value: 3 },
+      { label: 'Chờ phê duyệt', value: 1 },
+      { label: 'Đang thực hiện', value: 2 },
+      { label: 'Bị từ chối', value: 3 },
     ],
   ]
   const [selectedTab, setSelectedTab] = useState(0) // Trạng thái tab hiện tại

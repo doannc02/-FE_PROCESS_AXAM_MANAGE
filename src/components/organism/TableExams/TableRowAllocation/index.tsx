@@ -84,7 +84,6 @@ export const TableRowPE = (props: Props) => {
                 <TableCell
                   onClick={() => {
                     if (
-                      column.fieldName === 'action' ||
                       column.fieldName === 'index' ||
                       column.fieldName === 'button'
                     ) {
@@ -137,7 +136,6 @@ export const TableRowPE = (props: Props) => {
                             disabled={role !== 'Admin'}
                             editorText={watch(`exams.${index}.comment`)}
                             setEditorText={(text) => {
-                              // Xóa lỗi khi thay đổi giá trị
                               setValue(`exams.${index}.comment`, text)
                               clearErrors(`exams.${index}.comment`)
                             }}

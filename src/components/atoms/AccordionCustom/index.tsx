@@ -12,6 +12,8 @@ type Props = {
   title: string | React.ReactNode
   children: React.ReactNode
   defaultOpen?: boolean
+  expanded?: boolean
+  onChange?: () => void
 }
 
 export const AccordionCustom = ({
@@ -20,10 +22,11 @@ export const AccordionCustom = ({
   title,
   children,
   defaultOpen = false,
+  expanded,
 }: Props) => {
   return (
     <div>
-      <Accordion defaultExpanded={defaultOpen}>
+      <Accordion defaultExpanded={defaultOpen || !!expanded}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'

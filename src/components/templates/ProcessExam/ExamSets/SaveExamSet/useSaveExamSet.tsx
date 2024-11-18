@@ -78,21 +78,18 @@ export const useSaveExamSet = () => {
           header: 'Trạng thái',
           fieldName: 'status',
         },
-        ...(isView
-          ? [
-              {
-                header: '',
-                fieldName: 'button',
-              },
-            ]
-          : [
-              {
-                header: '',
-                fieldName: 'action',
-              },
-            ]),
+
+        {
+          header: '',
+          fieldName: 'button',
+        },
+
+        {
+          header: '',
+          fieldName: 'action',
+        },
       ] as ColumnProps[],
-    [isView]
+    []
   )
 
   const tableData = (watch('exams') ?? []).map((item, index) => {
@@ -197,18 +194,15 @@ export const useSaveExamSet = () => {
       ),
       code: watch(`exams.${index}.code`),
       button: <CoreButton>Xem thêm...</CoreButton>,
-      action: isView
-        ? null
-        : watch(`exams.${index}.status`) !== 'approved' &&
-          index > 0 && (
-            <TopAction
-              isShowText={false}
-              actionList={['delete']}
-              onDeleteAction={() => {
-                remove(index)
-              }}
-            />
-          ),
+      action: isView ? null : watch(`exams.${index}.status`) !== 'approved' ? (
+        <TopAction
+          isShowText={false}
+          actionList={['delete']}
+          onDeleteAction={() => {
+            remove(index)
+          }}
+        />
+      ) : null,
     }
   })
 

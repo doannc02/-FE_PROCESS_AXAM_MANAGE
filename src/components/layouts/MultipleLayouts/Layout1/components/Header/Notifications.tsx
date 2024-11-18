@@ -15,38 +15,63 @@ import {
   Switch,
   Typography,
 } from '@mui/material'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import { CoreButton } from '@/components/atoms/CoreButton'
 import { BLACK, GRAY_SCALE } from '@/helper/colors'
 import { toast, TypeOptions } from 'react-toastify'
 import { useNotificationCenter } from 'react-toastify/addons/use-notification-center'
+import {
+  actionNotification,
+  useQueryGetNotificationByUserId,
+} from '@/service/notification'
+import { useMutation } from 'react-query'
+import { TypeNotification } from '@/service/notification/type'
+import { PageResponse } from '@/service/type'
+import { errorMsg } from '@/helper/message'
 
 const types = ['success', 'info', 'warning', 'error']
 
 export default function Notifications() {
-  const { notifications, clear, markAllAsRead, markAsRead, unreadCount } =
-    useNotificationCenter()
+  // // const { notifications, clear, markAllAsRead, markAsRead, unreadCount } =
+  //   useNotificationCenter()
   const [showUnreadOnly, setShowUnreadOnly] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const addNotification = () => {
-    // use a random type of notification
-    toast('Lorem ipsum dolor sit amet, consectetur adipiscing elit', {
-      type: types[Math.floor(Math.random() * types.length)] as TypeOptions,
-    })
-  }
-
+  const [notifications, setNotifications] = useState<TypeNotification[]>()
   const toggleNotificationCenter = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
     setIsOpen(!isOpen)
   }
-
+  console.log('notification')
   const toggleFilter = (e: React.ChangeEvent) => {
     setShowUnreadOnly(!showUnreadOnly)
   }
 
+  const { data, refetch } = useQueryGetNotificationByUserId()
+
+  const { mutate } = useMutation(actionNotification, {
+    onSuccess: (res) => {
+      if (res) {
+        refetch()
+      }
+    },
+    onError: (err) => {
+      console.log(err, 'err notifi')
+      refetch()
+    },
+  })
+  useEffect(() => {
+    if (data?.data.content) {
+      console.log(data?.data.content, 'data')
+      setNotifications(data?.data.content ?? [])
+    }
+  }, [data?.data.content])
+
+  const unreadCount = Array.isArray(notifications)
+    ? notifications.filter((n) => n.is_read === false).length
+    : 0
+  console.log(unreadCount, 'log un')
   return (
     <Box sx={{ margin: '8px' }}>
       <IconButton size='large' onClick={toggleNotificationCenter}>
@@ -54,7 +79,6 @@ export default function Notifications() {
           <MailIcon color='action' />
         </Badge>
       </IconButton>
-      <button onClick={addNotification}>Add notification</button>
 
       <Popper open={isOpen} anchorEl={anchorEl} transition>
         {({ TransitionProps }) => (
@@ -108,7 +132,7 @@ export default function Notifications() {
                 }}
                 spacing={2}
               >
-                {(!notifications.length ||
+                {(notifications?.length === 0 ||
                   (unreadCount === 0 && showUnreadOnly)) && (
                   <div className='min-w-[400px] flex justify-center flex-col'>
                     <Typography variant='body2'>
@@ -117,28 +141,34 @@ export default function Notifications() {
                   </div>
                 )}
                 {(showUnreadOnly
-                  ? notifications.filter((v) => !v.read)
+                  ? (notifications ?? []).filter((v) => !v.is_read)
                   : notifications
-                ).map((notification) => {
+                )?.map((notification) => {
                   return (
                     <Alert
                       key={notification.id}
-                      severity={(notification.type as AlertColor) || 'info'}
+                      severity='info'
                       action={
-                        notification.read ? (
+                        notification.is_read ? (
                           <CheckIcon />
                         ) : (
                           <CoreButton
                             color='primary'
                             aria-label='upload picture'
-                            onClick={() => markAsRead(notification.id)}
+                            onClick={() => {
+                              mutate({
+                                NotificationIds: [Number(notification?.id)],
+                                isRead: true,
+                                method: 'put',
+                              })
+                            }}
                           >
                             <MarkChatReadIcon />
                           </CoreButton>
                         )
                       }
                     >
-                      {notification?.content as ReactNode}
+                      {notification?.message}
                     </Alert>
                   )
                 })}
@@ -154,11 +184,28 @@ export default function Notifications() {
                   borderBottomRightRadius: '8px',
                 }}
               >
-                <CoreButton variant='contained' onClick={clear}>
+                <CoreButton
+                  variant='contained'
+                  onClick={async () => {
+                    await mutate({
+                      NotificationIds: (notifications ?? []).map((n) => n.id),
+                      method: 'delete',
+                    })
+                  }}
+                >
                   Xóa tất cả
                 </CoreButton>
 
-                <CoreButton variant='contained' onClick={markAllAsRead}>
+                <CoreButton
+                  variant='contained'
+                  onClick={async () => {
+                    await mutate({
+                      NotificationIds: (notifications ?? []).map((n) => n.id),
+                      isRead: true,
+                      method: 'put',
+                    })
+                  }}
+                >
                   Đánh dấu đã đọc
                 </CoreButton>
               </Box>

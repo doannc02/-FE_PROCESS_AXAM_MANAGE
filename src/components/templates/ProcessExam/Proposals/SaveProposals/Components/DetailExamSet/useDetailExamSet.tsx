@@ -3,42 +3,66 @@ import { errorMsg, successMsg } from '@/helper/message'
 import { actionExams, getDetailExam } from '@/service/exam'
 import { Exam } from '@/service/examSet/type'
 import { Proposals } from '@/service/proposals/type'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useQueryClient } from 'react-query'
 
 const useDetailExamSet = ({ indexExamSet }: { indexExamSet: number }) => {
   const role = getRole()
+  const router = useRouter()
   const [isLoadingUpdateStateExam, setLoadingUpdateStateExam] =
     useState<boolean>()
   const methodForm = useFormContext<Proposals>()
-  const { setValue, getValues } = methodForm
-  //  const { mutate } = useMutation(, {})
+  const { setValue, setError, clearErrors } = methodForm
+  const queryClient = useQueryClient()
 
   const submitChangeStateExam = async (input: Exam, index: number) => {
-    if (role !== 'Admin') return
-    if (!input?.comment) {
-      errorMsg(`Hãy nhập nhận xét cho đề ${input.name}`)
-      return
-    }
     try {
-      setLoadingUpdateStateExam(true)
-      const res = await actionExams({
-        method: 'put',
-        data: input,
-      })
-      if (res.data?.id) {
-        const detail = await getDetailExam({
-          examId: res?.data?.id,
+      if (role !== 'Admin') return
+      let valid = true
+      if (!input?.comment) {
+        setError(`exam_sets.${indexExamSet}.exams.${index}.comment`, {
+          message: `Hãy nhập nhận xét cho đề ${input.name}`,
         })
-        if (detail.data) {
-          console.log(detail.data, 'log')
-          setValue(
-            `exam_sets.${indexExamSet}.exams.${index}`,
-            detail.data as any
+        valid = false
+      }
+      if (valid) {
+        setLoadingUpdateStateExam(true)
+        const res = await actionExams({
+          method: 'put',
+          data: input,
+        })
+        if (res.data?.id) {
+          const detail = await getDetailExam({
+            examId: res?.data?.id,
+          })
+          if (detail.data) {
+            console.log(detail.data, 'log')
+            setValue(
+              `exam_sets.${indexExamSet}.exams.${index}`,
+              detail.data as any
+            )
+          }
+
+          successMsg(`Phê duyệt đề ${input.name} thành công!!`)
+          setLoadingUpdateStateExam(false)
+          if (
+            index ===
+            Number(
+              (methodForm.watch(`exam_sets.${indexExamSet}.exams`) ?? [])
+                .length - 1
+            )
+          ) {
+            queryClient.invalidateQueries({
+              queryKey: ['api/v1/proposals/detail'],
+            })
+          }
+          console.log(
+            methodForm.watch(`exam_sets.${indexExamSet}.exams.${index}`),
+            'log watch'
           )
         }
-        successMsg(`Phê duyệt đề ${input.name} thành công!!`)
-        setLoadingUpdateStateExam(false)
       }
     } catch (ex: any) {
       setLoadingUpdateStateExam(false)
@@ -46,8 +70,8 @@ const useDetailExamSet = ({ indexExamSet }: { indexExamSet: number }) => {
     }
   }
   return [
-    { methodForm, role, isLoadingUpdateStateExam },
-    { submitChangeStateExam },
+    { methodForm, role, router, isLoadingUpdateStateExam },
+    { submitChangeStateExam, clearErrors },
   ] as const
 }
 export default useDetailExamSet

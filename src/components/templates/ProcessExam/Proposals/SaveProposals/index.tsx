@@ -474,7 +474,6 @@ const SaveProposals = () => {
                                     <DetailExamSet
                                       isViewProp={isView}
                                       indexExamSet={index}
-                                      item={item}
                                     />
                                   </AccordionCustom>
                                 )

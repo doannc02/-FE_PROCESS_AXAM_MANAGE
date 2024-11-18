@@ -146,6 +146,15 @@ const useSaveExams = () => {
             },
           },
         },
+        {
+          header: '',
+          fieldName: 'button',
+          styleCell: {
+            style: {
+              minWidth: '50px',
+            },
+          },
+        },
       ] as ColumnProps[],
     [role, isView]
   )
@@ -211,7 +220,7 @@ const useSaveExams = () => {
             }
           />
         ),
-        action: <CoreButton>Xem thêm...</CoreButton>,
+        button: <CoreButton>Xem thêm...</CoreButton>,
       }
     }
     return {
@@ -316,6 +325,7 @@ const useSaveExams = () => {
           />
         </div>
       ),
+      button: <CoreButton>Xem thêm...</CoreButton>,
       action: !isView &&
         watch(`exams.${index}.status`) !== 'approved' &&
         index > 0 && (
