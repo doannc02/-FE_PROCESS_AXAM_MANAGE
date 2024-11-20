@@ -1,3 +1,5 @@
+import { CommonObject } from '../type'
+
 export type TypeNotification = {
   id: number
   user_id: number
@@ -6,4 +8,5 @@ export type TypeNotification = {
   avatar: string
   created_at: string
   is_read: boolean
+  proposal: CommonObject
 }

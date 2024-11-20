@@ -17,7 +17,7 @@ export const getNotificationByUserId = async (): Promise<
   return data
 }
 
-export const useQueryGetNotificationByUserId = (options?: any) => {
+export const useQueryGetNotificationByUserId = (params: any, options?: any) => {
   return useQuery<PageResponse<TypeNotification[]>>(
     ['api/v1/notification/get-by-user-id'],
     () => getNotificationByUserId(),

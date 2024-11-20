@@ -14,7 +14,7 @@ import useChangePassword from './hooks/useChangePassword'
 import { useLogin } from './useLogin'
 
 const Login = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('login')
 
   const [userName, setUserName] = useState<any>()
   const [forgotStep, setForgotStep] = useState(0)
@@ -37,7 +37,7 @@ const Login = () => {
       </Box>
       <Box
         className='flex flex-row items-stretch flex-1 relative'
-        style={{ maxWidth: 1000, height: 720 }}
+        style={{ maxWidth: 1000, height: 690 }}
       >
         <RegisterPanel />
 
@@ -64,13 +64,13 @@ const Login = () => {
           >
             <Box className='flex flex-col'>
               <Typography variant='h5' style={{ marginTop: 40 }}>
-                Module Quản Lý Quy Trình Tạo Đề Thi
+                {t('nameModule')}
               </Typography>
               <Typography
                 variant='h6'
                 style={{ marginLeft: 40, marginTop: 10 }}
               >
-                Khoa Công Nghệ Thông Tin - VIU
+                {t('department')}
               </Typography>
 
               <CoreInput

@@ -18,7 +18,7 @@ export const getServerSideProps = combineGssp<any>(
   checkLogin(),
   async ({ locale = 'vn' }) => ({
     props: {
-      ...(await serverSideTranslations(locale)),
+      ...(await serverSideTranslations(locale, ['common', 'login'])),
     },
   })
 )

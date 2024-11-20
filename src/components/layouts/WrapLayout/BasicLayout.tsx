@@ -2,13 +2,15 @@ import { DialogProvider } from '@/components/hooks/dialog/useDialog'
 import { useAppSelector } from '@/redux/hook'
 import { createTheme } from '@mui/material'
 import NextNProgress from 'nextjs-progressbar'
-import { ReactElement, useMemo } from 'react'
+import { ReactElement, useEffect, useMemo } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { RecoilRoot, useRecoilValue } from 'recoil'
+import { useRouter } from 'next/router'
 import ModeTheme from '../Theme'
 import { getThemeConfig } from '../Theme/themeMUIConfig'
 import multipleLayout from '../MultipleLayouts'
 import { layoutType } from '../MultipleLayouts/layoutTypeRecoil'
+import Notifications from '../MultipleLayouts/Layout1/components/Header/Notifications'
 
 const queryClient = new QueryClient()
 
@@ -19,6 +21,18 @@ export const BasicLayout = (page: ReactElement) => {
   const themeConfig = getThemeConfig(mainTheme, fontConfig)
 
   const theme = createTheme(themeConfig)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      queryClient.invalidateQueries('api/v1/notification/get-by-user-id')
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   return (
     <QueryClientProvider client={queryClient}>

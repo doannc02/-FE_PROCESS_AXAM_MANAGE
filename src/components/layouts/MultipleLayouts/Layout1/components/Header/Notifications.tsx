@@ -1,9 +1,6 @@
-import CheckIcon from '@mui/icons-material/Check'
-import MailIcon from '@mui/icons-material/Mail'
-import MarkChatReadIcon from '@mui/icons-material/MarkChatRead'
+import { useState, useEffect, ReactNode } from 'react'
 import {
   Alert,
-  AlertColor,
   Badge,
   Box,
   Fade,
@@ -15,65 +12,68 @@ import {
   Switch,
   Typography,
 } from '@mui/material'
-import { ReactNode, useEffect, useState } from 'react'
-
+import CheckIcon from '@mui/icons-material/Check'
+import MailIcon from '@mui/icons-material/Mail'
+import MarkChatReadIcon from '@mui/icons-material/MarkChatRead'
 import { CoreButton } from '@/components/atoms/CoreButton'
 import { BLACK, GRAY_SCALE } from '@/helper/colors'
-import { toast, TypeOptions } from 'react-toastify'
-import { useNotificationCenter } from 'react-toastify/addons/use-notification-center'
 import {
-  actionNotification,
   useQueryGetNotificationByUserId,
+  actionNotification,
 } from '@/service/notification'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { TypeNotification } from '@/service/notification/type'
-import { PageResponse } from '@/service/type'
-import { errorMsg } from '@/helper/message'
-
-const types = ['success', 'info', 'warning', 'error']
+import path from 'path'
+import { MENU_URL } from '@/routes'
+import { useRouter } from 'next/router'
 
 export default function Notifications() {
-  // // const { notifications, clear, markAllAsRead, markAsRead, unreadCount } =
-  //   useNotificationCenter()
   const [showUnreadOnly, setShowUnreadOnly] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [notifications, setNotifications] = useState<TypeNotification[]>()
+  const [notifications, setNotifications] = useState<TypeNotification[]>([])
+  const queryClient = useQueryClient()
+
+  // Fetch notifications
+  const { data, refetch } = useQueryGetNotificationByUserId(
+    {
+      size: 1,
+      page: 20,
+    },
+    {
+      cacheTime: 0,
+      staleTime: 0,
+    }
+  )
+  const { mutate } = useMutation(actionNotification, { onSuccess: refetch })
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['api/v1/notification/get-by-user-id'],
+    })
+    refetch()
+  }, [])
+  useEffect(() => {
+    if (data?.data.content) {
+      setNotifications(data.data.content)
+    }
+  }, [data])
+
+  // Toggle visibility of Notification Center
   const toggleNotificationCenter = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
     setIsOpen(!isOpen)
   }
-  console.log('notification')
-  const toggleFilter = (e: React.ChangeEvent) => {
-    setShowUnreadOnly(!showUnreadOnly)
-  }
+  const router = useRouter()
 
-  const { data, refetch } = useQueryGetNotificationByUserId()
+  // Filter notifications based on "unread" status
+  const filteredNotifications = showUnreadOnly
+    ? notifications.filter((n) => !n.is_read)
+    : notifications
 
-  const { mutate } = useMutation(actionNotification, {
-    onSuccess: (res) => {
-      if (res) {
-        refetch()
-      }
-    },
-    onError: (err) => {
-      console.log(err, 'err notifi')
-      refetch()
-    },
-  })
-  useEffect(() => {
-    if (data?.data.content) {
-      console.log(data?.data.content, 'data')
-      setNotifications(data?.data.content ?? [])
-    }
-  }, [data?.data.content])
+  const unreadCount = notifications.filter((n) => !n.is_read).length
 
-  const unreadCount = Array.isArray(notifications)
-    ? notifications.filter((n) => n.is_read === false).length
-    : 0
-  console.log(unreadCount, 'log un')
   return (
-    <Box sx={{ margin: '8px' }}>
+    <Box sx={{ margin: '8px 20px 8px 8px' }}>
       <IconButton size='large' onClick={toggleNotificationCenter}>
         <Badge badgeContent={unreadCount} color='error'>
           <MailIcon color='action' />
@@ -84,131 +84,42 @@ export default function Notifications() {
         {({ TransitionProps }) => (
           <Fade
             style={{
-              width: '85%',
+              width: '100%',
               borderRadius: '8px',
               boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+              marginRight: '10px',
             }}
             {...TransitionProps}
-            timeout={350}
+            timeout={150}
           >
-            <Box
-              sx={{
-                borderRadius: '8px',
-              }}
-            >
-              <Box
-                sx={{
-                  borderTopLeftRadius: '8px',
-                  borderTopRightRadius: '8px',
-                  background: '#ffff',
-                  padding: '8px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography variant='h6' color={BLACK}>
-                  Thông báo
-                </Typography>
-                <FormGroup sx={{ color: BLACK }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        color='secondary'
-                        onChange={toggleFilter}
-                        checked={showUnreadOnly}
-                      />
-                    }
-                    label='Hiển thị chưa đọc'
-                  />
-                </FormGroup>
-              </Box>
-              <Stack
-                sx={{
-                  height: '400px',
-                  padding: '12px',
-                  background: GRAY_SCALE,
-                  overflowY: 'auto',
-                }}
-                spacing={2}
-              >
-                {(notifications?.length === 0 ||
-                  (unreadCount === 0 && showUnreadOnly)) && (
-                  <div className='min-w-[400px] flex justify-center flex-col'>
-                    <Typography variant='body2'>
-                      Không có thông báo nào!!
-                    </Typography>
-                  </div>
-                )}
-                {(showUnreadOnly
-                  ? (notifications ?? []).filter((v) => !v.is_read)
-                  : notifications
-                )?.map((notification) => {
-                  return (
-                    <Alert
-                      key={notification.id}
-                      severity='info'
-                      action={
-                        notification.is_read ? (
-                          <CheckIcon />
-                        ) : (
-                          <CoreButton
-                            color='primary'
-                            aria-label='upload picture'
-                            onClick={() => {
-                              mutate({
-                                NotificationIds: [Number(notification?.id)],
-                                isRead: true,
-                                method: 'put',
-                              })
-                            }}
-                          >
-                            <MarkChatReadIcon />
-                          </CoreButton>
-                        )
-                      }
-                    >
-                      {notification?.message}
-                    </Alert>
-                  )
-                })}
-              </Stack>
-              <Box
-                sx={{
-                  background: '#ffff',
-                  padding: '8px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  borderBottomLeftRadius: '8px',
-                  borderBottomRightRadius: '8px',
-                }}
-              >
-                <CoreButton
-                  variant='contained'
-                  onClick={async () => {
-                    await mutate({
-                      NotificationIds: (notifications ?? []).map((n) => n.id),
-                      method: 'delete',
-                    })
-                  }}
-                >
-                  Xóa tất cả
-                </CoreButton>
-
-                <CoreButton
-                  variant='contained'
-                  onClick={async () => {
-                    await mutate({
-                      NotificationIds: (notifications ?? []).map((n) => n.id),
-                      isRead: true,
-                      method: 'put',
-                    })
-                  }}
-                >
-                  Đánh dấu đã đọc
-                </CoreButton>
-              </Box>
+            <Box sx={{ borderRadius: '8px' }}>
+              <NotificationHeader
+                showUnreadOnly={showUnreadOnly}
+                onToggleFilter={() => setShowUnreadOnly(!showUnreadOnly)}
+              />
+              <NotificationList
+                router={router}
+                notifications={filteredNotifications}
+                onMarkAsRead={(id) =>
+                  mutate({ NotificationIds: [id], isRead: true, method: 'put' })
+                }
+              />
+              <NotificationFooter
+                notifications={notifications}
+                onDeleteAll={() =>
+                  mutate({
+                    NotificationIds: notifications.map((n) => n.id),
+                    method: 'delete',
+                  })
+                }
+                onMarkAllAsRead={() =>
+                  mutate({
+                    NotificationIds: notifications.map((n) => n.id),
+                    isRead: true,
+                    method: 'put',
+                  })
+                }
+              />
             </Box>
           </Fade>
         )}
@@ -216,3 +127,141 @@ export default function Notifications() {
     </Box>
   )
 }
+
+// Header Component
+const NotificationHeader = ({
+  showUnreadOnly,
+  onToggleFilter,
+}: {
+  showUnreadOnly: boolean
+  onToggleFilter: () => void
+}) => (
+  <Box
+    sx={{
+      borderTopLeftRadius: '8px',
+      borderTopRightRadius: '8px',
+      background: '#ffff',
+      padding: '8px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      minWidth: '300px',
+    }}
+  >
+    <Typography variant='h6' color={BLACK}>
+      Thông báo
+    </Typography>
+    <FormGroup sx={{ color: BLACK }}>
+      <FormControlLabel
+        control={
+          <Switch
+            color='secondary'
+            onChange={onToggleFilter}
+            checked={showUnreadOnly}
+          />
+        }
+        label='Chưa đọc'
+      />
+    </FormGroup>
+  </Box>
+)
+
+// Notification List Component
+const NotificationList = ({
+  notifications,
+  onMarkAsRead,
+  router,
+}: {
+  notifications: TypeNotification[]
+  onMarkAsRead: (id: number) => void
+  router: any
+}) => (
+  <Stack
+    sx={{
+      height: '400px',
+      width: '300px',
+      padding: '12px',
+      background: GRAY_SCALE,
+      overflowY: 'auto',
+    }}
+    spacing={2}
+  >
+    {notifications.length === 0 && (
+      <Typography variant='body2' textAlign='center'>
+        Không có thông báo nào!!
+      </Typography>
+    )}
+    {notifications.map((notification) => (
+      <Alert
+        className='cursor-pointer'
+        key={notification.id}
+        severity='info'
+        action={
+          notification.is_read ? (
+            <CheckIcon />
+          ) : (
+            <CoreButton
+              color='primary'
+              onClick={(e) => {
+                e.stopPropagation()
+                onMarkAsRead(notification.id)
+              }}
+            >
+              <MarkChatReadIcon />
+            </CoreButton>
+          )
+        }
+        onClick={() => {
+          onMarkAsRead(notification.id)
+          router.push({
+            pathname: `${MENU_URL.PROPOSAL}/[id]`,
+            query: {
+              id: notification?.proposal?.id,
+            },
+          })
+        }}
+      >
+        {notification.message}
+        {notification?.proposal?.code && (
+          <Typography fontWeight={500}>
+            Mã đề xuất: {notification?.proposal?.code}
+          </Typography>
+        )}
+      </Alert>
+    ))}
+  </Stack>
+)
+
+// Footer Component
+const NotificationFooter = ({
+  notifications,
+  onDeleteAll,
+  onMarkAllAsRead,
+}: {
+  notifications: TypeNotification[]
+  onDeleteAll: () => void
+  onMarkAllAsRead: () => void
+}) => (
+  <Box
+    sx={{
+      background: '#ffff',
+      padding: '8px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderBottomLeftRadius: '8px',
+      borderBottomRightRadius: '8px',
+    }}
+  >
+    {notifications.length > 0 ? (
+      <>
+        <CoreButton variant='contained' onClick={onDeleteAll}>
+          Xóa tất cả
+        </CoreButton>
+        <CoreButton variant='contained' onClick={onMarkAllAsRead}>
+          Đánh dấu đã đọc
+        </CoreButton>
+      </>
+    ) : null}
+  </Box>
+)
