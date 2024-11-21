@@ -228,7 +228,7 @@ const SaveProposals = () => {
                             />
                           </Grid>
 
-                          <Grid item xs={12} sm={12} md={12}>
+                          <Grid item xs={12} sm={6} md={6}>
                             <CoreInput
                               className='mt-5'
                               control={control}
@@ -242,6 +242,23 @@ const SaveProposals = () => {
                               }}
                             />
                           </Grid>
+
+                          {isUpdate && (
+                            <Grid item xs={12} sm={6} md={6}>
+                              <CoreInput
+                                className='mt-5'
+                                control={control}
+                                name='comment'
+                                label='Nhận xét kế hoạch'
+                                isViewProp={isDisabledControl}
+                                multiline
+                                required={role === 'Admin'}
+                                rules={{
+                                  required: t('common:validation.required'),
+                                }}
+                              />
+                            </Grid>
+                          )}
                         </Grid>
                       </div>
                       {!isView && role !== 'Admin' && (
@@ -350,6 +367,10 @@ const SaveProposals = () => {
                                                       `exam_sets.${index}`,
                                                       val
                                                     )
+                                                    setValue(
+                                                      `exam_sets.${index}.exams`,
+                                                      val.exams ?? []
+                                                    )
                                                   }
                                                   // } else {
                                                   //   setExceptValues((prev) =>
@@ -420,7 +441,8 @@ const SaveProposals = () => {
                                           <div>
                                             {role === 'Admin' &&
                                               item?.status ===
-                                                'pending_approval' && (
+                                                'pending_approval' &&
+                                              !isView && (
                                                 <>
                                                   <CoreButton
                                                     sx={{ marginRight: '10px' }}

@@ -16,8 +16,8 @@ export const Header = () => {
       className='flex justify-between h-[55px] top-0 sticky'
       style={{
         backgroundColor: WHITE,
-        borderBottom: '1px solid rgba(0, 0, 0, 0.2)', // Viền dưới màu xám đậm hơn
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // Bóng mờ đậm hơn
+        borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
       }}
     >
       <div className='flex items-center gap-10 h-full'>

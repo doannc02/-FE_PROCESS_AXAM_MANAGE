@@ -28,7 +28,12 @@ const useListProposals = () => {
     status: isTracking
       ? role === 'Admin'
         ? 'pending_approval'
-        : 'approved'
+        : undefined
+      : undefined,
+    is_request_tracking: isTracking
+      ? role === 'Admin'
+        ? undefined
+        : true
       : undefined,
   }
   const methodForm = useFormCustom<any>({
@@ -162,6 +167,7 @@ const useListProposals = () => {
       columns,
       isLoadingTable,
       tableData,
+      role,
       page: data?.data?.page,
       size: data?.data?.size,
       totalPages: data?.data?.totalPages,

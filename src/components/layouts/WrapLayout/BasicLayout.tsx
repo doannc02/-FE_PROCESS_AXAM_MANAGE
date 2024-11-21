@@ -22,17 +22,7 @@ export const BasicLayout = (page: ReactElement) => {
 
   const theme = createTheme(themeConfig)
 
-  const router = useRouter()
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      queryClient.invalidateQueries('api/v1/notification/get-by-user-id')
-    }
-    router.events.on('routeChangeComplete', handleRouteChange)
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-    }
-  }, [router.events])
+  queryClient.invalidateQueries('api/v1/notification/get-by-user-id')
 
   return (
     <QueryClientProvider client={queryClient}>

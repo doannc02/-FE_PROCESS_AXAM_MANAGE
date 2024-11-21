@@ -5,7 +5,6 @@ import EditText from '@/components/molecules/EditText'
 import { BLUE } from '@/helper/colors'
 import { Exam } from '@/service/examSet/type'
 import { Grid, Stack, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -22,7 +21,7 @@ const DetailExamSet = ({
 }) => {
   const { t } = useTranslation()
   const [values, handles] = useDetailExamSet({ indexExamSet })
-  const { methodForm, router, isLoadingUpdateStateExam, role } = values
+  const { methodForm, isView, router, isLoadingUpdateStateExam, role } = values
   const { submitChangeStateExam, clearErrors } = handles
   const { watch, getValues, setValue, control, formState } = methodForm
 
@@ -110,42 +109,46 @@ const DetailExamSet = ({
                       />
                     </Typography>
                     {role === 'Admin' && status === 'pending_approval' ? (
-                      <div>
-                        <CoreButton
-                          loading={isLoadingUpdateStateExam}
-                          sx={{ marginRight: '10px' }}
-                          theme='cancel'
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            submitChangeStateExam(
-                              {
-                                ...getValues(
-                                  `exam_sets.${indexExamSet}.exams.${index}`
-                                ),
-                                status: 'rejected',
-                              } as Exam,
-                              index
-                            )
-                          }}
-                        >
-                          Từ chối
-                        </CoreButton>
+                      <>
+                        {!isView ? (
+                          <div>
+                            <CoreButton
+                              loading={isLoadingUpdateStateExam}
+                              sx={{ marginRight: '10px' }}
+                              theme='cancel'
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                submitChangeStateExam(
+                                  {
+                                    ...getValues(
+                                      `exam_sets.${indexExamSet}.exams.${index}`
+                                    ),
+                                    status: 'rejected',
+                                  } as Exam,
+                                  index
+                                )
+                              }}
+                            >
+                              Từ chối
+                            </CoreButton>
 
-                        <CoreButton
-                          sx={{ marginRight: '10px' }}
-                          loading={isLoadingUpdateStateExam}
-                          theme='submit'
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            submitChangeStateExam(
-                              { ...ele, status: 'approved' } as Exam,
-                              index
-                            )
-                          }}
-                        >
-                          Phê duyệt
-                        </CoreButton>
-                      </div>
+                            <CoreButton
+                              sx={{ marginRight: '10px' }}
+                              loading={isLoadingUpdateStateExam}
+                              theme='submit'
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                submitChangeStateExam(
+                                  { ...ele, status: 'approved' } as Exam,
+                                  index
+                                )
+                              }}
+                            >
+                              Phê duyệt
+                            </CoreButton>
+                          </div>
+                        ) : null}
+                      </>
                     ) : null}
                     {ele?.id && (
                       <CoreButton

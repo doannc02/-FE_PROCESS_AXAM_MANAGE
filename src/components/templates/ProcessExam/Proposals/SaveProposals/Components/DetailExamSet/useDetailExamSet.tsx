@@ -11,17 +11,18 @@ import { useQueryClient } from 'react-query'
 const useDetailExamSet = ({ indexExamSet }: { indexExamSet: number }) => {
   const role = getRole()
   const router = useRouter()
+  const { actionType, id } = router.query
   const [isLoadingUpdateStateExam, setLoadingUpdateStateExam] =
     useState<boolean>()
   const methodForm = useFormContext<Proposals>()
-  const { setValue, setError, clearErrors } = methodForm
+  const { setValue, setError, clearErrors, getValues } = methodForm
   const queryClient = useQueryClient()
-
+  const isView = !!id && actionType === 'VIEW'
   const submitChangeStateExam = async (input: Exam, index: number) => {
     try {
       if (role !== 'Admin') return
       let valid = true
-      if (!input?.comment) {
+      if (!getValues(`exam_sets.${indexExamSet}.exams.${index}.comment`)) {
         setError(`exam_sets.${indexExamSet}.exams.${index}.comment`, {
           message: `Hãy nhập nhận xét cho đề ${input.name}`,
         })
@@ -70,7 +71,7 @@ const useDetailExamSet = ({ indexExamSet }: { indexExamSet: number }) => {
     }
   }
   return [
-    { methodForm, role, router, isLoadingUpdateStateExam },
+    { methodForm, isView, role, router, isLoadingUpdateStateExam },
     { submitChangeStateExam, clearErrors },
   ] as const
 }

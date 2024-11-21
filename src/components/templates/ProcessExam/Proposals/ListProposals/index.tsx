@@ -21,6 +21,7 @@ const ListProposals = () => {
     columns,
     tableData,
     totalPages,
+    role,
     size,
     page,
     isLoadingTable,
@@ -40,7 +41,11 @@ const ListProposals = () => {
           isShowDashboard
           breadcrumbs={[
             {
-              title: isProposal ? 'Danh sách đề xuất' : 'Danh sách phê duyệt',
+              title: isProposal
+                ? 'Danh sách đề xuất'
+                : role === 'Admin'
+                ? 'Yêu cầu phê duyệt'
+                : 'Theo dõi phê duyệt',
             },
           ]}
         />

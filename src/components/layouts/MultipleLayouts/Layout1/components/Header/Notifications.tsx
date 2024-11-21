@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Alert,
   Badge,
@@ -23,7 +23,6 @@ import {
 } from '@/service/notification'
 import { useMutation, useQueryClient } from 'react-query'
 import { TypeNotification } from '@/service/notification/type'
-import path from 'path'
 import { MENU_URL } from '@/routes'
 import { useRouter } from 'next/router'
 
@@ -73,26 +72,43 @@ export default function Notifications() {
   const unreadCount = notifications.filter((n) => !n.is_read).length
 
   return (
-    <Box sx={{ margin: '8px 20px 8px 8px' }}>
+    <Box sx={{ margin: '8px 10px 8px 8px' }}>
       <IconButton size='large' onClick={toggleNotificationCenter}>
         <Badge badgeContent={unreadCount} color='error'>
           <MailIcon color='action' />
         </Badge>
       </IconButton>
 
-      <Popper open={isOpen} anchorEl={anchorEl} transition>
+      <Popper
+        open={isOpen}
+        anchorEl={anchorEl}
+        transition
+        placement="bottom-start"
+        modifiers={[
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 10], // Dịch xuống 10px
+            },
+          },
+          {
+            name: 'preventOverflow',
+            options: {
+              boundary: 'viewport',
+            },
+          },
+        ]}
+      >
         {({ TransitionProps }) => (
           <Fade
             style={{
-              width: '100%',
               borderRadius: '8px',
               boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-              marginRight: '10px',
             }}
             {...TransitionProps}
             timeout={150}
           >
-            <Box sx={{ borderRadius: '8px' }}>
+            <Box sx={{ borderRadius: '8px', background: '#fff', minWidth: '300px' }}>
               <NotificationHeader
                 showUnreadOnly={showUnreadOnly}
                 onToggleFilter={() => setShowUnreadOnly(!showUnreadOnly)}
@@ -265,3 +281,4 @@ const NotificationFooter = ({
     ) : null}
   </Box>
 )
+

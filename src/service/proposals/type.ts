@@ -13,6 +13,8 @@ export type Proposals = {
   semester: number
   exam_sets: ExamSet[]
   isCreateExamSet?: boolean
+  comment?: string
+  content?: string
 }
 
 export type ResponseProposals = {
