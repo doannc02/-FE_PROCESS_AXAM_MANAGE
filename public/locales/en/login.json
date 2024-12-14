@@ -2,5 +2,14 @@
     "nameModule": "Exam Process Management Module",
     "industrial": "VIET-HUNG INDUSTRIAL UNIVERSITY",
     "department": "Information Technology (IT).",
+    "forgetPassword": "Forget Password",
+    "password": {
+        "label": "Password",
+        "placeholder": "Enter password"
+    },
+    "username": {
+        "label": "Email",
+        "placeholder": "Enter email"
+    },
     "contentPanel": "The module “Management of the Practical Exam Bank Construction Process for the Website of the Faculty of Information Technology, Vietnam - Hung Industrial University” is designed specifically for lecturers of the Faculty of Information Technology. It aims to optimize and enhance the process of creating, reviewing, and approving exam papers and projects within the Faculty of Information Technology at Vietnam - Hung Industrial University.This module is customized to meet the specific needs of the Faculty of Information Technology, ensuring that the preparation and approval of exam documents are carried out efficiently, transparently, and in compliance with quality assurance standards."
 }
