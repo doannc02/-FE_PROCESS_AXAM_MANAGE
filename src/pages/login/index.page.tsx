@@ -17,6 +17,7 @@ Page.getMeta = Meta(() => ({
   title: 'Đăng nhập hệ thống quản lý đề thi VIU',
   headNode: (
     <>
+      <meta name='keywords' content='Quản lý đề thi VIU' />
       <meta
         name='description'
         content='Hệ thống quản lý quy trình đề thi VIU, nơi giúp bạn tạo và duyệt các đề thi một cách dễ dàng.'
