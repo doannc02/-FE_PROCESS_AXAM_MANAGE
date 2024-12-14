@@ -14,15 +14,15 @@ const Page: NextPageWithLayout<Props> = () => <Login />
 
 Page.getLayout = NoneLayout
 Page.getMeta = Meta(() => ({
-  title: 'Login',
+  title: 'Đăng nhập hệ thống quản lý đề thi VIU',
   headNode: (
-    <Head>
-      <title>Đăng nhập hệ thống quản lý đề thi VIU</title>
+    <>
       <meta
         name='description'
-        content='Đăng nhập vào hệ thống quản lý đề thi VIU, nơi giúp bạn tạo và duyệt các đề thi một cách dễ dàng.'
+        content='Hệ thống quản lý quy trình đề thi VIU, nơi giúp bạn tạo và duyệt các đề thi một cách dễ dàng.'
       />
-    </Head>
+      <meta name='mota' content='Quản lý đề thi VIU' />
+    </>
   ),
 }))
 

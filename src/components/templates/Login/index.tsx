@@ -77,9 +77,9 @@ const Login = () => {
                 control={control}
                 className='mt-20'
                 name='username'
-                label={t('mail.label')}
-                placeholder={t('mail.placeholder')}
-                rules={{ required: t('rules.required') }}
+                label={t('username.label')}
+                placeholder={t('username.placeholder')}
+                rules={{ required: t('common:validation.required') }}
               />
               <CoreInput
                 control={control}
