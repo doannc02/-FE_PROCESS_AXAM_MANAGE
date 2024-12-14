@@ -23,6 +23,7 @@ Page.getMeta = Meta(() => ({
         content='Hệ thống quản lý quy trình đề thi VIU, nơi giúp bạn tạo và duyệt các đề thi một cách dễ dàng.'
       />
       <meta name='mota' content='Quản lý đề thi VIU' />
+      <meta name='author' content='Công nghệ thông tin - VIU' />
     </>
   ),
 }))
